@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoPortal", "InfoPortal\InfoPortal.csproj", "{69484FA6-0D4D-4848-8989-7522E6B79613}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoPortal", "InfoPortal\InfoPortal.csproj", "{35AC0370-2D68-444F-B272-2412F6E3DF8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{69484FA6-0D4D-4848-8989-7522E6B79613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69484FA6-0D4D-4848-8989-7522E6B79613}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69484FA6-0D4D-4848-8989-7522E6B79613}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69484FA6-0D4D-4848-8989-7522E6B79613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35AC0370-2D68-444F-B272-2412F6E3DF8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35AC0370-2D68-444F-B272-2412F6E3DF8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35AC0370-2D68-444F-B272-2412F6E3DF8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35AC0370-2D68-444F-B272-2412F6E3DF8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {936D4D80-A2AC-4BE7-8419-35FDCBC71D3E}
+		SolutionGuid = {E8D648F2-2559-4A4E-8046-A8A09493ADBE}
 	EndGlobalSection
 EndGlobal
