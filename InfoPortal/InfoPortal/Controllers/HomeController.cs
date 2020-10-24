@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace InfoPortal.Controllers
+namespace InfoPortal.WebMVC.Controllers
 {
     public class HomeController : Controller
     {

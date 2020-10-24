@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace InfoPortal
+namespace InfoPortal.WebMVC
 {
     public class Program
     {
