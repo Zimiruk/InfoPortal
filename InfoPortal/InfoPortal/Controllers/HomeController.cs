@@ -14,7 +14,7 @@ namespace InfoPortal.WebMVC.Controllers
 
         public IActionResult Index()
         {
-            var articles = _articleService.GetArticles();
+            var articles = _articleService.GetAll();
             ViewBag.Articles = articles;
 
             return View();

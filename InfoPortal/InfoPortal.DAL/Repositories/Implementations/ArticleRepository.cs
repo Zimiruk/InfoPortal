@@ -9,16 +9,21 @@ namespace InfoPortal.DAL.Repositories.Implementations
 {
     public class ArticleRepository : IArticleRepository
     {   
-        SQLDataAccess access = new SQLDataAccess();
+        public SQLDataAccess Access { get; }
+
+        public ArticleRepository(SQLDataAccess access)
+        {
+            Access = access;
+        }
 
         /// TODO Fix that, additional class, exceptions, parsing
-        public List<Article> GetArticles()
+        public List<Article> GetAll()
         {
             List<Article> articles = new List<Article>();
 
-            string connectionString = access.ConnectionString;
+            SqlConnection connection = Access.Connection;            
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (connection)
             {
                 connection.Open();
                 string sqlExpression = SqlCommands.GetArticles;

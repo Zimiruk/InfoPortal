@@ -5,6 +5,6 @@ namespace InfoPortal.BLL.Services.Interfaces
 {
     public interface IArticleService
     {
-        List<Article> GetArticles();
+        List<Article> GetAll();
     }
 }

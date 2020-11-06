@@ -14,9 +14,9 @@ namespace InfoPortal.BLL.Services.Implementations
             _articleRepository = articleRepository;
         }
 
-        public List<Article> GetArticles()
+        public List<Article> GetAll()
         {
-            return _articleRepository.GetArticles();
+            return _articleRepository.GetAll();
         }
     }
 }

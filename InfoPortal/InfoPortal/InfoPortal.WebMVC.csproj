@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\InfoPortal.BLL\InfoPortal.BLL.csproj" />
     <ProjectReference Include="..\InfoPortal.Common\InfoPortal.Common.csproj" />
+    <ProjectReference Include="..\InfoPortal.DAL\InfoPortal.DAL.csproj" />
     <ProjectReference Include="..\InfoPortal.DI\InfoPortal.DI.csproj" />
   </ItemGroup>
 

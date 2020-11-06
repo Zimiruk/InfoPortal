@@ -1,3 +1,4 @@
+using InfoPortal.DAL;
 using InfoPortal.DI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +20,8 @@ namespace InfoPortal.WebMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.IoCRegistry();          
+            services.IoCRegistry();
+            services.AddTransient(_ => new SQLDataAccess(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

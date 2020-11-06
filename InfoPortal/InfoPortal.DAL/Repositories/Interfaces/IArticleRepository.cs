@@ -5,6 +5,6 @@ namespace InfoPortal.DAL.Repositories.Interfaces
 {
     public interface IArticleRepository
     {
-        List<Article> GetArticles();
+        List<Article> GetAll();
     }
 }

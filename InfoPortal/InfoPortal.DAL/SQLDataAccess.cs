@@ -1,22 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.IO;
+﻿using System.Data.SqlClient;
 
 namespace InfoPortal.DAL
 {
-    /// TODO if this can stay. Maybe set sql commands here
-
-    public class SQLDataAccess
+    public class SQLDataAccess : System.IDisposable
     {
-        public string ConnectionString { get; set; }
+        public SqlConnection Connection { get; }
 
-        public SQLDataAccess()
+        public SQLDataAccess(string connectionString)
         {
-            var configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory() + "/").AddJsonFile("appsettings.json", false)
-               .Build();
-
-            this.ConnectionString = configuration.GetConnectionString("DefaultConnection");
+            Connection = new SqlConnection(connectionString);
         }
-                
+
+        public void Dispose() => Connection.Dispose();
     }
 }
