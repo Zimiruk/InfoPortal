@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InfoPortal.BLL\InfoPortal.BLL.csproj" />
+    <ProjectReference Include="..\InfoPortal.Common\InfoPortal.Common.csproj" />
+    <ProjectReference Include="..\InfoPortal.DAL\InfoPortal.DAL.csproj" />
+    <ProjectReference Include="..\InfoPortal.DI\InfoPortal.DI.csproj" />
+  </ItemGroup>
+
+</Project>
