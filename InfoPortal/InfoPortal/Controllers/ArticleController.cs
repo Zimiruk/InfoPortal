@@ -4,9 +4,14 @@ namespace InfoPortal.WebMVC.Controllers
 {
     public class ArticleController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Detail(int id)
         {
-            return View();
+           if (id == 0)
+            {
+                return NotFound();
+            }
+
+            return View();           
         }
     }
 }
