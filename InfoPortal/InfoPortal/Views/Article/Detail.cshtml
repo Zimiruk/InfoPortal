@@ -1,21 +1,26 @@
-﻿
+﻿@model InfoPortal.Common.Models.Article
+
 @{
     ViewData["Title"] = "Article";
 }
 
-<h3 class="d-inline card-title">Article name</h3>
+<h3 class="d-inline card-title">@Model.Name</h3>
 
 <button type="button" class="d-inline  btn btn-danger float-right">Delete</button>
 <button type="button" class="d-inline  btn btn-warning float-right">Edit</button>
 
 <p>Topics</p>
 <ul>
-    <li>Im Topic</li>
-    <li>And im Topic</li>
+    <li>@Model.Theme</li>  
 </ul>
 
-<p>
-    I am article details. In future i could be updated and deleted.
-</p>
+<span>
+    My language: 
+</span>
 
-<img class="card-img-top" src="..." alt="Some awesome picture could be here">
+<span>
+    @Model.Language
+</span>
+
+<!--TODO Move style-->
+<img class="card-img-top" src="..." alt="Some awesome picture could be here" style="display: block;">

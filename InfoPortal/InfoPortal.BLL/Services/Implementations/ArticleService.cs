@@ -18,5 +18,10 @@ namespace InfoPortal.BLL.Services.Implementations
         {
             return _articleRepository.GetAll();
         }
+
+        public Article Get(int id)
+        {
+            return _articleRepository.Get(id);
+        }
     }
 }
