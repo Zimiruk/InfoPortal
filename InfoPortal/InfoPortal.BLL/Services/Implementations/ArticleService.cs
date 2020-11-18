@@ -9,6 +9,11 @@ namespace InfoPortal.BLL.Services.Implementations
     {
         private IArticleRepository _articleRepository;
 
+        public int Create(Article article)
+        {
+            return _articleRepository.Create(article);
+        }
+
         public ArticleService(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
@@ -17,6 +22,21 @@ namespace InfoPortal.BLL.Services.Implementations
         public List<Article> GetAll()
         {
             return _articleRepository.GetAll();
+        }
+
+        public Article Get(int id)
+        {
+            return _articleRepository.Get(id);
+        }
+
+        public void Update(Article article)
+        {
+            _articleRepository.Update(article);
+        }
+
+        public void Delete(int id)
+        {
+            _articleRepository.Delete(id);
         }
     }
 }

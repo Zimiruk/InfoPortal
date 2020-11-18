@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<InfoPortal.Common.Models.Article>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -6,8 +7,10 @@
 <h1>Info Portal</h1>
 
 <h2>List of articles</h2>
+<!--STYLE-->
+<a href="@Url.Action("Create", "Article")" class="d-block btn btn-success" style="width:300px; margin:30px">Add article</a>
 
-@foreach (var article in ViewBag.Articles)
+@foreach (var article in Model)
 {
     <div class="card" style="width: 40rem;">
         <div>
@@ -19,10 +22,10 @@
             <h5 class="card-title">@article.Name</h5>
             <p>Themes</p>
             <ul>
-                <li>@article.Theme</li>             
+                <li>@article.Theme</li>
             </ul>
             <img class="card-img-top" src="..." alt="Some awesome picture could be here">
-            <a href="#" class="d-block btn btn-primary">Show details</a>
+            <a href="@Url.Action("Detail", "Article", new { id = article.Id})" class="d-block btn btn-primary">Show details</a>
         </div>
-    </div>   
+    </div>
 }

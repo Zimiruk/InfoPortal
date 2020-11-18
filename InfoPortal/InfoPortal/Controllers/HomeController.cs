@@ -1,5 +1,7 @@
 ﻿using InfoPortal.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using InfoPortal.Common.Models;
+using System.Collections.Generic;
 
 namespace InfoPortal.WebMVC.Controllers
 {
@@ -14,10 +16,8 @@ namespace InfoPortal.WebMVC.Controllers
 
         public IActionResult Index()
         {
-            var articles = _articleService.GetAll();
-            ViewBag.Articles = articles;
-
-            return View();
+            var articles = _articleService.GetAll();  
+            return View(articles);
         }
     }
 }
