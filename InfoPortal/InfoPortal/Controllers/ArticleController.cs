@@ -13,6 +13,19 @@ namespace InfoPortal.WebMVC.Controllers
             _articleService = articleService;
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {          
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Article article)
+        {
+            int id = _articleService.Create(article);
+            return RedirectToAction("Detail", new { id });
+        }
+
         [HttpGet("{id}")]
         public IActionResult Detail(int id)
         {
