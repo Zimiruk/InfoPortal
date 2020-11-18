@@ -45,11 +45,12 @@ namespace InfoPortal.WebMVC
             ///TODO Think over
             app.UseMvc(routes =>
             {
+                routes.MapRoute("create", "/article/create", new { controller = "Article", action = "Create" });
                 routes.MapRoute("detail", "/article/{id}", new { controller = "Article", action = "Detail" });
 
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=home}/{action=Index}/");
+                    template: "{controller=home}/{action=Index}/{id?}");
             });
         }
     }

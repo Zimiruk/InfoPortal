@@ -26,7 +26,7 @@ namespace InfoPortal.WebMVC.Controllers
             return RedirectToAction("Detail", new { id });
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public IActionResult Detail(int id)
         {
             if (id == 0)
@@ -43,8 +43,16 @@ namespace InfoPortal.WebMVC.Controllers
 
         public IActionResult Content(int id)
         {
-            var article = _articleService.Get(id);
-            return View(article);
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                var article = _articleService.Get(id);
+                return View(article);
+            }
         }
 
         [HttpGet]
