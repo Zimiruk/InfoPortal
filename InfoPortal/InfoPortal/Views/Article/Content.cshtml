@@ -1,0 +1,25 @@
+﻿@model InfoPortal.Common.Models.Article
+
+@{
+    ViewData["Title"] = "Content";
+}
+
+<h1>Content</h1>
+
+<h3 class="d-inline card-title">@Model.Name</h3>
+
+<p>Topics</p>
+<ul>
+    <li>@Model.Theme</li>
+</ul>
+
+<span>
+    My language:
+</span>
+
+<span>
+    @Model.Language
+</span>
+ 
+<!--TODO Move style-->
+<img class="card-img-top" src="..." alt="Some awesome picture could be here" style="display: block;">

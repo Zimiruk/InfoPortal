@@ -23,5 +23,10 @@ namespace InfoPortal.BLL.Services.Implementations
         {
             return _articleRepository.Get(id);
         }
+
+        public void Update(Article article)
+        {
+            _articleRepository.Update(article);
+        }
     }
 }

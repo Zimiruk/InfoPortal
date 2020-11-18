@@ -23,9 +23,29 @@ namespace InfoPortal.WebMVC.Controllers
 
             else
             {
-                var article = _articleService.Get(id);
-                return View(article);
-            }            
+                ViewBag.Id = id;
+                return View();
+            }
+        }
+
+        public IActionResult Content(int id)
+        {
+            var article = _articleService.Get(id);
+            return View(article);
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            var article = _articleService.Get(id);
+            return View(article);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Article article)
+        {
+            _articleService.Update(article);
+            return RedirectToAction("Detail", new { id = article.Id });
         }
     }
 }

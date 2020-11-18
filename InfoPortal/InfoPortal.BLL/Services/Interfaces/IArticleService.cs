@@ -7,5 +7,7 @@ namespace InfoPortal.BLL.Services.Interfaces
     {
         List<Article> GetAll();
         Article Get(int id);
+
+        void Update(Article article);
     }
 }

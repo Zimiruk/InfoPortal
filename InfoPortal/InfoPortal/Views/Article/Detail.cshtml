@@ -1,26 +1,43 @@
-﻿@model InfoPortal.Common.Models.Article
-
-@{
+﻿@{
     ViewData["Title"] = "Article";
 }
 
-<h3 class="d-inline card-title">@Model.Name</h3>
+@section Scripts {
+    <script>
+
+        let mode = 'edit';
+
+        //TODO MayB change that
+        $(document).ready(function () {
+
+            $("#modeButton").click(function () {
+                changePage();
+            });
+
+            function changePage() {
+               
+                if (mode == 'content') {                  
+                    mode = 'edit';
+                    $("#modeButton").html('View');
+                    $("#div1").load("@Url.Action("Update", "Article", new { id = @ViewBag.Id })");
+                }
+
+                else if (mode == 'edit') {                
+                    mode = 'content';
+                    $("#modeButton").html('Edit');
+                    $("#div1").load("@Url.Action("Content", "Article", new { id = @ViewBag.Id })");
+                }
+            }
+
+            changePage();
+
+        });
+
+     
+    </script>
+}
 
 <button type="button" class="d-inline  btn btn-danger float-right">Delete</button>
-<button type="button" class="d-inline  btn btn-warning float-right">Edit</button>
+<button type="button" id="modeButton" class="d-inline  btn btn-warning float-right">Edit</button>
 
-<p>Topics</p>
-<ul>
-    <li>@Model.Theme</li>  
-</ul>
-
-<span>
-    My language: 
-</span>
-
-<span>
-    @Model.Language
-</span>
-
-<!--TODO Move style-->
-<img class="card-img-top" src="..." alt="Some awesome picture could be here" style="display: block;">
+<div id="div1"></div>
