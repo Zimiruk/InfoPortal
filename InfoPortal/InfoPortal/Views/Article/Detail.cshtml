@@ -37,7 +37,7 @@
     </script>
 }
 
-<button type="button" class="d-inline  btn btn-danger float-right">Delete</button>
+<button type="button" class="d-inline  btn btn-danger float-right" onclick="location.href='@Url.Action("Delete", "Article", new { id = @ViewBag.Id})'">Delete</button>
 <button type="button" id="modeButton" class="d-inline  btn btn-warning float-right">Edit</button>
 
 <div id="div1"></div>

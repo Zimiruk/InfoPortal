@@ -33,5 +33,10 @@ namespace InfoPortal.BLL.Services.Implementations
         {
             _articleRepository.Update(article);
         }
+
+        public void Delete(int id)
+        {
+            _articleRepository.Delete(id);
+        }
     }
 }

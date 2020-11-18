@@ -30,8 +30,8 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
                 using (SqlCommand command = new SqlCommand(sqlExpression, connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;  
-                  
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.Add("@name", SqlDbType.VarChar).Value = article.Name;
                     command.Parameters.Add("@theme", SqlDbType.VarChar).Value = article.Theme;
                     command.Parameters.Add("@addedOn", SqlDbType.DateTime).Value = DateTime.Now;
@@ -42,7 +42,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
                     SqlParameter returnValue = new SqlParameter();
                     returnValue.Direction = ParameterDirection.ReturnValue;
-                    command.Parameters.Add(returnValue);                    
+                    command.Parameters.Add(returnValue);
 
                     command.ExecuteNonQuery();
 
@@ -108,7 +108,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
                 using (SqlCommand command = new SqlCommand(sqlExpression, connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;                  
+                    command.CommandType = CommandType.StoredProcedure;
 
                     SqlParameter parameter = new SqlParameter();
 
@@ -146,7 +146,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
         /// TODO Parser, something with sql parameter
         public void Update(Article article)
         {
-            SqlConnection connection = Access.Connection;    
+            SqlConnection connection = Access.Connection;
 
             using (connection)
             {
@@ -170,7 +170,33 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
                     command.ExecuteNonQuery();
                 }
-            }  
+            }
+        }
+
+        public void Delete(int id)
+        {
+            SqlConnection connection = Access.Connection;
+
+            using (connection)
+            {
+                connection.Open();
+                string sqlExpression = ArticleConstants.DeleteArticle;
+
+                using (SqlCommand command = new SqlCommand(sqlExpression, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter parameter = new SqlParameter();
+
+                    parameter.ParameterName = "@id";
+                    parameter.SqlDbType = SqlDbType.Int;
+                    parameter.Value = id;
+
+                    command.Parameters.Add(parameter);
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

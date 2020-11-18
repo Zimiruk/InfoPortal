@@ -12,5 +12,7 @@ namespace InfoPortal.BLL.Services.Interfaces
         Article Get(int id);
 
         void Update(Article article);
+
+        void Delete(int id);
     }
 }

@@ -9,5 +9,7 @@
         public const string GetArticle = "GetArticle";
 
         public const string UpdateArticle = "UpdateArticle";
+
+        public const string DeleteArticle = "DeleteArticle";
     }
 }

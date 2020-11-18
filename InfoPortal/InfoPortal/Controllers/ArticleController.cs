@@ -60,5 +60,12 @@ namespace InfoPortal.WebMVC.Controllers
             _articleService.Update(article);
             return RedirectToAction("Detail", new { id = article.Id });
         }
+
+        public IActionResult Delete(int id)
+        {
+            _articleService.Delete(id);
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

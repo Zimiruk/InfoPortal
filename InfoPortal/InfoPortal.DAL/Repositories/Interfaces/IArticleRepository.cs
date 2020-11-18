@@ -12,5 +12,7 @@ namespace InfoPortal.DAL.Repositories.Interfaces
         Article Get(int id);
 
         void Update(Article article);
+
+        void Delete(int id);
     }
 }
