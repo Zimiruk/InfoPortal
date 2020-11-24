@@ -1,30 +1,41 @@
 ﻿using InfoPortal.Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace InfoPortal.DAL
 {
     public static class DatabaseDataMapper
     {
-        private static Dictionary<Type, Func<SqlDataReader, ITable>> mappers_dictionary = new Dictionary<Type, Func<SqlDataReader, ITable>>();
+        private static Dictionary<Type, Func<SqlDataReader, ITable>> mappersDictionary = new Dictionary<Type, Func<SqlDataReader, ITable>>();
+        private static Dictionary<Type, SqlDbType> sqlTypes = new Dictionary<Type, SqlDbType>();
 
         static DatabaseDataMapper()
         {
-            mappers_dictionary.Add(typeof(Article), ArticleMapper);
+            mappersDictionary.Add(typeof(Article), ArticleMapper);
+
+            sqlTypes.Add(typeof(string), SqlDbType.VarChar);
+            sqlTypes.Add(typeof(int), SqlDbType.Int);
+            sqlTypes.Add(typeof(DateTime), SqlDbType.DateTime);
+        }
+
+        public static SqlDbType GetSqlType(Type type)
+        {
+            return sqlTypes[type];
         }
 
         public static ITable Map<ITable>(SqlDataReader reader)
         {
             Type type = typeof(ITable);
-            ITable result = (ITable)mappers_dictionary[type](reader);
+            ITable result = (ITable)mappersDictionary[type](reader);
 
             return result;
         }
 
         private static Article ArticleMapper(SqlDataReader reader)
         {
-            Article article = new Article
+            var article = new Article
             {
                 Id = Convert.ToInt32(reader.GetValue(0)),
                 Name = reader.GetValue(1).ToString(),
@@ -35,7 +46,8 @@ namespace InfoPortal.DAL
                 Video = reader.GetValue(6).ToString(),
                 Link = Convert.ToInt32(reader.GetValue(7))
             };
+
             return article;
-        }
+        }        
     }
 }
