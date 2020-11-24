@@ -2,7 +2,7 @@
 
 namespace InfoPortal.Common.Models
 {
-    public class Article
+    public class Article : ITable
     {
         public int Id { get; set; }
 
@@ -18,6 +18,6 @@ namespace InfoPortal.Common.Models
 
         public string Video { get; set; }
 
-        public int Link { get; set; }
+        public int Link { get; set; }       
     }
 }
