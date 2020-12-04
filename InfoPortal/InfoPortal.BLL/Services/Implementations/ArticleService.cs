@@ -8,15 +8,25 @@ namespace InfoPortal.BLL.Services.Implementations
     public class ArticleService : IArticleService
     {
         private IArticleRepository _articleRepository;
+        private IFileRepository _fileRepository;
 
         public int Create(Article article)
         {
-            return _articleRepository.Create(article);
+            int id = _articleRepository.Create(article);
+
+            foreach (File file in article.Files)
+            {
+                file.ArticleId = id;
+                _fileRepository.Add(file);
+            }
+
+            return id;
         }
 
-        public ArticleService(IArticleRepository articleRepository)
+        public ArticleService(IArticleRepository articleRepository, IFileRepository fileRepository)
         {
             _articleRepository = articleRepository;
+            _fileRepository = fileRepository;
         }
 
         public List<Article> GetAll()
@@ -26,7 +36,10 @@ namespace InfoPortal.BLL.Services.Implementations
 
         public Article Get(int id)
         {
-            return _articleRepository.Get(id);
+            var article = _articleRepository.Get(id);
+            article.Files = _fileRepository.GetAllByArticleId(id);
+
+            return article;
         }
 
         public void Update(Article article)

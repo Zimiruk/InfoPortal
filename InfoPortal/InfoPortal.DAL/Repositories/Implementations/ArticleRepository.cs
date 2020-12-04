@@ -25,10 +25,10 @@ namespace InfoPortal.DAL.Repositories.Implementations
         {
             return DatabaseCommand.ExecuteListReader<Article>(ArticleConstants.GetArticles, Access.Connection);
         }
-
+      
         public Article Get(int id)
-        {
-            return DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
+        {          
+           return DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
         }
 
         public void Update(Article article)

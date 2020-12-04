@@ -5,12 +5,10 @@ CREATE PROCEDURE CreateArticle
 	@theme varchar(50),
 	@addedOn datetime,
 	@language varchar(50),
-	@picture varchar(100),
-	@video varchar(100),
 	@link int
 AS   
-INSERT INTO Articles(Name, Theme, AddedOn, Language, Picture, Video, Link)
-VALUES (@name, @theme, @addedOn, @language, @picture, @video, @link);
+INSERT INTO Articles(Name, Theme, AddedOn, Language, Link)
+VALUES (@name, @theme, @addedOn, @language, @link);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -21,7 +19,7 @@ GO
 CREATE PROCEDURE GetArticle  
     @id int
 AS   
-    SELECT Id, Name, Theme, AddedOn, Language, Picture, Video, Link
+    SELECT Id, Name, Theme, AddedOn, Language, Link
     FROM Articles 
     WHERE Id = @id 
 GO  
@@ -32,7 +30,7 @@ USE [InfoPortal];
 GO  
 CREATE PROCEDURE GetArticles  
 AS   
-    SELECT Id, Name, Theme, AddedOn, Language, Picture, Video, Link
+    SELECT Id, Name, Theme, AddedOn, Language, Link
     FROM Articles 
 GO  
 
@@ -46,8 +44,6 @@ CREATE PROCEDURE UpdateArticle
 	@theme varchar(50),
 	@addedOn datetime,
 	@language varchar(50),
-	@picture varchar(100),
-	@video varchar(100),
 	@link int
 AS   
 
@@ -58,8 +54,6 @@ Name = @name,
 Theme = @theme,
 AddedOn = @addedOn,
 Language = @language,
-Picture = @picture,
-Video = @video,
 Link = @link
 
 WHERE Id = @id

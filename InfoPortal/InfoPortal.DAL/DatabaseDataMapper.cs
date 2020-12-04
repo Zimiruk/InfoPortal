@@ -14,10 +14,12 @@ namespace InfoPortal.DAL
         static DatabaseDataMapper()
         {
             mappersDictionary.Add(typeof(Article), ArticleMapper);
+            mappersDictionary.Add(typeof(File), FileMapper);
 
             sqlTypes.Add(typeof(string), SqlDbType.VarChar);
             sqlTypes.Add(typeof(int), SqlDbType.Int);
             sqlTypes.Add(typeof(DateTime), SqlDbType.DateTime);
+            sqlTypes.Add(typeof(byte[]), SqlDbType.VarBinary);
         }
 
         public static SqlDbType GetSqlType(Type type)
@@ -42,12 +44,22 @@ namespace InfoPortal.DAL
                 Theme = reader.GetValue(2).ToString(),
                 AddedOn = Convert.ToDateTime(reader.GetValue(3)),
                 Language = reader.GetValue(4).ToString(),
-                Picture = reader.GetValue(5).ToString(),
-                Video = reader.GetValue(6).ToString(),
-                Link = Convert.ToInt32(reader.GetValue(7))
+                Link = Convert.ToInt32(reader.GetValue(5))
             };
 
             return article;
-        }        
+        }
+
+        private static File FileMapper(SqlDataReader reader)
+        {
+            var file = new File
+            {
+                Id = Convert.ToInt32(reader.GetValue(0)),
+                Content = (byte[])reader.GetValue(1),
+                ArticleId = Convert.ToInt32(reader.GetValue(2))
+            };
+
+            return file;
+        }
     }
 }

@@ -20,6 +20,18 @@
 <span>
     @Model.Language
 </span>
- 
-<!--TODO Move style-->
-<img class="card-img-top" src="..." alt="Some awesome picture could be here" style="display: block;">
+
+
+<div style="margin-left:20px; margin-right:20px">
+
+    <label>Pictures</label>
+
+    <div id="images" style="margin: auto; width: 100px;">
+        @foreach (var file in Model.Files)
+        {
+            <img style="margin-bottom:20px" src="data:image/jpeg;base64,@(Convert.ToBase64String(file.Content))" />
+        }
+    </div>
+
+</div>
+

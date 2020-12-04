@@ -14,6 +14,9 @@ namespace InfoPortal.DI
 
             services.AddScoped<IArticleService, ArticleService>();
 
+            services.AddScoped<IFileRepository, FileRepository>();
+
+
             return services;
         }
     }

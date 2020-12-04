@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace InfoPortal.Common.Models
 {
@@ -14,10 +15,8 @@ namespace InfoPortal.Common.Models
 
         public string Language { get; set; }
 
-        public string Picture { get; set; }
+        public int Link { get; set; }
 
-        public string Video { get; set; }
-
-        public int Link { get; set; }       
+        public List<File> Files {get; set;}
     }
 }
