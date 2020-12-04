@@ -28,6 +28,8 @@ namespace InfoPortal.DAL
                         entity = DatabaseDataMapper.Map<ITable>(reader);
                     }
                 }
+
+                sqlConnection.Close();
             }
 
             return entity;
@@ -51,6 +53,8 @@ namespace InfoPortal.DAL
                         entities.Add(value);
                     }
                 }
+
+                sqlConnection.Close();
             }
 
             return entities;
@@ -77,6 +81,8 @@ namespace InfoPortal.DAL
                         entities.Add(value);
                     }
                 }
+
+                sqlConnection.Close();
             }
 
             return entities;

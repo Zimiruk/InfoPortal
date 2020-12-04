@@ -16,7 +16,6 @@ namespace InfoPortal.DI
 
             services.AddScoped<IFileRepository, FileRepository>();
 
-
             return services;
         }
     }

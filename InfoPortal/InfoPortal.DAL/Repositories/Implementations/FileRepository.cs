@@ -14,7 +14,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
             Access = access;
         }
 
-        public void Add(File file)
+        public void Create(File file)
         {
            DatabaseCommand.ExecuteNonQueryWithId(file, FileConstants.AddFile, Access.Connection);
         }
