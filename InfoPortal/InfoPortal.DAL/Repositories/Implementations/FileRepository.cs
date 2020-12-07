@@ -13,15 +13,5 @@ namespace InfoPortal.DAL.Repositories.Implementations
         {
             Access = access;
         }
-
-        public void Create(File file)
-        {
-           DatabaseCommand.ExecuteNonQueryWithId(file, FileConstants.AddFile, Access.Connection);
-        }
-
-        public List<File> GetAllByArticleId(int id)
-        {
-            return DatabaseCommand.ExecuteListReader<File>(id, FileConstants.GetFilesByArticleId, Access.Connection);
-        }
     }
 }

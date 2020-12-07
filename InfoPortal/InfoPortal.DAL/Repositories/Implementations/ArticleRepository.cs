@@ -9,14 +9,11 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
     public class ArticleRepository : IArticleRepository
     {
-        FileRepository fileRepository;
-
         public SQLDataAccess Access { get; }
 
         public ArticleRepository(SQLDataAccess access)
         {
             Access = access;
-            fileRepository = new FileRepository(Access);
         }
 
         public int Create(Article article)
@@ -26,7 +23,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
             foreach(var file in article.Files)
             {
                 file.ArticleId = id;
-                fileRepository.Create(file);
+                CreateFile(file);
             }
 
             return id;
@@ -40,7 +37,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
         public Article Get(int id)
         {          
            var article = DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
-           article.Files = fileRepository.GetAllByArticleId(id);
+           article.Files = GetAllByArticleId(id);
 
            return article;
         }
@@ -53,6 +50,16 @@ namespace InfoPortal.DAL.Repositories.Implementations
         public void Delete(int id)
         {
             DatabaseCommand.ExecuteNonQuery(id, ArticleConstants.DeleteArticle, Access.Connection);           
+        }
+
+        public void CreateFile(File file)
+        {
+            DatabaseCommand.ExecuteNonQueryWithId(file, FileConstants.AddFile, Access.Connection);
+        }
+
+        public List<File> GetAllByArticleId(int id)
+        {
+            return DatabaseCommand.ExecuteListReader<File>(id, FileConstants.GetFilesByArticleId, Access.Connection);
         }
     }
 }

@@ -14,5 +14,9 @@ namespace InfoPortal.DAL.Repositories.Interfaces
         void Update(Article article);
 
         void Delete(int id);
+
+        void CreateFile(File file);
+
+        public List<File> GetAllByArticleId(int id);
     }
 }
