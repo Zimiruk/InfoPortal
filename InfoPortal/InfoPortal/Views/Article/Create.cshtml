@@ -8,6 +8,14 @@
 
     <script>
 
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.class == 'DeleteButton') {
+
+                let parent = e.target.parentNode;           
+                removePicture(parent);
+            }
+        });
+
         let article = {};
         let files = [];
 
@@ -25,7 +33,7 @@
                 formData.append("Language", article.Language);
 
                 for (let x = 0; x < files.length; x++) {
-                    formData.append("Files", files[x]);
+                    formData.append("Files", files[x].file);
                 }
 
                 $.ajax({
@@ -38,7 +46,7 @@
                     success: function (response) {
 
                         if (response.success) {
-                            alert(response.responseText);                         
+                            alert(response.responseText);
                             location.href = response.id;
                         }
 
@@ -54,24 +62,83 @@
 
             $("#addPicture").click(function () {
                 $('#file-input').trigger('click');
-            });           
+            });
 
             $(document).on('change', '#file-input', function () {
 
                 let selectedFile = $('#file-input').get(0).files[0];
 
                 let images = document.getElementById('images');
-                let newImage = document.createElement("img");
-                newImage.style.display = 'block';
-                newImage.style.marginBottom = '20px';
 
+                let newId = setPictureId();
+
+                let imageDiv = document.createElement("div");
+                imageDiv.id = "image_div" + newId;
+                imageDiv.style.marginBottom = '20px';
+
+
+                let deleteImageButton = document.createElement("button");
+                deleteImageButton.innerHTML = "Remove this picture";
+                deleteImageButton.class = "DeleteButton";
+
+                let newImage = document.createElement("img");
                 newImage.src = URL.createObjectURL(selectedFile);
-                images.appendChild(newImage);
-                files.push(selectedFile);     
+                // newImage.style.display = 'block';
+
+
+
+
+                imageDiv.appendChild(newImage);
+                imageDiv.appendChild(deleteImageButton);
+
+                images.appendChild(imageDiv);
+
+
+
+                files.push(
+                    {
+                        "id": newId,
+                        "file": selectedFile
+                    }
+                );
+
+                console.log(files);
 
                 document.getElementById("file-input").value = "";
             });
         });
+
+
+        function setPictureId() {
+
+            if (files.length == 0) {
+                return 1;
+            }
+
+            else {
+
+                let id = Math.max.apply(Math, files.map(
+                    function (element) {
+                        return element.id;
+                    }))
+
+                return ++id;
+            }
+        }
+
+        function removePicture(parent) {
+            let id = parent.id.substr(9)
+
+            console.log(id);
+            index = files.findIndex(x => x.id == id);
+
+            console.log(index);
+            files.splice(index, 1);
+
+            parent.remove();
+            console.log(files);
+        }
+
     </script>
 }
 
@@ -82,7 +149,7 @@
     <button type="button" id="buttonNext" class="d-inline  btn btn-primary float-right">Save article</button>
 </div>
 
-<input id="file-input" type="file" name="name" style="display: none;" />
+<input id="file-input" type="file" name="name" style="display: none;" accept="image/x-png,image/gif,image/jpeg" />
 
 <div>
     <div class="form-group" style="margin-left:20px; margin-right:20px">
@@ -99,9 +166,9 @@
     </div>
     <div class="form-group" style="margin-left:20px; margin-right:20px">
         <label>Pictures</label>
-        <div id="images" 
-        style="margin: auto;
-        width: 100px; 
-        padding: 10px;"/>
+        <div id="images"
+             style="margin: auto;
+        width: 100px;
+        padding: 10px;" />
     </div>
 </div>
