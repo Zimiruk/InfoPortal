@@ -77,10 +77,11 @@ USE [InfoPortal]
 GO  
 CREATE PROCEDURE AddFile 
 	@Content varbinary(max),
-	@ArticleId int
+	@ArticleId int,
+	@Type varchar(50)
 AS   
-INSERT INTO Files(Content, ArticleId)
-VALUES (@Content, @ArticleId);
+INSERT INTO Files(Content, ArticleId, Type)
+VALUES (@Content, @ArticleId, @Type);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -91,10 +92,10 @@ GO
 CREATE PROCEDURE GetFilesByArticleId
     @id int
 AS   
-    SELECT Id, Content, ArticleId
+    SELECT Id, ArticleId, Content, Type
     FROM Files 
     WHERE ArticleId = @id
-GO  
+GO
 
 /************************************************************************************/
 

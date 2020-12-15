@@ -49,7 +49,8 @@ namespace InfoPortal.WebMVC.Controllers
 
                     newArticle.Files.Add(new File
                     {
-                        Content = imageData
+                        Content = imageData,
+                        Type = file.ContentType
                     });
                 }
             }

@@ -55,8 +55,9 @@ namespace InfoPortal.DAL
             var file = new File
             {
                 Id = Convert.ToInt32(reader.GetValue(0)),
-                Content = (byte[])reader.GetValue(1),
-                ArticleId = Convert.ToInt32(reader.GetValue(2))
+                ArticleId = Convert.ToInt32(reader.GetValue(1)),
+                Content = (byte[])reader.GetValue(2),
+                Type = reader.GetValue(3).ToString()   
             };
 
             return file;
