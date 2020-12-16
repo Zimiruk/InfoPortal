@@ -1,0 +1,38 @@
+﻿@model IEnumerable<InfoPortal.Common.Models.Theme>
+
+@{
+    ViewData["Title"] = "Theme";
+}
+
+<h1>Themes</h1>
+
+@foreach (var theme in Model)
+{
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th>Actions</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">@theme.Id</th>
+                        <td>@theme.Name</td>
+                        <td class="fit">
+                            <button type="button" class="btn btn-success">Edit</button>
+                            <button type="button" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+}
+

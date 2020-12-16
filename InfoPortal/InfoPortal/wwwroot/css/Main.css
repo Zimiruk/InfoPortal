@@ -14,3 +14,9 @@ video {
     max-height: 100%;
     display: block; /* remove extra space below image */
 }
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
