@@ -1,3 +1,5 @@
+/*ARTICLES*/
+
 USE [InfoPortal] 
 GO  
 CREATE PROCEDURE CreateArticle  
@@ -5,12 +7,10 @@ CREATE PROCEDURE CreateArticle
 	@theme varchar(50),
 	@addedOn datetime,
 	@language varchar(50),
-	@picture varchar(100),
-	@video varchar(100),
 	@link int
 AS   
-INSERT INTO Articles(Name, Theme, AddedOn, Language, Picture, Video, Link)
-VALUES (@name, @theme, @addedOn, @language, @picture, @video, @link);
+INSERT INTO Articles(Name, Theme, AddedOn, Language, Link)
+VALUES (@name, @theme, @addedOn, @language, @link);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -21,7 +21,7 @@ GO
 CREATE PROCEDURE GetArticle  
     @id int
 AS   
-    SELECT Id, Name, Theme, AddedOn, Language, Picture, Video, Link
+    SELECT Id, Name, Theme, AddedOn, Language, Link
     FROM Articles 
     WHERE Id = @id 
 GO  
@@ -32,7 +32,7 @@ USE [InfoPortal];
 GO  
 CREATE PROCEDURE GetArticles  
 AS   
-    SELECT Id, Name, Theme, AddedOn, Language, Picture, Video, Link
+    SELECT Id, Name, Theme, AddedOn, Language, Link
     FROM Articles 
 GO  
 
@@ -46,8 +46,6 @@ CREATE PROCEDURE UpdateArticle
 	@theme varchar(50),
 	@addedOn datetime,
 	@language varchar(50),
-	@picture varchar(100),
-	@video varchar(100),
 	@link int
 AS   
 
@@ -58,8 +56,6 @@ Name = @name,
 Theme = @theme,
 AddedOn = @addedOn,
 Language = @language,
-Picture = @picture,
-Video = @video,
 Link = @link
 
 WHERE Id = @id
@@ -74,4 +70,41 @@ CREATE PROCEDURE DeleteArticle
 AS   
 DELETE FROM Articles Where Id = @id
 GO  
+
+/*FILES*/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE AddFile 
+	@Content varbinary(max),
+	@ArticleId int,
+	@Type varchar(50)
+AS   
+INSERT INTO Files(Content, ArticleId, Type)
+VALUES (@Content, @ArticleId, @Type);
+RETURN SCOPE_IDENTITY()
+GO  
+
+/************************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE GetFilesByArticleId
+    @id int
+AS   
+    SELECT Id, ArticleId, Content, Type
+    FROM Files 
+    WHERE ArticleId = @id
+GO
+
+/************************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE DeleteFile 
+	@id int
+AS   
+DELETE FROM Files Where Id = @id
+GO  
+
 

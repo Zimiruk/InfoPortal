@@ -28,6 +28,8 @@ namespace InfoPortal.DAL
                         entity = DatabaseDataMapper.Map<ITable>(reader);
                     }
                 }
+
+                sqlConnection.Close();
             }
 
             return entity;
@@ -51,6 +53,36 @@ namespace InfoPortal.DAL
                         entities.Add(value);
                     }
                 }
+
+                sqlConnection.Close();
+            }
+
+            return entities;
+        }
+
+        public static List<ITable> ExecuteListReader<ITable>(int id, string sqlExpression, SqlConnection sqlConnection)
+        {
+            List<ITable> entities = new List<ITable>();
+
+            using (SqlCommand command = new SqlCommand(sqlExpression, sqlConnection))
+            {
+                sqlConnection.Open();
+
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ITable value = DatabaseDataMapper.Map<ITable>(reader);
+                        entities.Add(value);
+                    }
+                }
+
+                sqlConnection.Close();
             }
 
             return entities;
@@ -68,6 +100,11 @@ namespace InfoPortal.DAL
 
                 foreach (var propertyInfo in entity.GetType().GetProperties())
                 {
+                    if(propertyInfo.PropertyType.IsGenericType)
+                    {
+                        continue;
+                    }
+
                     switch (propertyInfo.Name)
                     {
                         case "Id":
@@ -100,6 +137,8 @@ namespace InfoPortal.DAL
                 command.ExecuteNonQuery();
 
                 id = (int)returnValue.Value;
+
+                sqlConnection.Close();
             }
 
             return id;

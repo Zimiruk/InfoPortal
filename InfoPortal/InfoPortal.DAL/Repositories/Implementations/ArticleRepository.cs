@@ -18,17 +18,28 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
         public int Create(Article article)
         {
-            return DatabaseCommand.ExecuteNonQueryWithId(article, ArticleConstants.CreateArticle, Access.Connection);
+            int id = DatabaseCommand.ExecuteNonQueryWithId(article, ArticleConstants.CreateArticle, Access.Connection);           
+
+            foreach(var file in article.Files)
+            {
+                file.ArticleId = id;
+                CreateFile(file);
+            }
+
+            return id;
         }
 
         public List<Article> GetAll()
         {
             return DatabaseCommand.ExecuteListReader<Article>(ArticleConstants.GetArticles, Access.Connection);
         }
-
+      
         public Article Get(int id)
-        {
-            return DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
+        {          
+           var article = DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
+           article.Files = GetAllByArticleId(id);
+
+           return article;
         }
 
         public void Update(Article article)
@@ -39,6 +50,16 @@ namespace InfoPortal.DAL.Repositories.Implementations
         public void Delete(int id)
         {
             DatabaseCommand.ExecuteNonQuery(id, ArticleConstants.DeleteArticle, Access.Connection);           
+        }
+
+        public void CreateFile(File file)
+        {
+            DatabaseCommand.ExecuteNonQueryWithId(file, FileConstants.AddFile, Access.Connection);
+        }
+
+        public List<File> GetAllByArticleId(int id)
+        {
+            return DatabaseCommand.ExecuteListReader<File>(id, FileConstants.GetFilesByArticleId, Access.Connection);
         }
     }
 }

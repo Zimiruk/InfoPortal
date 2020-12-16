@@ -6,8 +6,6 @@ CREATE PROCEDURE UpdateArticle
 	@theme varchar(50),
 	@addedOn datetime,
 	@language varchar(50),
-	@picture varchar(100),
-	@video varchar(100),
 	@link int
 AS   
 
@@ -18,8 +16,6 @@ Name = @name,
 Theme = @theme,
 AddedOn = @addedOn,
 Language = @language,
-Picture = @picture,
-Video = @video,
 Link = @link
 
 WHERE Id = @id

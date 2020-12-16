@@ -4,30 +4,225 @@
     ViewData["Title"] = "Create";
 }
 
+@section Scripts {
+
+    <script>
+
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.class == 'DeleteButton') {
+
+                let parent = e.target.parentNode;           
+                removePicture(parent);
+            }
+        });
+
+        var article = {};
+        var files = [];
+
+        $(function () {
+            $("#buttonNext").click(function () {
+
+                article.Name = $("#Name").val();
+                article.Theme = $("#Theme").val();
+                article.Language = $("#Language").val();
+
+                let formData = new FormData();
+
+                formData.append("Name", article.Name);
+                formData.append("Theme", article.Theme);
+                formData.append("Language", article.Language);
+
+                for (let x = 0; x < files.length; x++) {
+                    formData.append("Files", files[x].file);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Article/Add",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function (response) {
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            location.href = response.id;
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+            $("#addPicture").click(function () {
+                $('#file-input-picture').trigger('click');
+            });
+
+            $("#addVideo").click(function () {
+                $('#file-input-video').trigger('click');
+            });
+
+            ///Picture input
+
+            $(document).on('change', '#file-input-picture', function () {
+
+                var selectedFile = $('#file-input-picture').get(0).files[0];
+
+                if (selectedFile.type == "image/png") {
+
+                    let newId = setFileId();
+
+                    let imageDiv = document.createElement("div");   
+                    imageDiv.className = "img-wrap";
+                    imageDiv.id = "image_div" + newId;
+
+                    ///TODO Add class for image div
+                    imageDiv.style.marginBottom = '20px';
+                    imageDiv.style.display = "block";
+
+                    let deleteImageButton = document.createElement("button");
+                    deleteImageButton.innerHTML = "Remove this picture";
+                    deleteImageButton.class = "DeleteButton";      
+
+                    let newImage = document.createElement("img");
+                    newImage.src = URL.createObjectURL(selectedFile);
+
+                    imageDiv.appendChild(newImage);
+                    imageDiv.appendChild(deleteImageButton);
+
+                    let content = document.getElementById('content');
+                    content.appendChild(imageDiv);
+
+                    files.push(
+                        {
+                            "id": newId,
+                            "file": selectedFile
+                        }
+                    );          
+
+                    document.getElementById("file-input-picture").value = "";
+                }
+
+                else {
+                    alert("Wrong file format");
+                }                  
+             
+            });
+
+            ///Video input
+
+            $(document).on('change', '#file-input-video', function () {
+
+                var selectedFile = $('#file-input-video').get(0).files[0];
+
+                if (selectedFile.type == "video/mp4") {
+
+                    let newId = setFileId();
+
+                    let videoDiv = document.createElement("div");
+                    videoDiv.id = "video_div" + newId;
+                    videoDiv.style.marginBottom = '20px';
+
+                    let deleteVideoButton = document.createElement("button");
+                    deleteVideoButton.innerHTML = "Remove this video";
+                    deleteVideoButton.class = "DeleteButton";
+
+
+                    let newVideo = document.createElement("video");
+                    newVideo.src = URL.createObjectURL(selectedFile);
+                    newVideo.controls = true;
+
+                    videoDiv.appendChild(newVideo);
+                    videoDiv.appendChild(deleteVideoButton);
+
+                    let content = document.getElementById('content'); 
+                    content.appendChild(videoDiv);
+
+                    files.push(
+                        {
+                            "id": newId,
+                            "file": selectedFile
+                        }
+                    );
+   
+                    document.getElementById("file-input-video").value = "";
+                }
+
+                else {
+                    alert("Wrong file format");
+                } 
+             
+            });
+
+        });
+
+
+        function setFileId() {
+
+            if (files.length == 0) {
+                return 1;
+            }
+
+            else {
+
+                let id = Math.max.apply(Math, files.map(
+                    function (element) {
+                        return element.id;
+                    }))
+
+                return ++id;
+            }
+        }
+
+        function removePicture(parent) {
+            let id = parent.id.substr(9)
+
+            console.log(id);
+            index = files.findIndex(x => x.id == id);
+
+            console.log(index);
+            files.splice(index, 1);
+
+            parent.remove();
+            console.log(files);
+        }
+
+    </script>
+}
+
 <h1>Create</h1>
 
+<div style="margin-bottom:60px">
+    <button type="button" id="addPicture" class="d-inline btn btn-secondary float-left" style="margin-left:20px">Add picture</button>
+    <button type="button" id="addVideo" class="d-inline btn btn-secondary float-left" style="margin-left:20px">Add video</button>
+    <button type="button" id="buttonNext" class="d-inline  btn btn-primary float-right">Save article</button>
+</div>
 
-<form asp-action="Create">
-    <!--STYLE-->
+<input id="file-input-picture" type="file" name="name" style="display: none;" accept="image/x-png,image/gif,image/jpeg" />
+<input id="file-input-video" type="file" name="name" style="display: none;" accept="video/mp4, video/ogg, video/webm" />
+
+<div>
     <div class="form-group" style="margin-left:20px; margin-right:20px">
-        <label asp-for="Name">Name</label>
-        <input asp-for="Name" type="text" class="form-control" id="Name" />
+        <label>Name</label>
+        <input class="form-control" id="Name" />
     </div>
     <div class="form-group" style="margin-left:20px; margin-right:20px">
-        <label asp-for="Theme">Theme</label>
-        <input asp-for="Theme" type="text" class="form-control" id="theme" />
+        <label>Theme</label>
+        <input class="form-control" id="Theme" />
     </div>
     <div class="form-group" style="margin-left:20px; margin-right:20px">
-        <label asp-for="Language">Language</label>
-        <input asp-for="Language" type="text" class="form-control" id="language" />
+        <label>Language</label>
+        <input class="form-control" id="Language" />
     </div>
     <div class="form-group" style="margin-left:20px; margin-right:20px">
-        <label asp-for="Picture">Picture</label>
-        <input asp-for="Picture" type="text" class="form-control" id="picture" />
+        <label>Content</label>
+        <div id="content"
+        style=" display: block; margin-left: auto; margin-right: auto; width: 30%;" />
     </div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
-        <label asp-for="Video">Video</label>
-        <input asp-for="Video" type="text" class="form-control" id="video" />
-    </div>
-    <button type="submit" value="Create" style="margin-left:20px" ; class="btn btn-primary">Add</button>
-</form>
+</div>
