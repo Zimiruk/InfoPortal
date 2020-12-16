@@ -16,8 +16,8 @@
             }
         });
 
-        let article = {};
-        let files = [];
+        var article = {};
+        var files = [];
 
         $(function () {
             $("#buttonNext").click(function () {
@@ -72,32 +72,31 @@
 
             $(document).on('change', '#file-input-picture', function () {
 
-                let selectedFile = $('#file-input-picture').get(0).files[0];
-                let content = document.getElementById('content');
-                let newId = setFileId();
+                var selectedFile = $('#file-input-picture').get(0).files[0];
 
-                let imageDiv = document.createElement("div");
-                imageDiv.id = "image_div" + newId;
-                imageDiv.style.marginBottom = '20px';
+                if (selectedFile.type == "image/png") {
 
+                    let newId = setFileId();
 
-                let deleteImageButton = document.createElement("button");
-                deleteImageButton.innerHTML = "Remove this picture";
-                deleteImageButton.class = "DeleteButton";
+                    let imageDiv = document.createElement("div");   
+                    imageDiv.className = "img-wrap";
+                    imageDiv.id = "image_div" + newId;
 
-                console.log(selectedFile);
-                
-                if (selectedFile.type == "image/png" || selectedFile.type == "" || selectedFile.type == "") {
+                    ///TODO Add class for image div
+                    imageDiv.style.marginBottom = '20px';
+                    imageDiv.style.display = "block";
+
+                    let deleteImageButton = document.createElement("button");
+                    deleteImageButton.innerHTML = "Remove this picture";
+                    deleteImageButton.class = "DeleteButton";      
 
                     let newImage = document.createElement("img");
                     newImage.src = URL.createObjectURL(selectedFile);
 
-                    console.log(newImage);
-                    // newImage.style.display = 'block';
-
                     imageDiv.appendChild(newImage);
                     imageDiv.appendChild(deleteImageButton);
 
+                    let content = document.getElementById('content');
                     content.appendChild(imageDiv);
 
                     files.push(
@@ -105,51 +104,44 @@
                             "id": newId,
                             "file": selectedFile
                         }
-                    );
-
-                    console.log(files);
+                    );          
 
                     document.getElementById("file-input-picture").value = "";
-
                 }
 
                 else {
                     alert("Wrong file format");
-                }                
+                }                  
+             
             });
 
             ///Video input
 
             $(document).on('change', '#file-input-video', function () {
 
-                let selectedFile = $('#file-input-video').get(0).files[0];
+                var selectedFile = $('#file-input-video').get(0).files[0];
 
-                let content = document.getElementById('content');
+                if (selectedFile.type == "video/mp4") {
 
-                let newId = setFileId();
+                    let newId = setFileId();
 
-                let videoDiv = document.createElement("div");
-                videoDiv.id = "video_div" + newId;
-                videoDiv.style.marginBottom = '20px';
+                    let videoDiv = document.createElement("div");
+                    videoDiv.id = "video_div" + newId;
+                    videoDiv.style.marginBottom = '20px';
+
+                    let deleteVideoButton = document.createElement("button");
+                    deleteVideoButton.innerHTML = "Remove this video";
+                    deleteVideoButton.class = "DeleteButton";
 
 
-                let deleteVideoButton = document.createElement("button");
-                deleteVideoButton.innerHTML = "Remove this video";
-                deleteVideoButton.class = "DeleteButton";
-
-                let newVideo = document.createElement("video");
-
-                console.log(selectedFile);
-
-                if (selectedFile.type == "video/mp4" || selectedFile.type == "" || selectedFile.type == "") {
-
-                    console.log(selectedFile.type);
+                    let newVideo = document.createElement("video");
                     newVideo.src = URL.createObjectURL(selectedFile);
                     newVideo.controls = true;
 
                     videoDiv.appendChild(newVideo);
                     videoDiv.appendChild(deleteVideoButton);
 
+                    let content = document.getElementById('content'); 
                     content.appendChild(videoDiv);
 
                     files.push(
@@ -158,15 +150,13 @@
                             "file": selectedFile
                         }
                     );
-
-                    console.log(files);
+   
                     document.getElementById("file-input-video").value = "";
-
                 }
 
                 else {
                     alert("Wrong file format");
-                }
+                } 
              
             });
 
@@ -233,8 +223,6 @@
     <div class="form-group" style="margin-left:20px; margin-right:20px">
         <label>Content</label>
         <div id="content"
-             style="margin: auto;
-        width: 100px;
-        padding: 10px;" />
+        style=" display: block; margin-left: auto; margin-right: auto; width: 30%;" />
     </div>
 </div>
