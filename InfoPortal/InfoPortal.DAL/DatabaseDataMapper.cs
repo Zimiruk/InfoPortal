@@ -15,6 +15,7 @@ namespace InfoPortal.DAL
         {
             mappersDictionary.Add(typeof(Article), ArticleMapper);
             mappersDictionary.Add(typeof(File), FileMapper);
+            mappersDictionary.Add(typeof(Theme), ThemeMapper);
 
             sqlTypes.Add(typeof(string), SqlDbType.VarChar);
             sqlTypes.Add(typeof(int), SqlDbType.Int);
@@ -41,7 +42,7 @@ namespace InfoPortal.DAL
             {
                 Id = Convert.ToInt32(reader.GetValue(0)),
                 Name = reader.GetValue(1).ToString(),
-                Theme = reader.GetValue(2).ToString(),
+                ThemeId = Convert.ToInt32(reader.GetValue(2)),
                 AddedOn = Convert.ToDateTime(reader.GetValue(3)),
                 Language = reader.GetValue(4).ToString(),
                 Link = Convert.ToInt32(reader.GetValue(5))
@@ -61,6 +62,17 @@ namespace InfoPortal.DAL
             };
 
             return file;
+        }
+
+        private static Theme ThemeMapper(SqlDataReader reader)
+        {
+            var theme = new Theme
+            {
+                Id = Convert.ToInt32(reader.GetValue(0)),
+                Name = reader.GetValue(1).ToString()
+            };
+
+            return theme;
         }
     }
 }

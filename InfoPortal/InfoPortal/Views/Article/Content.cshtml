@@ -10,7 +10,7 @@
 
 <p>Topics</p>
 <ul>
-    <li>@Model.Theme</li>
+    <li>@Model.Theme.Name</li>
 </ul>
 
 <span>
@@ -26,7 +26,7 @@
 
     <label>Pictures</label>
 
-    <div id="content"  style=" display: block; margin-left: auto; margin-right: auto; width: 30%;">
+    <div id="content" style=" display: block; margin-left: auto; margin-right: auto; width: 30%;">
         @foreach (var file in Model.Files)
         {
             switch (file.Type)

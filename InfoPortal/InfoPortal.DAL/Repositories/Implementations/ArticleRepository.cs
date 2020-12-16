@@ -37,9 +37,16 @@ namespace InfoPortal.DAL.Repositories.Implementations
         public Article Get(int id)
         {          
            var article = DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
+
+           article.Theme = GetTheme(article.ThemeId); 
            article.Files = GetAllByArticleId(id);
 
            return article;
+        }
+
+        public Theme GetTheme(int id)
+        {
+            return DatabaseCommand.ExecuteSingleReader<Theme>(id, ThemeConstants.GetTheme, Access.Connection);          
         }
 
         public void Update(Article article)

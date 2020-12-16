@@ -31,8 +31,7 @@ namespace InfoPortal.WebMVC.Controllers
 
             Article newArticle = new Article();
 
-            newArticle.Name = article.Name == null ? "" : article.Name;
-            newArticle.Theme = article.Theme == null ? "" : article.Theme;
+            newArticle.Name = article.Name == null ? "" : article.Name;   
             newArticle.Language = article.Language == null ? "" : article.Language;
 
             newArticle.Files = new List<File>();
