@@ -7,8 +7,7 @@ CREATE TABLE [InfoPortal].[dbo].[Files]
 
 	CONSTRAINT FK_Article_Files FOREIGN KEY (ArticleId)
         REFERENCES Articles (Id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+        ON DELETE CASCADE       
 )
 
 GO

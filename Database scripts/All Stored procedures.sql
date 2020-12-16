@@ -4,13 +4,13 @@ USE [InfoPortal]
 GO  
 CREATE PROCEDURE CreateArticle  
 	@name varchar(50),
-	@theme varchar(50),
+	@themeId int,
 	@addedOn datetime,
 	@language varchar(50),
 	@link int
 AS   
-INSERT INTO Articles(Name, Theme, AddedOn, Language, Link)
-VALUES (@name, @theme, @addedOn, @language, @link);
+INSERT INTO Articles(Name, ThemeId, AddedOn, Language, Link)
+VALUES (@name, @themeId, @addedOn, @language, @link);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -21,7 +21,7 @@ GO
 CREATE PROCEDURE GetArticle  
     @id int
 AS   
-    SELECT Id, Name, Theme, AddedOn, Language, Link
+    SELECT Id, Name, ThemeId, AddedOn, Language, Link
     FROM Articles 
     WHERE Id = @id 
 GO  
@@ -32,7 +32,7 @@ USE [InfoPortal];
 GO  
 CREATE PROCEDURE GetArticles  
 AS   
-    SELECT Id, Name, Theme, AddedOn, Language, Link
+    SELECT Id, Name, ThemeId, AddedOn, Language, Link
     FROM Articles 
 GO  
 
@@ -43,7 +43,7 @@ GO
 CREATE PROCEDURE UpdateArticle  
     @id int,
 	@name varchar(50),
-	@theme varchar(50),
+	@themeId int,
 	@addedOn datetime,
 	@language varchar(50),
 	@link int
@@ -53,7 +53,7 @@ UPDATE Articles
 
 SET 
 Name = @name,
-Theme = @theme,
+ThemeId = @themeId,
 AddedOn = @addedOn,
 Language = @language,
 Link = @link
@@ -70,6 +70,7 @@ CREATE PROCEDURE DeleteArticle
 AS   
 DELETE FROM Articles Where Id = @id
 GO  
+
 
 /*FILES*/
 
