@@ -3,5 +3,5 @@ GO
 CREATE PROCEDURE GetThemes
 AS   
     SELECT Id, Name
-    FROM Theme
+    FROM Themes
 GO  

@@ -1,38 +1,238 @@
 ﻿@model IEnumerable<InfoPortal.Common.Models.Theme>
 
-@{
-    ViewData["Title"] = "Theme";
+@section Scripts {
+
+    <script>
+
+        let theme = {};
+        let lastValue = "";
+        let editMode = false;
+
+        ///TODO Think over;
+
+        $(function () {
+            $("#buttonNext").click(function () {
+
+                theme.Name = $("#Name").val();
+
+                let formData = new FormData();
+
+                formData.append("Name", theme.Name);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Theme/Create",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function (response) {
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.reload();
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert("Server error");
+                    }
+                });
+            });
+
+            $(document).on("click", ".editButton", function (event) {
+
+                if (!editMode) {
+
+                    editMode = true;
+
+                    let editButton = event.target;
+
+                    let buttonsBox = editButton.parentElement;
+                    let contentBox = buttonsBox.parentElement;
+
+                    buttonsBox.innerHTML = "";
+
+                    let saveButton = document.createElement("button");
+                    saveButton.innerHTML = "Save";
+                    saveButton.className = "btn btn-success saveButton";
+                    saveButton.style.marginRight = "5px";
+                    buttonsBox.appendChild(saveButton);
+
+                    let cancelButton = document.createElement("button");
+                    cancelButton.innerHTML = "Cancel";
+                    cancelButton.className = "btn btn-warning cancelButton";
+                    buttonsBox.appendChild(cancelButton);
+
+                    /// might be model way to get element did not found for now;
+                    let nameElement = contentBox.getElementsByClassName("viewName")[0];
+                    lastValue = nameElement.textContent;
+
+                    let tdElement = nameElement.parentElement;
+                    tdElement.innerHTML = "";
+
+                    let inputElement = document.createElement("input");
+                    inputElement.type = "text";
+                    inputElement.value = lastValue;
+                    inputElement.className = "inputName";
+
+                    tdElement.appendChild(inputElement);
+                }
+
+            });
+            $(document).on("click", ".cancelButton", function (event) {
+
+                editMode = false;
+
+                let cancelButton = event.target;       
+
+                let buttonsBox = cancelButton.parentElement;
+                let contentBox = buttonsBox.parentElement;
+
+                buttonsBox.innerHTML = "";
+
+                let editButton = document.createElement("button");
+                editButton.innerHTML = "Edit";
+                editButton.className = "btn btn-success editButton";
+                editButton.style.marginRight = "5px";
+                buttonsBox.appendChild(editButton);
+
+                let deleteButton = document.createElement("button");
+                deleteButton.innerHTML = "Delete";
+                deleteButton.className = "btn btn-danger deleteButton";
+                buttonsBox.appendChild(deleteButton);
+
+                let nameElement = contentBox.getElementsByClassName("inputName")[0];
+
+                let tdElement = nameElement.parentElement;
+                tdElement.innerHTML = "";
+
+                let spanElement = document.createElement("span");
+                spanElement.innerHTML = lastValue;
+                spanElement.className = "viewName";
+
+                tdElement.appendChild(spanElement);
+            });
+
+            $(document).on("click", ".saveButton", function (event) {
+
+                console.log("here");
+
+                let editButton = event.target;
+
+                let buttonsBox = editButton.parentElement;
+                let contentBox = buttonsBox.parentElement;
+
+                let idElement = contentBox.getElementsByClassName("viewId")[0];
+                theme.Id = idElement.textContent;
+
+                let inputElement = contentBox.getElementsByClassName("inputName")[0];
+                theme.Name = inputElement.value;
+
+                console.log(theme);
+
+                let formData = new FormData();
+
+                formData.append("Id", theme.Id);
+                formData.append("Name", theme.Name);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Theme/Update",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function (response) {
+
+                        console.log(response);
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert("Server error");
+                    }
+                });
+
+            });
+
+            $(document).on("click", ".deleteButton", function (event) {
+
+                console.log("here")
+
+                let deleteButton = event.target;
+
+                let buttonsBox = deleteButton.parentElement;
+                let contentBox = buttonsBox.parentElement;
+
+                let idElement = contentBox.getElementsByClassName("viewId")[0];
+                id = idElement.textContent;
+
+
+                location.href='@Url.Action("Delete", "Theme")?id=' + id;
+            });
+        });
+
+    </script>
 }
 
-<h1>Themes</h1>
+    @{
+        ViewData["Title"] = "Theme";
+    }
 
-@foreach (var theme in Model)
-{
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th>Actions</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">@theme.Id</th>
-                        <td>@theme.Name</td>
-                        <td class="fit">
-                            <button type="button" class="btn btn-success">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <h1>Themes</h1>
+
+    <div class="container">
+        <div class="form-group" style="margin-right:20px; width: 30%; display:inline-block">
+            <label>Name</label>
+            <input class="form-control" id="Name" />
         </div>
+
+        <button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new theme</button>
     </div>
-</div>
-}
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Name</th>
+                                <th>Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var theme in Model)
+                            {
+                                <tr>
+                                    <th scope="row">
+                                        <span class="viewId">@theme.Id</span>
+                                    </th>
+                                    <td>
+                                        <span class="viewName">@theme.Name</span>                           
+                                        <input type="text" value="@theme.Name" style="display:none" />
+                                    </td>
+                                    <td class="fit">
+                                        <button type="button" class="btn btn-success editButton">Edit</button>
+                                        <button type="button" id="deleteButton" class="btn btn-danger deleteButton">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>                           
+                    </table>
+                </div>
+            </div>
+        </div>
 

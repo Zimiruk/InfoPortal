@@ -5,7 +5,7 @@ CREATE PROCEDURE UpdateTheme
 	@name varchar(50)
 AS   
 
-UPDATE Articles
+UPDATE Themes
 
 SET 
 Name = @name

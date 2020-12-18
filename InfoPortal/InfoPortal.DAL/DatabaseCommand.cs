@@ -8,7 +8,7 @@ namespace InfoPortal.DAL
 {
     public static class DatabaseCommand
     {
-        public static ITable ExecuteSingleReader<ITable>(int id, string sqlExpression, SqlConnection sqlConnection)
+        public static ITable ExecuteSingleReader<ITable>(int? id, string sqlExpression, SqlConnection sqlConnection)
         {
             ITable entity = default;
 

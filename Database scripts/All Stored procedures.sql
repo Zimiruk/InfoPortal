@@ -125,7 +125,7 @@ GO
 
 USE [InfoPortal] 
 GO  
-CREATE PROCEDURE DeleteThemes
+CREATE PROCEDURE DeleteTheme
 	@id int
 AS   
 DELETE FROM Themes Where Id = @id
@@ -150,7 +150,7 @@ GO
 CREATE PROCEDURE GetThemes
 AS   
     SELECT Id, Name
-    FROM Theme
+    FROM Themes
 GO 
 
 /***************************************************************************/
@@ -162,7 +162,7 @@ CREATE PROCEDURE UpdateTheme
 	@name varchar(50)
 AS   
 
-UPDATE Articles
+UPDATE Themes
 
 SET 
 Name = @name

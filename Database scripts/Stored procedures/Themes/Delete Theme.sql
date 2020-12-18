@@ -1,6 +1,6 @@
 USE [InfoPortal] 
 GO  
-CREATE PROCEDURE DeleteThemes
+CREATE PROCEDURE DeleteTheme
 	@id int
 AS   
 DELETE FROM Themes Where Id = @id

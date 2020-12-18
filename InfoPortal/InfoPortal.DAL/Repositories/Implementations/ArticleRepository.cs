@@ -18,9 +18,9 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
         public int Create(Article article)
         {
-            int id = DatabaseCommand.ExecuteNonQueryWithId(article, ArticleConstants.CreateArticle, Access.Connection);           
+            int id = DatabaseCommand.ExecuteNonQueryWithId(article, ArticleConstants.CreateArticle, Access.Connection);
 
-            foreach(var file in article.Files)
+            foreach (var file in article.Files)
             {
                 file.ArticleId = id;
                 CreateFile(file);
@@ -33,30 +33,46 @@ namespace InfoPortal.DAL.Repositories.Implementations
         {
             return DatabaseCommand.ExecuteListReader<Article>(ArticleConstants.GetArticles, Access.Connection);
         }
-      
+
         public Article Get(int id)
-        {          
-           var article = DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
+        {
+            var article = DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
 
-           article.Theme = GetTheme(article.ThemeId); 
-           article.Files = GetAllByArticleId(id);
 
-           return article;
+            ///TODO MayB set cascade delete instead of null;
+            if (article.ThemeId == 0)
+            {
+                article.Theme = new Theme
+                {
+                    Id = 0,
+                    Name = "No theme :("
+                };
+            }
+
+            else
+            {
+                article.Theme = GetTheme(article.ThemeId);
+            }
+
+           
+            article.Files = GetAllByArticleId(id);
+
+            return article;
         }
 
-        public Theme GetTheme(int id)
+        public Theme GetTheme(int? id)
         {
-            return DatabaseCommand.ExecuteSingleReader<Theme>(id, ThemeConstants.GetTheme, Access.Connection);          
+            return DatabaseCommand.ExecuteSingleReader<Theme>(id, ThemeConstants.GetTheme, Access.Connection);
         }
 
         public void Update(Article article)
         {
-            DatabaseCommand.ExecuteNonQuery(article, ArticleConstants.UpdateArticle, Access.Connection);         
+            DatabaseCommand.ExecuteNonQuery(article, ArticleConstants.UpdateArticle, Access.Connection);
         }
 
         public void Delete(int id)
         {
-            DatabaseCommand.ExecuteNonQuery(id, ArticleConstants.DeleteArticle, Access.Connection);           
+            DatabaseCommand.ExecuteNonQuery(id, ArticleConstants.DeleteArticle, Access.Connection);
         }
 
         public void CreateFile(File file)

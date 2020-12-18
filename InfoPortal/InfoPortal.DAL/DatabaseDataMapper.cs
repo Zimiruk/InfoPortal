@@ -42,7 +42,7 @@ namespace InfoPortal.DAL
             {
                 Id = Convert.ToInt32(reader.GetValue(0)),
                 Name = reader.GetValue(1).ToString(),
-                ThemeId = Convert.ToInt32(reader.GetValue(2)),
+                ThemeId = reader.GetValue(2) == DBNull.Value ? 0 : Convert.ToInt32(reader.GetValue(2)), 
                 AddedOn = Convert.ToDateTime(reader.GetValue(3)),
                 Language = reader.GetValue(4).ToString(),
                 Link = Convert.ToInt32(reader.GetValue(5))

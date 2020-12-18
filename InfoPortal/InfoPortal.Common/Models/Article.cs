@@ -17,7 +17,7 @@ namespace InfoPortal.Common.Models
 
         public List<File> Files {get; set;}
 
-        public int ThemeId { get; set; }
+        public int? ThemeId { get; set; }
 
         public Theme Theme { get; set; }
     }

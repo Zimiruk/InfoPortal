@@ -11,10 +11,12 @@ namespace InfoPortal.DI
         public static IServiceCollection IoCRegistry(this IServiceCollection services)
         {      
             services.AddScoped<IArticleRepository, ArticleRepository>();
-
             services.AddScoped<IArticleService, ArticleService>();
 
             services.AddScoped<IFileRepository, FileRepository>();
+
+            services.AddScoped<IThemeRepository, ThemeRepository>();
+            services.AddScoped<IThemeService, ThemeService>();
 
             return services;
         }
