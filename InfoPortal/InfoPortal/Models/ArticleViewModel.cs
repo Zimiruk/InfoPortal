@@ -8,11 +8,11 @@ namespace InfoPortal.WebMVC.Models
 {
     public class ArticleViewModel
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public string Theme { get; set; }
+        public string ThemeId { get; set; }
 
         public DateTime AddedOn { get; set; }
 

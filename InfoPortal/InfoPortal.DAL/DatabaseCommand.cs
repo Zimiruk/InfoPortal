@@ -108,6 +108,7 @@ namespace InfoPortal.DAL
                     switch (propertyInfo.Name)
                     {
                         case "Id":
+                        case "Theme":
                             continue;
 
                         case "AddedOn":

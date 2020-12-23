@@ -87,7 +87,7 @@
 
                 editMode = false;
 
-                let cancelButton = event.target;       
+                let cancelButton = event.target;
 
                 let buttonsBox = cancelButton.parentElement;
                 let contentBox = buttonsBox.parentElement;
@@ -118,8 +118,6 @@
             });
 
             $(document).on("click", ".saveButton", function (event) {
-
-                console.log("here");
 
                 let editButton = event.target;
 
@@ -185,54 +183,53 @@
     </script>
 }
 
-    @{
-        ViewData["Title"] = "Theme";
-    }
+@{
+    ViewData["Title"] = "Theme";
+}
 
-    <h1>Themes</h1>
+<h1>Themes</h1>
 
-    <div class="container">
-        <div class="form-group" style="margin-right:20px; width: 30%; display:inline-block">
-            <label>Name</label>
-            <input class="form-control" id="Name" />
-        </div>
-
-        <button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new theme</button>
+<div class="container">
+    <div class="form-group" style="margin-right:20px; width: 30%; display:inline-block">
+        <label>Name</label>
+        <input class="form-control" id="Name" />
     </div>
 
+    <button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new theme</button>
+</div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Name</th>
-                                <th>Actions</th>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th>Actions</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var theme in Model)
-                            {
-                                <tr>
-                                    <th scope="row">
-                                        <span class="viewId">@theme.Id</span>
-                                    </th>
-                                    <td>
-                                        <span class="viewName">@theme.Name</span>                           
-                                        <input type="text" value="@theme.Name" style="display:none" />
-                                    </td>
-                                    <td class="fit">
-                                        <button type="button" class="btn btn-success editButton">Edit</button>
-                                        <button type="button" id="deleteButton" class="btn btn-danger deleteButton">Delete</button>
-                                    </td>
-                                </tr>
-                            }
-                            </tbody>                           
-                    </table>
-                </div>
-            </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var theme in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <span class="viewId">@theme.Id</span>
+                            </th>
+                            <td>
+                                <span class="viewName">@theme.Name</span>
+                                <input type="text" value="@theme.Name" style="display:none" />
+                            </td>
+                            <td class="fit">
+                                <button type="button" class="btn btn-success editButton">Edit</button>
+                                <button type="button" id="deleteButton" class="btn btn-danger deleteButton">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
+    </div>
+</div>
 

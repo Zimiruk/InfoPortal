@@ -3,6 +3,7 @@ using InfoPortal.Common.Models;
 using InfoPortal.WebMVC.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 
 namespace InfoPortal.WebMVC.Controllers
@@ -10,18 +11,23 @@ namespace InfoPortal.WebMVC.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly IThemeService _themeService;
+
         private readonly IWebHostEnvironment _appEnvironment;
 
-        public ArticleController(IArticleService articleService, IWebHostEnvironment appEnvironment)
+        public ArticleController(IArticleService articleService, IThemeService themeService, IWebHostEnvironment appEnvironment)
         {
             _articleService = articleService;
+            _themeService = themeService;
             _appEnvironment = appEnvironment;
         }
 
         [HttpGet]
         public IActionResult Create()
-        {          
-            return View();
+        {
+            var themes = _themeService.GetAll();
+
+            return View(themes);
         }
 
         [HttpPost]
@@ -30,7 +36,8 @@ namespace InfoPortal.WebMVC.Controllers
             /// TODO Add validation
 
             Article newArticle = new Article();
-
+              
+            newArticle.ThemeId = article.ThemeId == null ? 0 : Convert.ToInt32(article.ThemeId);
             newArticle.Name = article.Name == null ? "" : article.Name;   
             newArticle.Language = article.Language == null ? "" : article.Language;
 
