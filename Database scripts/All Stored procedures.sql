@@ -4,13 +4,12 @@ USE [InfoPortal]
 GO  
 CREATE PROCEDURE CreateArticle  
 	@name varchar(50),
-	@themeId int,
 	@addedOn datetime,
 	@language varchar(50),
 	@link int
 AS   
-INSERT INTO Articles(Name, ThemeId, AddedOn, Language, Link)
-VALUES (@name, @themeId, @addedOn, @language, @link);
+INSERT INTO Articles(Name, AddedOn, Language, Link)
+VALUES (@name, @addedOn, @language, @link);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -21,7 +20,7 @@ GO
 CREATE PROCEDURE GetArticle  
     @id int
 AS   
-    SELECT Id, Name, ThemeId, AddedOn, Language, Link
+    SELECT Id, Name, AddedOn, Language, Link
     FROM Articles 
     WHERE Id = @id 
 GO  
@@ -32,7 +31,7 @@ USE [InfoPortal];
 GO  
 CREATE PROCEDURE GetArticles  
 AS   
-    SELECT Id, Name, ThemeId, AddedOn, Language, Link
+    SELECT Id, Name, AddedOn, Language, Link
     FROM Articles 
 GO  
 
@@ -42,8 +41,7 @@ USE [InfoPortal]
 GO  
 CREATE PROCEDURE UpdateArticle  
     @id int,
-	@name varchar(50),
-	@themeId int,
+	@name varchar(50),	
 	@addedOn datetime,
 	@language varchar(50),
 	@link int
@@ -53,7 +51,6 @@ UPDATE Articles
 
 SET 
 Name = @name,
-ThemeId = @themeId,
 AddedOn = @addedOn,
 Language = @language,
 Link = @link
@@ -169,4 +166,38 @@ Name = @name
 WHERE Id = @id
 GO
 
+/*ARTICLE_THEMES*/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE AddThemeToArticle
+   @ArticleId int,
+   @ThemeId int
+
+AS   
+INSERT INTO Article_Themes(ArticleId, ThemeId)
+VALUES (@ArticleId, @ThemeId );
+GO  
+
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE DeleteAllByArticleId
+	@ArticleId int
+AS   
+DELETE FROM Article_Themes Where ArticleId = @ArticleId
+GO  
+
+/***************************************************************************/
+
+USE [InfoPortal];  
+GO  
+CREATE PROCEDURE GetThemesIdByArticleId
+    @ArticleId int
+AS   
+    SELECT ArticleId, ThemeId
+    FROM Article_Themes
+    WHERE ArticleId = @ArticleId
+GO 
 
