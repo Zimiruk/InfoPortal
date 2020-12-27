@@ -11,5 +11,9 @@
         public const string UpdateArticle = "UpdateArticle";
 
         public const string DeleteArticle = "DeleteArticle";
+
+        public const string GetArticlesByThemeId = "GetArticlesByThemeId";
+
+        public const string AddThemeToArticle = "AddThemeToArticle";
     }
 }

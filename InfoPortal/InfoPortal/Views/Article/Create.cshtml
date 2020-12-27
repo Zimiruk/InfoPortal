@@ -10,7 +10,9 @@
 
         let article = {};
         let files = [];
-        let selectedTheme = {};
+        let themes = [];
+
+        //let selectedTheme = {};
 
         document.addEventListener('click', function (e) {
             if (e.target && e.target.class == 'DeleteButton') {
@@ -23,42 +25,58 @@
         $(function () {
             $("#buttonNext").click(function () {
 
-                article.Name = $("#Name").val();        
-                article.Language = $("#Language").val();
-
-                let formData = new FormData();
-
-                formData.append("Name", article.Name);
-                formData.append("ThemeId", selectedTheme.Id);
-                formData.append("Language", article.Language);
-
-                for (let x = 0; x < files.length; x++) {
-                    formData.append("Files", files[x].file);
+                if (themes.length == 0) {
+                    alert("Add at least one theme")
                 }
 
-                $.ajax({
-                    type: "POST",
-                    url: "/Article/Add",
-                    dataType: 'json',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                else {
+                    article.Name = $("#Name").val();
+                    article.Language = $("#Language").val();
 
-                    success: function (response) {
+                    let formData = new FormData();
 
-                        if (response.success) {
-                            alert(response.responseText);
-                            location.href = response.id;
-                        }
+                    formData.append("Name", article.Name);
+                    formData.append("ThemeId", selectedTheme.Id);
+                    formData.append("Language", article.Language);
+                    //formData.append("Themes", JSON.stringify(themes));
 
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
+                    console.log(themes[0]);
+
+                    for (let x = 0; x < files.length; x++) {
+                        formData.append("Files", files[x].file);
                     }
-                });
+
+                    //formData.append("Themes", JSON.stringify(themes[0]));
+                    for (let x = 0; x < themes.length; x++) {
+                        
+                        formData.append("Themes", themes[x].Id);
+                    }
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Article/Add",
+                        //dataType: 'json',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+
+                        success: function (response) {
+
+                            if (response.success) {
+                                alert(response.responseText);
+                                location.href = response.id;
+                            }
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
             });
 
             $("#addPicture").click(function () {
@@ -163,55 +181,75 @@
 
             $(document).on("click", ".addTheme", function (event) {
 
-                let editButton = event.target;
+                if (themes.length == 10) {
 
-                let themeDiv = document.createElement("div");
+                    alert("Enough themes for that article")
+                }
 
-                let themeContent = document.createElement("button");
-   
-                themeContent.style.float = 'left';
-                themeContent.className = "btn btn-dark";
-                themeContent.style.paddingLeft = '10px';
-                themeContent.style.paddingRight = '37px';
-                themeContent.style.marginLeft = '5px';
-                themeContent.style.marginTop = '5px';
-                themeContent.innerHTML = editButton.innerHTML;              
-                themeContent.style.borderRadius = '20px';
+                else {
 
-                let themeDelete= document.createElement("button");
-                themeDelete.innerHTML = "X";
-                themeDelete.className = "btn btn-dark deleteTheme";
-                themeDelete.style.borderRadius = '20px';
-                themeDelete.style.marginTop = '5px';
-                themeDelete.style.marginLeft = '-35px';            
-                themeDelete.style.fontSize = '10px';
-                themeDelete.style.height = '38px';
+                    let id = event.target.id;
+
+                    let element = themes.find(x => x.Id == id);
+
+                    if (element == undefined) {
 
 
-                themeDiv.appendChild(themeContent);
-                themeDiv.appendChild(themeDelete);
+                        let editButton = event.target;
 
-                let selectedThemeBlock = document.getElementById("selectedTheme");
-                selectedThemeBlock.removeAttribute("style")
-                selectedThemeBlock.style.borderStyle = 'solid';
-                selectedThemeBlock.style.borderWidth = '2px 2px 2px 2px';
-                selectedThemeBlock.style.height = '100px';
-                selectedThemeBlock.style.width = '95%';
-                selectedThemeBlock.style.marginBottom = '20px';
-                selectedThemeBlock.style.padding = '0px';
+                        let themeDiv = document.createElement("div");
+                        themeDiv.style.display = 'inline-block';
 
-                selectedThemeBlock.innerHTML = "";
-                selectedThemeBlock.appendChild(themeDiv);
+                        let themeContent = document.createElement("button");
 
-                selectedTheme.Id = event.target.id;
-                selectedTheme.Name = event.target.innerHTML;
+                        themeContent.style.float = 'left';
+                        themeContent.className = "btn btn-dark";
+                        themeContent.style.paddingLeft = '10px';
+                        themeContent.style.paddingRight = '37px';
+                        themeContent.style.marginLeft = '5px';
+                        themeContent.style.marginTop = '5px';
+                        themeContent.innerHTML = editButton.innerHTML;
+                        themeContent.style.borderRadius = '20px';
 
-                console.log(selectedTheme);
+                        let themeDelete = document.createElement("button");
+                        themeDelete.innerHTML = "X";
+                        themeDelete.className = "btn btn-dark deleteTheme";
+                        themeDelete.style.borderRadius = '20px';
+                        themeDelete.style.marginTop = '5px';
+                        themeDelete.style.marginLeft = '-35px';
+                        themeDelete.style.fontSize = '10px';
+                        themeDelete.style.height = '38px';
+
+                        themeDiv.appendChild(themeContent);
+                        themeDiv.appendChild(themeDelete);
+
+                        let selectedThemeBlock = document.getElementById("selectedTheme");
+                        selectedThemeBlock.removeAttribute("style")
+                        selectedThemeBlock.style.borderStyle = 'solid';
+                        selectedThemeBlock.style.borderWidth = '2px 2px 2px 2px';
+                        selectedThemeBlock.style.height = '100px';
+                        selectedThemeBlock.style.width = '95%';
+                        selectedThemeBlock.style.marginBottom = '20px';
+                        selectedThemeBlock.style.padding = '0px';
+
+                        if (themes.length == 0) {
+                            selectedThemeBlock.innerHTML = "";
+                        }
+
+                        selectedThemeBlock.appendChild(themeDiv);
+
+                        let selectedTheme = {};
+                        selectedTheme.Id = id
+                        selectedTheme.Name = event.target.innerHTML;
+
+                        themes.push(selectedTheme);
+                    }
+                }
             });
 
 
             $(document).on("click", ".deleteTheme", function (event) {
-              
+
 
                 event.target.parentNode.remove();
                 selectedTheme = {};

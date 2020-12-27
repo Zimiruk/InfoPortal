@@ -2,6 +2,7 @@
 using InfoPortal.Common.Models;
 using InfoPortal.DAL.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace InfoPortal.DAL.Repositories.Implementations
 {
@@ -26,43 +27,59 @@ namespace InfoPortal.DAL.Repositories.Implementations
                 CreateFile(file);
             }
 
+
+            /// TODO Make sure to use it more then one time
+            /// If not, figure out how to do otherwise
+
+            foreach (var themeId in article.ThemesId)
+            {
+
+                List<CustomParameter> parameters = new List<CustomParameter>
+                {
+                    new CustomParameter
+                    {
+                        Parameter = "@ArticleId",
+                        Value = id
+                    },
+                    new CustomParameter
+                    {
+                        Parameter = "@ThemeId",
+                        Value = themeId
+                    }
+                };
+
+                DatabaseCommand.ExecuteWithCustomParemeters(parameters, ArticleConstants.AddThemeToArticle, Access.Connection);
+            }
+
             return id;
         }
 
         public List<Article> GetAll()
         {
-            return DatabaseCommand.ExecuteListReader<Article>(ArticleConstants.GetArticles, Access.Connection);
+            List<Article> articles = DatabaseCommand.ExecuteListReader<Article>(ArticleConstants.GetArticles, Access.Connection);
+            foreach (var article in articles)
+            {
+                article.Themes = GetThemesByArticleId(article.Id);
+            }
+
+            return articles;
+
         }
 
         public Article Get(int id)
         {
             var article = DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
 
-
-            ///TODO MayB set cascade delete instead of null;
-            if (article.ThemeId == 0)
-            {
-                article.Theme = new Theme
-                {
-                    Id = 0,
-                    Name = "No theme :("
-                };
-            }
-
-            else
-            {
-                article.Theme = GetTheme(article.ThemeId);
-            }
-
-           
-            article.Files = GetAllByArticleId(id);
+            article.Themes = GetThemesByArticleId(id);
+            article.Files = GetAllFilesByArticleId(id);
 
             return article;
         }
 
-        public Theme GetTheme(int? id)
+        public List<Theme> GetThemesByArticleId(int id)
         {
-            return DatabaseCommand.ExecuteSingleReader<Theme>(id, ThemeConstants.GetTheme, Access.Connection);
+            return DatabaseCommand.ExecuteListReader<Theme>(id, ThemeConstants.GetThemesByArticleId, Access.Connection);
+
         }
 
         public void Update(Article article)
@@ -80,7 +97,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
             DatabaseCommand.ExecuteNonQueryWithId(file, FileConstants.AddFile, Access.Connection);
         }
 
-        public List<File> GetAllByArticleId(int id)
+        public List<File> GetAllFilesByArticleId(int id)
         {
             return DatabaseCommand.ExecuteListReader<File>(id, FileConstants.GetFilesByArticleId, Access.Connection);
         }

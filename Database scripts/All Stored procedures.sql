@@ -191,13 +191,30 @@ GO
 
 /***************************************************************************/
 
-USE [InfoPortal];  
+USE [InfoPortal]
 GO  
-CREATE PROCEDURE GetThemesIdByArticleId
-    @ArticleId int
+CREATE PROCEDURE GetThemesByArticleId    
+	@Id int
+	AS   
+    SELECT Themes.Id, Name
+    FROM Themes
+	INNER JOIN Article_Themes
+ON Themes.Id = Article_Themes.ThemeId
+
+    WHERE Article_Themes.ArticleId = @Id
+GO  
+
+/***************************************************************************/
+
+USE [InfoPortal]  
+GO  
+CREATE PROCEDURE GetArticlesByThemeId    
+    @Id int
 AS   
-    SELECT ArticleId, ThemeId
-    FROM Article_Themes
-    WHERE ArticleId = @ArticleId
-GO 
+    SELECT Articles.Id, Articles.Name, AddedOn, Language, Link
+    FROM Articles
+	INNER JOIN Article_Themes
+ON Articles.Id = Article_Themes.ArticleId
+
+    WHERE Article_Themes.ThemeId = @Id
 

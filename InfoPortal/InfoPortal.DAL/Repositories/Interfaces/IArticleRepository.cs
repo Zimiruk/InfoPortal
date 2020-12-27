@@ -17,6 +17,6 @@ namespace InfoPortal.DAL.Repositories.Interfaces
 
         void CreateFile(File file);
 
-        public List<File> GetAllByArticleId(int id);
+        public List<File> GetAllFilesByArticleId(int id);
     }
 }

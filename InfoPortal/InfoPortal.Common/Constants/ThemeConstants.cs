@@ -11,5 +11,8 @@
         public const string UpdateTheme = "UpdateTheme";
 
         public const string DeleteTheme = "DeleteTheme";
+
+        public const string GetThemesByArticleId = "GetThemesByArticleId";
+    
     }
 }

@@ -32,10 +32,29 @@ namespace InfoPortal.DAL.Repositories.Implementations
             DatabaseCommand.ExecuteNonQuery(Theme, ThemeConstants.UpdateTheme, Access.Connection);
         }
 
-        public void Delete(int id)
-        {
-            DatabaseCommand.ExecuteNonQuery(id, ThemeConstants.DeleteTheme, Access.Connection);
-        }
+        /// TODO Result boolean value usage
+        public Report Delete(int id)
+        {       
+            var articles = DatabaseCommand.ExecuteListReader<Article>(id, ArticleConstants.GetArticlesByThemeId, Access.Connection);
 
+            if (articles.Count > 0)
+            {
+                return new Report { 
+                    Result = false, 
+                    Message = MessagesConstants.ThemeDeleteFalse 
+                };
+            }
+
+            else
+            {
+                DatabaseCommand.ExecuteNonQuery(id, ThemeConstants.DeleteTheme, Access.Connection);
+
+                return new Report
+                {
+                    Result = true,
+                    Message = MessagesConstants.ThemeDeleteTrue
+                };
+            }
+        }
     }
 }

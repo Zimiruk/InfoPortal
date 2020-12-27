@@ -8,7 +8,7 @@ namespace InfoPortal.DAL
 {
     public static class DatabaseCommand
     {
-        public static ITable ExecuteSingleReader<ITable>(int? id, string sqlExpression, SqlConnection sqlConnection)
+        public static ITable ExecuteSingleReader<ITable>(int id, string sqlExpression, SqlConnection sqlConnection)
         {
             ITable entity = default;
 
@@ -200,6 +200,30 @@ namespace InfoPortal.DAL
                 command.Parameters.Add(parameter);
 
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public static void ExecuteWithCustomParemeters(List<CustomParameter> parameters, string sqlExpression, SqlConnection sqlConnection)
+        {
+            using (SqlCommand command = new SqlCommand(sqlExpression, sqlConnection))
+            {
+                sqlConnection.Open();
+                command.CommandType = CommandType.StoredProcedure;
+
+                foreach(var param in parameters)
+                {
+
+                    SqlParameter parameter = new SqlParameter();
+
+                    parameter.ParameterName = param.Parameter;
+                    parameter.SqlDbType = SqlDbType.Int;
+                    parameter.Value = param.Value;
+
+                    command.Parameters.Add(parameter);
+                }
+
+                command.ExecuteNonQuery();
+                sqlConnection.Close();
             }
         }
     }

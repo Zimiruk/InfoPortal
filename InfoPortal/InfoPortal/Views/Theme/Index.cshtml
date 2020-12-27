@@ -175,8 +175,26 @@
                 let idElement = contentBox.getElementsByClassName("viewId")[0];
                 id = idElement.textContent;
 
+                $.ajax({
+                    type: "DELETE",
+                    url: "/Theme/Delete?id=" + id,
 
-                location.href='@Url.Action("Delete", "Theme")?id=' + id;
+                    success: function (response) {
+
+                        console.log(response);
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert("Server error");
+                    }
+                });
             });
         });
 

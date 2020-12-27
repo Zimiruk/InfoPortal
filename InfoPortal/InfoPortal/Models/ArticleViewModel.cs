@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using InfoPortal.Common.Models;
 
 namespace InfoPortal.WebMVC.Models
 {
@@ -25,5 +24,7 @@ namespace InfoPortal.WebMVC.Models
         public int Link { get; set; }
 
         public List<IFormFile> Files { get; set; }
+
+        public List<int> Themes { get; set; }
     }
 }

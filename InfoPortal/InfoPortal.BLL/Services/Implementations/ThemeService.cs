@@ -29,9 +29,9 @@ namespace InfoPortal.BLL.Services.Implementations
             _ThemeRepository.Update(Theme);
         }
 
-        public void Delete(int id)
+        public Report Delete(int id)
         {
-            _ThemeRepository.Delete(id);
+            return _ThemeRepository.Delete(id);
         }
     }
 }

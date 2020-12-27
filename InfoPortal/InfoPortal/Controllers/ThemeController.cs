@@ -42,10 +42,12 @@ namespace InfoPortal.WebMVC.Controllers
             return Json(new { success = true, responseText = "Theme chenged"});
         }
 
+        [HttpDelete]
         public IActionResult Delete(int id)
         {
-            _themeService.Delete(id);
-            return RedirectToAction("Index");
+            string message = _themeService.Delete(id).Message;
+
+            return Json(new { success = true, responseText = message });            
 
         }
     }

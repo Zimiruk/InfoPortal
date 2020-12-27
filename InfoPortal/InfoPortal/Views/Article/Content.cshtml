@@ -9,8 +9,13 @@
 <h3 class="d-inline card-title">@Model.Name</h3>
 
 <p>Topics</p>
+
 <ul>
-    <li>@Model.Theme.Name</li>
+    @foreach (var theme in @Model.Themes)
+    {
+        <li>@theme.Name</li>
+    }
+
 </ul>
 
 <span>

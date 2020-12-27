@@ -37,9 +37,24 @@ namespace InfoPortal.WebMVC.Controllers
 
             Article newArticle = new Article();
               
-            newArticle.ThemeId = article.ThemeId == null ? 0 : Convert.ToInt32(article.ThemeId);
+            //newArticle.ThemeId = article.ThemeId == null ? 0 : Convert.ToInt32(article.ThemeId);
             newArticle.Name = article.Name == null ? "" : article.Name;   
             newArticle.Language = article.Language == null ? "" : article.Language;
+            newArticle.ThemesId = article.Themes;
+
+
+
+
+            /*
+            foreach(int themeId in article.Themes)
+            {
+                newArticle.Themes.Add( new Theme
+                {
+                    Id = themeId
+                });
+            }
+            */
+        //    newArticle.Themes = article.Themes;
 
             newArticle.Files = new List<File>();
 

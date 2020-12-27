@@ -11,6 +11,6 @@ namespace InfoPortal.DAL.Repositories.Interfaces
 
         void Update(Theme Theme);
 
-        void Delete(int id);
+        Report Delete(int id);
     }
 }

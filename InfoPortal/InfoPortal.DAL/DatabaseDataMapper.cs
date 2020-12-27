@@ -42,10 +42,13 @@ namespace InfoPortal.DAL
             {
                 Id = Convert.ToInt32(reader.GetValue(0)),
                 Name = reader.GetValue(1).ToString(),
-                ThemeId = reader.GetValue(2) == DBNull.Value ? 0 : Convert.ToInt32(reader.GetValue(2)), 
+                /*ThemeId = reader.GetValue(2) == DBNull.Value ? 0 : Convert.ToInt32(reader.GetValue(2)), 
                 AddedOn = Convert.ToDateTime(reader.GetValue(3)),
                 Language = reader.GetValue(4).ToString(),
-                Link = Convert.ToInt32(reader.GetValue(5))
+                Link = Convert.ToInt32(reader.GetValue(5))*/
+                AddedOn = Convert.ToDateTime(reader.GetValue(2)),
+                Language = reader.GetValue(3).ToString(),
+                Link = Convert.ToInt32(reader.GetValue(4))
             };
 
             return article;

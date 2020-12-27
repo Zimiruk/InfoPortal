@@ -15,10 +15,11 @@ namespace InfoPortal.Common.Models
 
         public int Link { get; set; }
 
-        public List<File> Files {get; set;}
+        public List<File> Files {get; set; }
 
-        public int ThemeId { get; set; }
+        public List<Theme> Themes { get; set; }
 
-        public Theme Theme { get; set; }
+        public List<int> ThemesId { get; set; }
+
     }
 }
