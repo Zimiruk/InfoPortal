@@ -108,6 +108,7 @@ namespace InfoPortal.DAL
                     switch (propertyInfo.Name)
                     {
                         case "Id":
+                        case "Theme":
                             continue;
 
                         case "AddedOn":
@@ -199,6 +200,30 @@ namespace InfoPortal.DAL
                 command.Parameters.Add(parameter);
 
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public static void ExecuteWithCustomParemeters(List<CustomParameter> parameters, string sqlExpression, SqlConnection sqlConnection)
+        {
+            using (SqlCommand command = new SqlCommand(sqlExpression, sqlConnection))
+            {
+                sqlConnection.Open();
+                command.CommandType = CommandType.StoredProcedure;
+
+                foreach(var param in parameters)
+                {
+
+                    SqlParameter parameter = new SqlParameter();
+
+                    parameter.ParameterName = param.Parameter;
+                    parameter.SqlDbType = SqlDbType.Int;
+                    parameter.Value = param.Value;
+
+                    command.Parameters.Add(parameter);
+                }
+
+                command.ExecuteNonQuery();
+                sqlConnection.Close();
             }
         }
     }

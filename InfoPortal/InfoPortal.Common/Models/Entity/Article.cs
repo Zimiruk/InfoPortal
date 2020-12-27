@@ -7,9 +7,7 @@ namespace InfoPortal.Common.Models
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
-
-        public string Theme { get; set; }
+        public string Name { get; set; }   
 
         public DateTime AddedOn { get; set; }
 
@@ -17,6 +15,11 @@ namespace InfoPortal.Common.Models
 
         public int Link { get; set; }
 
-        public List<File> Files {get; set;}
+        public List<File> Files {get; set; }
+
+        public List<Theme> Themes { get; set; }
+
+        public List<int> ThemesId { get; set; }
+
     }
 }

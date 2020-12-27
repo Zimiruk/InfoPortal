@@ -9,8 +9,13 @@
 <h3 class="d-inline card-title">@Model.Name</h3>
 
 <p>Topics</p>
+
 <ul>
-    <li>@Model.Theme</li>
+    @foreach (var theme in @Model.Themes)
+    {
+        <li>@theme.Name</li>
+    }
+
 </ul>
 
 <span>
@@ -26,7 +31,7 @@
 
     <label>Pictures</label>
 
-    <div id="content"  style=" display: block; margin-left: auto; margin-right: auto; width: 30%;">
+    <div id="content" style=" display: block; margin-left: auto; margin-right: auto; width: 30%;">
         @foreach (var file in Model.Files)
         {
             switch (file.Type)

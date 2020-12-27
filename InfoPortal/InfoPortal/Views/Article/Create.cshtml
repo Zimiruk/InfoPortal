@@ -1,4 +1,4 @@
-﻿@model InfoPortal.Common.Models.Article
+﻿@model IEnumerable<InfoPortal.Common.Models.Theme>
 
 @{
     ViewData["Title"] = "Create";
@@ -8,56 +8,70 @@
 
     <script>
 
+        let article = {};
+        let files = [];
+        let themes = [];
+
         document.addEventListener('click', function (e) {
             if (e.target && e.target.class == 'DeleteButton') {
 
-                let parent = e.target.parentNode;           
+                let parent = e.target.parentNode;
                 removePicture(parent);
             }
         });
 
-        var article = {};
-        var files = [];
-
         $(function () {
             $("#buttonNext").click(function () {
 
-                article.Name = $("#Name").val();
-                article.Theme = $("#Theme").val();
-                article.Language = $("#Language").val();
-
-                let formData = new FormData();
-
-                formData.append("Name", article.Name);
-                formData.append("Theme", article.Theme);
-                formData.append("Language", article.Language);
-
-                for (let x = 0; x < files.length; x++) {
-                    formData.append("Files", files[x].file);
+                if (themes.length == 0) {
+                    alert("Add at least one theme")
                 }
 
-                $.ajax({
-                    type: "POST",
-                    url: "/Article/Add",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                else {
+                    article.Name = $("#Name").val();
+                    article.Language = $("#Language").val();
 
-                    success: function (response) {
+                    let formData = new FormData();
 
-                        if (response.success) {
-                            alert(response.responseText);
-                            location.href = response.id;
-                        }
+                    formData.append("Name", article.Name);
+                    formData.append("ThemeId", selectedTheme.Id);
+                    formData.append("Language", article.Language);
 
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
+                    console.log(themes[0]);
+
+                    for (let x = 0; x < files.length; x++) {
+                        formData.append("Files", files[x].file);
                     }
-                });
+
+                    for (let x = 0; x < themes.length; x++) {
+
+                        formData.append("Themes", themes[x].Id);
+                    }
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Article/Add",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+
+                        success: function (response) {
+
+                            if (response.success) {
+                                alert(response.responseText);
+                                location.href = response.id;
+                            }
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
             });
 
             $("#addPicture").click(function () {
@@ -78,17 +92,13 @@
 
                     let newId = setFileId();
 
-                    let imageDiv = document.createElement("div");   
-                    imageDiv.className = "img-wrap";
+                    let imageDiv = document.createElement("div");
+                    imageDiv.className = "img-wrap  imageDiv indentBottom";
                     imageDiv.id = "image_div" + newId;
-
-                    ///TODO Add class for image div
-                    imageDiv.style.marginBottom = '20px';
-                    imageDiv.style.display = "block";
 
                     let deleteImageButton = document.createElement("button");
                     deleteImageButton.innerHTML = "Remove this picture";
-                    deleteImageButton.class = "DeleteButton";      
+                    deleteImageButton.class = "DeleteButton";
 
                     let newImage = document.createElement("img");
                     newImage.src = URL.createObjectURL(selectedFile);
@@ -104,15 +114,15 @@
                             "id": newId,
                             "file": selectedFile
                         }
-                    );          
+                    );
 
                     document.getElementById("file-input-picture").value = "";
                 }
 
                 else {
                     alert("Wrong file format");
-                }                  
-             
+                }
+
             });
 
             ///Video input
@@ -126,8 +136,8 @@
                     let newId = setFileId();
 
                     let videoDiv = document.createElement("div");
-                    videoDiv.id = "video_div" + newId;
-                    videoDiv.style.marginBottom = '20px';
+                    videoDiv.id = "video_div" + newId;   
+                    videoDiv.className = "indentBottom";
 
                     let deleteVideoButton = document.createElement("button");
                     deleteVideoButton.innerHTML = "Remove this video";
@@ -141,7 +151,7 @@
                     videoDiv.appendChild(newVideo);
                     videoDiv.appendChild(deleteVideoButton);
 
-                    let content = document.getElementById('content'); 
+                    let content = document.getElementById('content');
                     content.appendChild(videoDiv);
 
                     files.push(
@@ -150,14 +160,75 @@
                             "file": selectedFile
                         }
                     );
-   
+
                     document.getElementById("file-input-video").value = "";
                 }
 
                 else {
                     alert("Wrong file format");
-                } 
-             
+                }
+
+            });
+
+            $(document).on("click", ".addTheme", function (event) {
+
+                if (themes.length == 10) {
+
+                    alert("Enough themes for that article")
+                }
+
+                else {
+
+                    let id = event.target.id;
+
+                    let element = themes.find(x => x.Id == id);
+
+                    if (element == undefined) {
+
+
+                        let editButton = event.target;
+
+                        let themeDiv = document.createElement("div");
+                        themeDiv.className = "inlineBlock"
+
+                        let themeContent = document.createElement("button");
+                  
+                        themeContent.innerHTML = editButton.innerHTML;
+                        themeContent.className = "btn btn-dark themeContentButton";
+
+                        let themeDelete = document.createElement("button");
+                        themeDelete.innerHTML = "X";
+                        themeDelete.className = "btn btn-dark deleteTheme themeDeleteButton";       
+
+                        themeDiv.appendChild(themeContent);
+                        themeDiv.appendChild(themeDelete);
+
+                        let selectedThemeBlock = document.getElementById("selectedTheme");
+
+                        selectedThemeBlock.className = "container-fluid selectedThemeBlockUpdate indentBottom";
+
+                        if (themes.length == 0) {
+                            selectedThemeBlock.innerHTML = "";
+                        }
+
+                        selectedThemeBlock.appendChild(themeDiv);
+
+                        let selectedTheme = {};
+                        selectedTheme.Id = id
+                        selectedTheme.Name = event.target.innerHTML;
+
+                        themes.push(selectedTheme);
+                    }
+                }
+            });
+
+
+            $(document).on("click", ".deleteTheme", function (event) {
+
+
+                event.target.parentNode.remove();
+                selectedTheme = {};
+
             });
 
         });
@@ -198,31 +269,46 @@
 
 <h1>Create</h1>
 
-<div style="margin-bottom:60px">
-    <button type="button" id="addPicture" class="d-inline btn btn-secondary float-left" style="margin-left:20px">Add picture</button>
-    <button type="button" id="addVideo" class="d-inline btn btn-secondary float-left" style="margin-left:20px">Add video</button>
-    <button type="button" id="buttonNext" class="d-inline  btn btn-primary float-right">Save article</button>
+<div class="dropdown indentBottom indentLeft">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Select theme
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        @foreach (var theme in Model)
+        {
+            <button id="@theme.Id" class="dropdown-item addTheme" type="button">@theme.Name</button>
+        }
+    </div>
+
+    <button type="button" id="buttonNext" style="margin-right:20px" class="d-inline  btn btn-primary float-right">Save article</button>
 </div>
 
-<input id="file-input-picture" type="file" name="name" style="display: none;" accept="image/x-png,image/gif,image/jpeg" />
-<input id="file-input-video" type="file" name="name" style="display: none;" accept="video/mp4, video/ogg, video/webm" />
+<div id="selectedTheme" class="container-fluid selectedThemeBlock indentBottom">
+    <span class="themeBlockSpan">
+        Selected themes will be shown here
+    </span>
+</div>
+
+<input id="file-input-picture" class="hiddenElement" type="file" name="name"  accept="image/x-png,image/gif,image/jpeg" />
+<input id="file-input-video" class="hiddenElement" type="file" name="name" accept="video/mp4, video/ogg, video/webm" />
 
 <div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
+    <div class="form-group indentLeft indentRight">
         <label>Name</label>
         <input class="form-control" id="Name" />
     </div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
-        <label>Theme</label>
-        <input class="form-control" id="Theme" />
-    </div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
+    <div class="form-group indentLeft indentRight">
         <label>Language</label>
         <input class="form-control" id="Language" />
     </div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
+    <div class="form-group indentLeft indentRight">
         <label>Content</label>
         <div id="content"
-        style=" display: block; margin-left: auto; margin-right: auto; width: 30%;" />
+             style=" display: block; margin-left: auto; margin-right: auto; width: 30%;" />
     </div>
+</div>
+
+<div class="indentBottomLarge">
+    <button type="button" id="addPicture" class="d-inline btn btn-secondary float-left indentLeft">Add picture</button>
+    <button type="button" id="addVideo" class="d-inline btn btn-secondary float-left indentLeft" >Add video</button>
 </div>

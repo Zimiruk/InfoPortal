@@ -14,3 +14,91 @@ video {
     max-height: 100%;
     display: block; /* remove extra space below image */
 }
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+.indent {
+    margin-right: 5px;
+}
+
+.indentLeft {
+    margin-left: 20px;
+}
+
+.indentRight{
+    margin-right: 20px;
+}
+
+.indentBottom {
+    margin-bottom: 20px;
+}
+
+.indentBottom-Large {
+    margin-bottom: 60px;
+}
+
+.addThemeForm {
+    margin-right: 20px;
+    width: 30%;
+    display: inline-block
+}
+
+.imageDiv {
+    display: block;
+}
+
+.inlineBlock {
+    display: inline-block;
+}
+
+.themeContentButton {
+    float: left;
+    padding-left: 10px;
+    padding-right: 37px;
+    margin-left: 5px;
+    margin-top: 5px;
+    border-radius: 20px
+}
+
+.themeDeleteButton {
+    font-size: 10px;
+    margin-left: -35px;
+    margin-top: 5px;
+    border-radius: 20px;
+    height: 38px;
+}
+
+.selectedThemeBlock {
+    border-style: solid;
+    border-width: 2px;
+    height: 100px;
+    width: 95%;
+    padding: 0px;
+    clear: both;
+    line-height: 80px;
+    text-align: center;
+}
+
+.selectedThemeBlockUpdate {
+    border-style: solid;
+    border-width: 2px;
+    height: 100px;
+    width:95%;
+    padding:0px;
+}
+
+.themeBlockSpan {
+    font-size: 20pt;
+    display: inline-block;
+    vertical-align:middle;
+    line-height:normal;
+    color:#808080;
+}
+
+.hiddenElement {
+    display: none;
+}
