@@ -11,15 +11,9 @@ namespace InfoPortal.WebMVC.Models
 
         public string Name { get; set; }
 
-        public string ThemeId { get; set; }
-
         public DateTime AddedOn { get; set; }
 
-        public string Language { get; set; }
-
-        public string Picture { get; set; }
-
-        public string Video { get; set; }
+        public int LanguageId { get; set; }
 
         public int Link { get; set; }
 
