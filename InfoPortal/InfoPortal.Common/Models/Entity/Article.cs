@@ -11,7 +11,9 @@ namespace InfoPortal.Common.Models
 
         public DateTime AddedOn { get; set; }
 
-        public string Language { get; set; }
+        public Language Language { get; set; }
+
+        public int LanguageId { get; set; }
 
         public int Link { get; set; }
 
