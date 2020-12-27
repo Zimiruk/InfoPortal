@@ -58,8 +58,8 @@
 
                     let saveButton = document.createElement("button");
                     saveButton.innerHTML = "Save";
-                    saveButton.className = "btn btn-success saveButton";
-                    saveButton.style.marginRight = "5px";
+                    saveButton.className = "btn btn-success saveButton indent";                    
+                    //saveButton.style.marginRight = "5px";
                     buttonsBox.appendChild(saveButton);
 
                     let cancelButton = document.createElement("button");
@@ -96,8 +96,8 @@
 
                 let editButton = document.createElement("button");
                 editButton.innerHTML = "Edit";
-                editButton.className = "btn btn-success editButton";
-                editButton.style.marginRight = "5px";
+                editButton.className = "btn btn-success editButton indent";
+                //editButton.style.marginRight = "5px";
                 buttonsBox.appendChild(editButton);
 
                 let deleteButton = document.createElement("button");
@@ -208,7 +208,8 @@
 <h1>Themes</h1>
 
 <div class="container">
-    <div class="form-group" style="margin-right:20px; width: 30%; display:inline-block">
+    <div class="form-group addThemeForm" />
+        <!-- style="margin-right:20px; width: 30%; display:inline-block"> -->
         <label>Name</label>
         <input class="form-control" id="Name" />
     </div>
@@ -237,7 +238,6 @@
                             </th>
                             <td>
                                 <span class="viewName">@theme.Name</span>
-                                <input type="text" value="@theme.Name" style="display:none" />
                             </td>
                             <td class="fit">
                                 <button type="button" class="btn btn-success editButton">Edit</button>

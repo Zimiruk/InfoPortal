@@ -12,8 +12,6 @@
         let files = [];
         let themes = [];
 
-        //let selectedTheme = {};
-
         document.addEventListener('click', function (e) {
             if (e.target && e.target.class == 'DeleteButton') {
 
@@ -38,7 +36,6 @@
                     formData.append("Name", article.Name);
                     formData.append("ThemeId", selectedTheme.Id);
                     formData.append("Language", article.Language);
-                    //formData.append("Themes", JSON.stringify(themes));
 
                     console.log(themes[0]);
 
@@ -46,9 +43,8 @@
                         formData.append("Files", files[x].file);
                     }
 
-                    //formData.append("Themes", JSON.stringify(themes[0]));
                     for (let x = 0; x < themes.length; x++) {
-                        
+
                         formData.append("Themes", themes[x].Id);
                     }
 
@@ -56,7 +52,6 @@
                     $.ajax({
                         type: "POST",
                         url: "/Article/Add",
-                        //dataType: 'json',
                         data: formData,
                         processData: false,
                         contentType: false,
@@ -98,12 +93,8 @@
                     let newId = setFileId();
 
                     let imageDiv = document.createElement("div");
-                    imageDiv.className = "img-wrap";
+                    imageDiv.className = "img-wrap  imageDiv indentBottom";
                     imageDiv.id = "image_div" + newId;
-
-                    ///TODO Add class for image div
-                    imageDiv.style.marginBottom = '20px';
-                    imageDiv.style.display = "block";
 
                     let deleteImageButton = document.createElement("button");
                     deleteImageButton.innerHTML = "Remove this picture";
@@ -145,8 +136,8 @@
                     let newId = setFileId();
 
                     let videoDiv = document.createElement("div");
-                    videoDiv.id = "video_div" + newId;
-                    videoDiv.style.marginBottom = '20px';
+                    videoDiv.id = "video_div" + newId;   
+                    videoDiv.className = "indentBottom";
 
                     let deleteVideoButton = document.createElement("button");
                     deleteVideoButton.innerHTML = "Remove this video";
@@ -198,39 +189,23 @@
                         let editButton = event.target;
 
                         let themeDiv = document.createElement("div");
-                        themeDiv.style.display = 'inline-block';
+                        themeDiv.className = "inlineBlock"
 
                         let themeContent = document.createElement("button");
-
-                        themeContent.style.float = 'left';
-                        themeContent.className = "btn btn-dark";
-                        themeContent.style.paddingLeft = '10px';
-                        themeContent.style.paddingRight = '37px';
-                        themeContent.style.marginLeft = '5px';
-                        themeContent.style.marginTop = '5px';
+                  
                         themeContent.innerHTML = editButton.innerHTML;
-                        themeContent.style.borderRadius = '20px';
+                        themeContent.className = "btn btn-dark themeContentButton";
 
                         let themeDelete = document.createElement("button");
                         themeDelete.innerHTML = "X";
-                        themeDelete.className = "btn btn-dark deleteTheme";
-                        themeDelete.style.borderRadius = '20px';
-                        themeDelete.style.marginTop = '5px';
-                        themeDelete.style.marginLeft = '-35px';
-                        themeDelete.style.fontSize = '10px';
-                        themeDelete.style.height = '38px';
+                        themeDelete.className = "btn btn-dark deleteTheme themeDeleteButton";       
 
                         themeDiv.appendChild(themeContent);
                         themeDiv.appendChild(themeDelete);
 
                         let selectedThemeBlock = document.getElementById("selectedTheme");
-                        selectedThemeBlock.removeAttribute("style")
-                        selectedThemeBlock.style.borderStyle = 'solid';
-                        selectedThemeBlock.style.borderWidth = '2px 2px 2px 2px';
-                        selectedThemeBlock.style.height = '100px';
-                        selectedThemeBlock.style.width = '95%';
-                        selectedThemeBlock.style.marginBottom = '20px';
-                        selectedThemeBlock.style.padding = '0px';
+
+                        selectedThemeBlock.className = "container-fluid selectedThemeBlockUpdate indentBottom";
 
                         if (themes.length == 0) {
                             selectedThemeBlock.innerHTML = "";
@@ -294,7 +269,7 @@
 
 <h1>Create</h1>
 
-<div class="dropdown" style="margin-left:20px;  margin-bottom:20px">
+<div class="dropdown indentBottom indentLeft">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Select theme
     </button>
@@ -308,44 +283,32 @@
     <button type="button" id="buttonNext" style="margin-right:20px" class="d-inline  btn btn-primary float-right">Save article</button>
 </div>
 
-<div id="selectedTheme" class="container-fluid" style="        border-style: solid;
-        border-width: 2px 2px 2px 2px;
-        height: 100px;
-        line-height: 80px;
-        width: 95%;
-        clear: both;
-        margin-bottom: 20px;
-        text-align: center;">
-
-    <span style="font-size: 20pt;
-        display: inline-block;
-        vertical-align: middle;
-        line-height: normal;
-        color: #808080;">
+<div id="selectedTheme" class="container-fluid selectedThemeBlock indentBottom">
+    <span class="themeBlockSpan">
         Selected themes will be shown here
     </span>
 </div>
 
-<input id="file-input-picture" type="file" name="name" style="display: none;" accept="image/x-png,image/gif,image/jpeg" />
-<input id="file-input-video" type="file" name="name" style="display: none;" accept="video/mp4, video/ogg, video/webm" />
+<input id="file-input-picture" class="hiddenElement" type="file" name="name"  accept="image/x-png,image/gif,image/jpeg" />
+<input id="file-input-video" class="hiddenElement" type="file" name="name" accept="video/mp4, video/ogg, video/webm" />
 
 <div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
+    <div class="form-group indentLeft indentRight">
         <label>Name</label>
         <input class="form-control" id="Name" />
     </div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
+    <div class="form-group indentLeft indentRight">
         <label>Language</label>
         <input class="form-control" id="Language" />
     </div>
-    <div class="form-group" style="margin-left:20px; margin-right:20px">
+    <div class="form-group indentLeft indentRight">
         <label>Content</label>
         <div id="content"
              style=" display: block; margin-left: auto; margin-right: auto; width: 30%;" />
     </div>
 </div>
 
-<div style="margin-bottom:60px">
-    <button type="button" id="addPicture" class="d-inline btn btn-secondary float-left" style="margin-left:20px">Add picture</button>
-    <button type="button" id="addVideo" class="d-inline btn btn-secondary float-left" style="margin-left:20px">Add video</button>
+<div class="indentBottomLarge">
+    <button type="button" id="addPicture" class="d-inline btn btn-secondary float-left indentLeft">Add picture</button>
+    <button type="button" id="addVideo" class="d-inline btn btn-secondary float-left indentLeft" >Add video</button>
 </div>
