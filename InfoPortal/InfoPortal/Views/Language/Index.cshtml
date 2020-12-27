@@ -1,10 +1,10 @@
-﻿@model IEnumerable<InfoPortal.Common.Models.Theme>
+﻿@model IEnumerable<InfoPortal.Common.Models.Language>
 
 @section Scripts {
 
     <script>
 
-        let theme = {};
+        let Language = {};
         let lastValue = "";
         let editMode = false;
 
@@ -13,15 +13,15 @@
         $(function () {
             $("#buttonNext").click(function () {
 
-                theme.Name = $("#Name").val();
+                Language.Name = $("#Name").val();
 
                 let formData = new FormData();
 
-                formData.append("Name", theme.Name);
+                formData.append("Name", Language.Name);
 
                 $.ajax({
                     type: "POST",
-                    url: "/Theme/Create",
+                    url: "/Language/Create",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -58,7 +58,7 @@
 
                     let saveButton = document.createElement("button");
                     saveButton.innerHTML = "Save";
-                    saveButton.className = "btn btn-success saveButton indent";                    
+                    saveButton.className = "btn btn-success saveButton indent";
                     //saveButton.style.marginRight = "5px";
                     buttonsBox.appendChild(saveButton);
 
@@ -125,21 +125,21 @@
                 let contentBox = buttonsBox.parentElement;
 
                 let idElement = contentBox.getElementsByClassName("viewId")[0];
-                theme.Id = idElement.textContent;
+                Language.Id = idElement.textContent;
 
                 let inputElement = contentBox.getElementsByClassName("inputName")[0];
-                theme.Name = inputElement.value;
+                Language.Name = inputElement.value;
 
-                console.log(theme);
+                console.log(Language);
 
                 let formData = new FormData();
 
-                formData.append("Id", theme.Id);
-                formData.append("Name", theme.Name);
+                formData.append("Id", Language.Id);
+                formData.append("Name", Language.Name);
 
                 $.ajax({
                     type: "POST",
-                    url: "/Theme/Update",
+                    url: "/Language/Update",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -177,7 +177,7 @@
 
                 $.ajax({
                     type: "DELETE",
-                    url: "/Theme/Delete?id=" + id,
+                    url: "/Language/Delete?id=" + id,
 
                     success: function (response) {
 
@@ -202,19 +202,19 @@
 }
 
 @{
-    ViewData["Title"] = "Theme";
+    ViewData["Title"] = "Language";
 }
 
-<h1>Themes</h1>
+<h1>Languages</h1>
 
 <div class="container">
     <div class="form-group addContentForm" />
-        <!-- style="margin-right:20px; width: 30%; display:inline-block"> -->
-        <label>Name</label>
-        <input class="form-control" id="Name" />
-    </div>
+    <!-- style="margin-right:20px; width: 30%; display:inline-block"> -->
+    <label>Name</label>
+    <input class="form-control" id="Name" />
+</div>
 
-    <button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new theme</button>
+<button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new Language</button>
 </div>
 
 <div class="container">
@@ -230,14 +230,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var theme in Model)
+                    @foreach (var Language in Model)
                     {
                         <tr>
                             <th scope="row">
-                                <span class="viewId">@theme.Id</span>
+                                <span class="viewId">@Language.Id</span>
                             </th>
                             <td>
-                                <span class="viewName">@theme.Name</span>
+                                <span class="viewName">@Language.Name</span>
                             </td>
                             <td class="fit">
                                 <button type="button" class="btn btn-success editButton">Edit</button>

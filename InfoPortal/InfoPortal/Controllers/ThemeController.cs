@@ -2,7 +2,6 @@
 using InfoPortal.Common.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace InfoPortal.WebMVC.Controllers
 {

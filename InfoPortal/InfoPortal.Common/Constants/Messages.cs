@@ -8,7 +8,6 @@
 
         public const string LanguageDeleteFalse = "You cant delete that language becouse some articles still use it";
 
-        public const string LanguageDeleteTrue = "language deleted";
-
+        public const string LanguageDeleteTrue = "Language deleted";
     }
 }

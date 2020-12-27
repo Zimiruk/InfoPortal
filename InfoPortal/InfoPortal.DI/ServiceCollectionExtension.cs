@@ -18,6 +18,9 @@ namespace InfoPortal.DI
             services.AddScoped<IThemeRepository, ThemeRepository>();
             services.AddScoped<IThemeService, ThemeService>();
 
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
+            services.AddScoped<ILanguageService, LanguageService>();
+
             return services;
         }
     }
