@@ -6,6 +6,13 @@ CREATE DATABASE [InfoPortal]
 
 GO
 
+CREATE TABLE [InfoPortal].[dbo].[Languages]
+(
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+	[Name] VARCHAR(50) NOT NULL
+)
+GO
+
 CREATE TABLE [InfoPortal].[dbo].[Themes]
 (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
@@ -18,8 +25,11 @@ CREATE TABLE [InfoPortal].[dbo].[Articles]
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
 	[Name] VARCHAR(50) NOT NULL, 
 	[AddedOn] DATETIME NOT NULL DEFAULT GETDATE(),
-	[Language] VARCHAR(50) NOT NULL,
+	[LanguageId] INT NOT NULL,
 	[Link] INT NOT NULL
+
+	CONSTRAINT FK_Article_Language FOREIGN KEY (LanguageId)
+    REFERENCES Languages (Id)      
 )
 GO
 

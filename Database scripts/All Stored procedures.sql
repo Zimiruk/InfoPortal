@@ -5,7 +5,7 @@ GO
 CREATE PROCEDURE CreateArticle  
 	@name varchar(50),
 	@addedOn datetime,
-	@language varchar(50),
+	@languageId int,
 	@link int
 AS   
 INSERT INTO Articles(Name, AddedOn, Language, Link)
@@ -218,3 +218,63 @@ ON Articles.Id = Article_Themes.ArticleId
 
     WHERE Article_Themes.ThemeId = @Id
 
+	/*LANGUAGES*/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE CreateLanguage
+	@name varchar(50)
+
+AS   
+INSERT INTO Languages(Name)
+VALUES (@name);
+RETURN SCOPE_IDENTITY()
+GO  
+
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE DeleteLanguage
+	@id int
+AS   
+DELETE FROM Languages Where Id = @id
+GO  
+
+/***************************************************************************/
+
+USE [InfoPortal];  
+GO  
+CREATE PROCEDURE GetLanguage
+    @id int
+AS   
+    SELECT Id, Name
+    FROM Languages
+    WHERE Id = @id 
+GO 
+
+/***************************************************************************/
+
+USE [InfoPortal];  
+GO  
+CREATE PROCEDURE GetLanguages
+AS   
+    SELECT Id, Name
+    FROM Languages
+GO 
+
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE UpdateLanguage 
+    @id int,
+	@name varchar(50)
+AS   
+
+UPDATE Languages
+
+SET 
+Name = @name
+WHERE Id = @id
+GO
