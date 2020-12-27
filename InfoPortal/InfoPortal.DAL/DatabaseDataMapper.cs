@@ -16,6 +16,7 @@ namespace InfoPortal.DAL
             mappersDictionary.Add(typeof(Article), ArticleMapper);
             mappersDictionary.Add(typeof(File), FileMapper);
             mappersDictionary.Add(typeof(Theme), ThemeMapper);
+            mappersDictionary.Add(typeof(Language), LanguageMapper);
 
             sqlTypes.Add(typeof(string), SqlDbType.VarChar);
             sqlTypes.Add(typeof(int), SqlDbType.Int);
@@ -47,7 +48,7 @@ namespace InfoPortal.DAL
                 Language = reader.GetValue(4).ToString(),
                 Link = Convert.ToInt32(reader.GetValue(5))*/
                 AddedOn = Convert.ToDateTime(reader.GetValue(2)),
-                Language = reader.GetValue(3).ToString(),
+                LanguageId = Convert.ToInt32(reader.GetValue(3)),
                 Link = Convert.ToInt32(reader.GetValue(4))
             };
 
@@ -76,6 +77,17 @@ namespace InfoPortal.DAL
             };
 
             return theme;
+        }
+
+        private static Language LanguageMapper(SqlDataReader reader)
+        {
+            var Language = new Language
+            {
+                Id = Convert.ToInt32(reader.GetValue(0)),
+                Name = reader.GetValue(1).ToString()
+            };
+
+            return Language;
         }
     }
 }

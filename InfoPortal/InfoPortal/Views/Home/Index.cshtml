@@ -7,7 +7,7 @@
 <h1>Info Portal</h1>
 
 <a href="@Url.Action("Index", "Theme")" class="d-block btn btn-success" style="width:300px; margin:30px">Themes</a>
-
+<a href="@Url.Action("Index", "Language")" class="d-block btn btn-success" style="width:300px; margin:30px">Languages</a>
 <h2>List of articles</h2>
 <!--STYLE-->
 <a href="@Url.Action("Create", "Article")" class="d-block btn btn-success" style="width:300px; margin:30px">Add article</a>
@@ -17,7 +17,7 @@
     <div class="card" style="width: 40rem;">
         <div>
             <span class="float-left">@article.AddedOn</span>
-            <span class="float-right">@article.Language</span>
+            <span class="float-right">@article.Language.Name</span>
         </div>
 
         <div class="card-body">

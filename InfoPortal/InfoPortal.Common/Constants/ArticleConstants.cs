@@ -14,6 +14,8 @@
 
         public const string GetArticlesByThemeId = "GetArticlesByThemeId";
 
+        public const string GetArticlesByLanguageId = "GetArticlesByLanguageId";
+
         public const string AddThemeToArticle = "AddThemeToArticle";
     }
 }

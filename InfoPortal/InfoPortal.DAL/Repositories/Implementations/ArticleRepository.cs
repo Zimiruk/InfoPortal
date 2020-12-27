@@ -60,6 +60,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
             foreach (var article in articles)
             {
                 article.Themes = GetThemesByArticleId(article.Id);
+                article.Language = GetLanguage(article.LanguageId);
             }
 
             return articles;
@@ -72,6 +73,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
             article.Themes = GetThemesByArticleId(id);
             article.Files = GetAllFilesByArticleId(id);
+            article.Language = GetLanguage(article.LanguageId);
 
             return article;
         }
@@ -79,7 +81,11 @@ namespace InfoPortal.DAL.Repositories.Implementations
         public List<Theme> GetThemesByArticleId(int id)
         {
             return DatabaseCommand.ExecuteListReader<Theme>(id, ThemeConstants.GetThemesByArticleId, Access.Connection);
+        }
 
+        public Language GetLanguage(int id)
+        {
+            return DatabaseCommand.ExecuteSingleReader<Language>(id, LanguageConstants.GetLanguage, Access.Connection);
         }
 
         public void Update(Article article)

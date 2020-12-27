@@ -21,7 +21,7 @@ video {
     width: 1%;
 }
 
-.indent {
+.indentRight {
     margin-right: 5px;
 }
 
@@ -29,7 +29,7 @@ video {
     margin-left: 20px;
 }
 
-.indentRight{
+.indentRight-Medium{
     margin-right: 20px;
 }
 
@@ -41,7 +41,7 @@ video {
     margin-bottom: 60px;
 }
 
-.addThemeForm {
+.addContentForm {
     margin-right: 20px;
     width: 30%;
     display: inline-block
@@ -102,3 +102,4 @@ video {
 .hiddenElement {
     display: none;
 }
+

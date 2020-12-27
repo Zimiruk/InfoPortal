@@ -12,22 +12,29 @@ namespace InfoPortal.WebMVC.Controllers
     {
         private readonly IArticleService _articleService;
         private readonly IThemeService _themeService;
+        private readonly ILanguageService _languageService;
 
         private readonly IWebHostEnvironment _appEnvironment;
 
-        public ArticleController(IArticleService articleService, IThemeService themeService, IWebHostEnvironment appEnvironment)
+        public ArticleController(IArticleService articleService, IThemeService themeService, IWebHostEnvironment appEnvironment, ILanguageService languageService)
         {
             _articleService = articleService;
             _themeService = themeService;
+            _languageService = languageService;
             _appEnvironment = appEnvironment;
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            var themes = _themeService.GetAll();
 
-            return View(themes);
+            ContentViewModel content = new ContentViewModel
+            {
+                Themes = _themeService.GetAll(),
+                Languages = _languageService.GetAll()
+            };         
+
+            return View(content);
         }
 
         [HttpPost]
@@ -38,9 +45,9 @@ namespace InfoPortal.WebMVC.Controllers
             Article newArticle = new Article();
               
             //newArticle.ThemeId = article.ThemeId == null ? 0 : Convert.ToInt32(article.ThemeId);
-            newArticle.Name = article.Name == null ? "" : article.Name;   
-            newArticle.Language = article.Language == null ? "" : article.Language;
+            newArticle.Name = article.Name == null ? "" : article.Name;       
             newArticle.ThemesId = article.Themes;
+            newArticle.LanguageId = article.LanguageId;
 
 
 
