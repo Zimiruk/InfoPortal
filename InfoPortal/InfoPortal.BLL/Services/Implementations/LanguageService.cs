@@ -7,31 +7,31 @@ namespace InfoPortal.BLL.Services.Implementations
 {
     public class LanguageService : ILanguageService
     {
-        private readonly ILanguageRepository _LanguageRepository;
+        private readonly ILanguageRepository _languageRepository;
 
         public LanguageService(ILanguageRepository LanguageRepository)
         {
-            _LanguageRepository = LanguageRepository;
+            _languageRepository = LanguageRepository;
         }
 
         public int Create(Language Language)
         {
-            return _LanguageRepository.Create(Language);
+            return _languageRepository.Create(Language);
         }
 
         public List<Language> GetAll()
         {
-            return _LanguageRepository.GetAll();
+            return _languageRepository.GetAll();
         }
 
         public void Update(Language Language)
         {
-            _LanguageRepository.Update(Language);
+            _languageRepository.Update(Language);
         }
 
         public Report Delete(int id)
         {
-            return _LanguageRepository.Delete(id);
+            return _languageRepository.Delete(id);
         }
     }
 }

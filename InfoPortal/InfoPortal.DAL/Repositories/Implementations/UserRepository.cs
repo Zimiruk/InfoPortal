@@ -2,7 +2,6 @@
 using InfoPortal.Common.Models;
 using InfoPortal.DAL.Repositories.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace InfoPortal.DAL.Repositories.Implementations
 {

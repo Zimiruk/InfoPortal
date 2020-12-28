@@ -17,6 +17,7 @@ namespace InfoPortal.DAL
             mappersDictionary.Add(typeof(File), FileMapper);
             mappersDictionary.Add(typeof(Theme), ThemeMapper);
             mappersDictionary.Add(typeof(Language), LanguageMapper);
+            mappersDictionary.Add(typeof(User), UserMapper);
 
             sqlTypes.Add(typeof(string), SqlDbType.VarChar);
             sqlTypes.Add(typeof(int), SqlDbType.Int);
@@ -88,6 +89,20 @@ namespace InfoPortal.DAL
             };
 
             return Language;
+        }
+
+        private static User UserMapper(SqlDataReader reader)
+        {
+            var User = new User
+            {
+                Id = Convert.ToInt32(reader.GetValue(0)),
+                Login = reader.GetValue(1).ToString(),
+                Email = reader.GetValue(2).ToString(),
+                Password = reader.GetValue(3).ToString(),
+                Role = reader.GetValue(4).ToString()
+            };
+
+            return User;
         }
     }
 }

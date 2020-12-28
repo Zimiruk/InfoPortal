@@ -1,10 +1,18 @@
-﻿using System;
+﻿using InfoPortal.Common.Models;
 using System.Collections.Generic;
-using System.Text;
 
 namespace InfoPortal.BLL.Services.Interfaces
 {
-    class IUserService
+    public interface IUserService
     {
+        int Create(User User);
+
+        List<User> GetAll();
+
+        User Get(int id);
+
+        void Update(User User);
+
+        void Delete(int id);
     }
 }

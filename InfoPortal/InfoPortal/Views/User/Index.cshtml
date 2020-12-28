@@ -1,0 +1,104 @@
+﻿@model IEnumerable<InfoPortal.Common.Models.User>
+
+@section Scripts {
+
+    <script>
+
+        ///TODO Think over;
+
+        $(function () {  
+
+            $(document).on("click", ".deleteButton", function (event) {
+
+                console.log("here")
+
+                let deleteButton = event.target;
+
+                let buttonsBox = deleteButton.parentElement;
+                let contentBox = buttonsBox.parentElement;
+
+                let idElement = contentBox.getElementsByClassName("viewId")[0];
+                id = idElement.textContent;
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/User/Delete?id=" + id,
+
+                    success: function (response) {
+
+                        console.log(response);
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert("Server error");
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+@{
+    ViewData["Title"] = "User";
+}
+
+<h1>Users</h1>
+
+
+<button type="button" id="buttonNext" class="d-inline  btn btn-primary indentLeft" onclick="location.href='@Url.Action("Create", "User")'">Add new User</button>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Login</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Role</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var User in Model)
+                    {
+                    <tr>
+                        <th scope="row">
+                            <span class="viewId">@User.Id</span>
+                        </th>
+                        <td>
+                            <span class="viewName">@User.Login</span>
+                        </td>
+                        <td>
+                            <span class="viewName">@User.Email</span>
+                        </td>
+                        <td>
+                            <span class="viewName">@User.Password</span>
+                        </td>
+                        <td>
+                            <span class="viewName">@User.Role</span>
+                        </td>
+                        <td class="fit">
+                            <button type="button" class="btn btn-success editButton "onclick="location.href='@Url.Action("Update", "User", new { id = User.Id})'">Edit</button>
+                            <button type="button" id="deleteButton" class="btn btn-danger deleteButton">Delete</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,32 @@
+﻿@model InfoPortal.Common.Models.User
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Create</h1>
+
+<form asp-action="Create" class="addContentForm">
+    <!--STYLE-->
+    <div class="form-group" style="margin-left:20px; margin-right:20px">
+        <label asp-for="Login">Login</label>
+        <input asp-for="Login" type="text" class="form-control" id="Login" />
+    </div>
+
+    <div class="form-group" style="margin-left:20px; margin-right:20px">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" type="text" class="form-control" id="Email" />
+    </div>
+
+    <div class="form-group" style="margin-left:20px; margin-right:20px">
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" type="text" class="form-control" id="Password" />
+    </div>
+
+    <div class="form-group" style="margin-left:20px; margin-right:20px">
+        <label asp-for="Role">Role</label>
+        <input asp-for="Role" type="text" class="form-control" id="Role" />
+    </div>
+
+    <button type="submit" value="Create" style="margin-left:20px" ; class="btn btn-primary">Save</button>
+</form>
