@@ -77,7 +77,7 @@ AS
     FROM Articles
 
     WHERE LanguageId = @Id
-
+GO
 /***********************************************************************************/
 
 
@@ -293,3 +293,74 @@ Name = @name
 WHERE Id = @id
 GO
 
+
+	/*USERS*/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE CreateUser
+	@login varchar(50),
+	@email varchar(50),
+	@password varchar(50),
+	@role varchar(50)
+
+
+AS   
+INSERT INTO Users(Login, Email, Password, Role)
+VALUES (@login, @email, @password, @role);
+RETURN SCOPE_IDENTITY()
+GO  
+
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE DeleteUser
+	@id int
+AS   
+DELETE FROM Users Where Id = @id
+GO  
+
+/***************************************************************************/
+
+USE [InfoPortal];  
+GO  
+CREATE PROCEDURE GetUser
+    @id int
+AS   
+    SELECT Id, Login, Email, Password, Role
+    FROM Users
+    WHERE Id = @id 
+GO 
+
+/***************************************************************************/
+
+USE [InfoPortal];  
+GO  
+CREATE PROCEDURE GetUsers
+AS   
+    SELECT Id, Login, Email, Password, Role
+    FROM Users
+GO 
+
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE UpdateUser
+    @id int,
+	@login varchar(50),
+	@email varchar(50),
+	@password varchar(50),
+	@role varchar(50)
+AS   
+
+UPDATE Users
+
+SET 
+Login = @login,
+Email = @email,
+Password = @password,
+Role = @role
+WHERE Id = @id
+GO

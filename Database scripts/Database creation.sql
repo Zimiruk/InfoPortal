@@ -24,7 +24,7 @@ CREATE TABLE [InfoPortal].[dbo].[Articles]
 (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
 	[Name] VARCHAR(50) NOT NULL, 
-	[AddedOn] DATETIME NOT NULL DEFAULT GETDATE(),
+	[AddedOn] DATETIME NOT NULL		DEFAULT GETDATE(),
 	[LanguageId] INT NOT NULL,
 	[Link] INT NOT NULL
 
@@ -58,6 +58,20 @@ CREATE TABLE [InfoPortal].[dbo].[Files]
 )
 
 GO
+
+
+CREATE TABLE [InfoPortal].[dbo].[Users]
+(
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Login] VARCHAR(50) NOT NULL,
+	[Email] VARCHAR(50) NOT NULL,
+	[Password] VARCHAR(50) NOT NULL,
+	[Role] VARCHAR(50) NOT NULL
+)
+
+GO
+
+
 
 
 

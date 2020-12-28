@@ -21,6 +21,9 @@ namespace InfoPortal.DI
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddScoped<ILanguageService, LanguageService>();
 
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+
             return services;
         }
     }
