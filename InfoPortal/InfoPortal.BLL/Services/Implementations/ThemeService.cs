@@ -7,31 +7,31 @@ namespace InfoPortal.BLL.Services.Implementations
 {
     public class ThemeService : IThemeService
     {
-        private readonly IThemeRepository _ThemeRepository;
+        private readonly IThemeRepository _themeRepository;
 
         public ThemeService(IThemeRepository ThemeRepository)
         {
-            _ThemeRepository = ThemeRepository;
+            _themeRepository = ThemeRepository;
         }
 
         public int Create(Theme Theme)
         {
-            return _ThemeRepository.Create(Theme);
+            return _themeRepository.Create(Theme);
         }
 
         public List<Theme> GetAll()
         {
-            return _ThemeRepository.GetAll();
+            return _themeRepository.GetAll();
         }
 
         public void Update(Theme Theme)
         {
-            _ThemeRepository.Update(Theme);
+            _themeRepository.Update(Theme);
         }
 
         public Report Delete(int id)
         {
-            return _ThemeRepository.Delete(id);
+            return _themeRepository.Delete(id);
         }
     }
 }
