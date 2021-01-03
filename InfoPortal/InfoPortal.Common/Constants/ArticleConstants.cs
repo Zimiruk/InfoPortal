@@ -16,6 +16,12 @@
 
         public const string GetArticlesByLanguageId = "GetArticlesByLanguageId";
 
+        public const string GetArticlesByName = "GetArticlesByName";
+
+        public const string GetArticlesByThemeName = "GetArticlesByThemeName";
+
+        public const string GetArticlesByDate = "GetArticlesByDate";
+
         public const string AddThemeToArticle = "AddThemeToArticle";
     }
 }
