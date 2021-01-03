@@ -88,6 +88,62 @@ namespace InfoPortal.DAL
             return entities;
         }
 
+        public static List<ITable> ExecuteListReader<ITable>(string name, string sqlExpression, SqlConnection sqlConnection)
+        {
+            List<ITable> entities = new List<ITable>();
+
+            using (SqlCommand command = new SqlCommand(sqlExpression, sqlConnection))
+            {
+                sqlConnection.Open();
+
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@searchString", SqlDbType.VarChar).Value = name;
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ITable value = DatabaseDataMapper.Map<ITable>(reader);
+                        entities.Add(value);
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return entities;
+        }
+
+        public static List<ITable> ExecuteListReader<ITable>(DateTime date, string sqlExpression, SqlConnection sqlConnection)
+        {
+            List<ITable> entities = new List<ITable>();
+
+            using (SqlCommand command = new SqlCommand(sqlExpression, sqlConnection))
+            {
+                sqlConnection.Open();
+
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("@searchDate", SqlDbType.DateTime).Value = date;
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ITable value = DatabaseDataMapper.Map<ITable>(reader);
+                        entities.Add(value);
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return entities;
+        }
+
         public static int ExecuteNonQueryWithId(ITable entity, string sqlExpression, SqlConnection sqlConnection)
         {
             int id = 0;

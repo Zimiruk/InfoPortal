@@ -1,6 +1,7 @@
 ﻿using InfoPortal.Common.Constants;
 using InfoPortal.Common.Models;
 using InfoPortal.DAL.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -77,6 +78,43 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
             return article;
         }
+
+        public List<Article> GetAllByName(string name)
+        {
+            List<Article> articles = DatabaseCommand.ExecuteListReader<Article>(name, ArticleConstants.GetArticlesByName, Access.Connection);
+            foreach (var article in articles)
+            {
+                article.Themes = GetThemesByArticleId(article.Id);
+                article.Language = GetLanguage(article.LanguageId);
+            }
+
+            return articles;
+        }
+
+        public List<Article> GetAllByThemeName(string name)
+        {
+            List<Article> articles = DatabaseCommand.ExecuteListReader<Article>(name, ArticleConstants.GetArticlesByThemeName, Access.Connection);
+            foreach (var article in articles)
+            {
+                article.Themes = GetThemesByArticleId(article.Id);
+                article.Language = GetLanguage(article.LanguageId);
+            }
+
+            return articles;
+        }
+
+        public List<Article> GetAllByDate(DateTime date)
+        {
+            List<Article> articles = DatabaseCommand.ExecuteListReader<Article>(date, ArticleConstants.GetArticlesByDate, Access.Connection);
+            foreach (var article in articles)
+            {
+                article.Themes = GetThemesByArticleId(article.Id);
+                article.Language = GetLanguage(article.LanguageId);
+            }
+
+            return articles;
+        }
+
 
         public List<Theme> GetThemesByArticleId(int id)
         {

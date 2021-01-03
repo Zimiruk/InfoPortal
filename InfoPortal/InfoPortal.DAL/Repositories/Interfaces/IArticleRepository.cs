@@ -1,4 +1,5 @@
 ﻿using InfoPortal.Common.Models;
+using System;
 using System.Collections.Generic;
 
 namespace InfoPortal.DAL.Repositories.Interfaces
@@ -18,5 +19,12 @@ namespace InfoPortal.DAL.Repositories.Interfaces
         void CreateFile(File file);
 
         public List<File> GetAllFilesByArticleId(int id);
+
+        public List<Article> GetAllByName(string name);
+
+        public List<Article> GetAllByThemeName(string name);
+
+        public List<Article> GetAllByDate(DateTime date);
     }
 }
+
