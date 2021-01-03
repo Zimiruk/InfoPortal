@@ -68,9 +68,11 @@ AS
 DELETE FROM Articles Where Id = @id
 GO  
 
+/***************************************************************************/
+
 USE [InfoPortal] 
 GO
-CREATE PROCEDURE [dbo].[GetArticlesByLanguageId]    
+CREATE PROCEDURE GetArticlesByLanguageId
     @Id int
 AS   
     SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Link
@@ -78,8 +80,31 @@ AS
 
     WHERE LanguageId = @Id
 GO
-/***********************************************************************************/
+/************************************************************************************/
 
+USE [InfoPortal];  
+GO  
+CREATE PROCEDURE GetArticlesByName  
+    @searchString varchar(max)
+AS   
+    SELECT Id, Name, AddedOn, LanguageId, Link
+    FROM Articles 
+	WHERE Name LIKE '%'+@searchString+'%'
+GO
+
+/************************************************************************************/
+
+USE [InfoPortal];  
+GO  
+CREATE PROCEDURE GetArticlesByDate  
+    @searchDate Datetime
+AS   
+    SELECT Id, Name, AddedOn, LanguageId, Link
+    FROM Articles 
+	WHERE AddedOn >= @searchDate
+GO
+
+/************************************************************************************/
 
 /*FILES*/
 
@@ -232,7 +257,25 @@ ON Articles.Id = Article_Themes.ArticleId
 
 GO
 
-	/*LANGUAGES*/
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE GetArticlesByThemeName 
+     @searchString varchar(max)
+AS   
+    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Link
+    FROM Articles
+	INNER JOIN Article_Themes
+ON Articles.Id = Article_Themes.ArticleId
+	INNER JOIN Themes
+ON Themes.Id = Article_Themes.ThemeId
+    WHERE Themes.Name LIKE '%'+@searchString+'%'
+GO
+
+/************************************************************************************/  
+
+/*LANGUAGES*/
 
 USE [InfoPortal] 
 GO  
@@ -293,8 +336,7 @@ Name = @name
 WHERE Id = @id
 GO
 
-
-	/*USERS*/
+/*USERS*/
 
 USE [InfoPortal] 
 GO  
