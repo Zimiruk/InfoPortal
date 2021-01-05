@@ -26,7 +26,7 @@ CREATE TABLE [InfoPortal].[dbo].[Articles]
 	[Name] VARCHAR(50) NOT NULL, 
 	[AddedOn] DATETIME NOT NULL		DEFAULT GETDATE(),
 	[LanguageId] INT NOT NULL,
-	[Link] INT NOT NULL
+    [Text] TEXT
 
 	CONSTRAINT FK_Article_Language FOREIGN KEY (LanguageId)
     REFERENCES Languages (Id)      

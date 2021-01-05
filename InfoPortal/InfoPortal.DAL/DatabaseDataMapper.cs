@@ -50,7 +50,7 @@ namespace InfoPortal.DAL
                 Link = Convert.ToInt32(reader.GetValue(5))*/
                 AddedOn = Convert.ToDateTime(reader.GetValue(2)),
                 LanguageId = Convert.ToInt32(reader.GetValue(3)),
-                Link = Convert.ToInt32(reader.GetValue(4))
+                Text = reader.GetValue(4).ToString()         
             };
 
             return article;

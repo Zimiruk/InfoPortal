@@ -46,5 +46,11 @@ namespace InfoPortal.WebMVC.Controllers
 
             return View(articles);
         }
+
+        public IActionResult Articles()
+        {
+            var articles = _articleService.GetAll();
+            return View(articles);
+        }
     }
 }
