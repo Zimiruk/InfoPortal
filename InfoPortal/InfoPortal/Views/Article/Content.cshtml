@@ -4,6 +4,50 @@
     ViewData["Title"] = "Content";
 }
 
+@section Scripts {
+
+    <script>
+
+        /* Function showing content of the article in the right order
+         * MayB change that
+        */
+
+        $(document).ready(function () {
+
+            let content = document.getElementById("content");
+
+            let file = content.querySelectorAll('[type="file"]');
+
+            let filesElements = []
+
+            for (var i = 0; i < file.length; i++) {
+                filesElements.push(file[i].outerHTML);
+                file[i].remove();
+            }
+
+            let text = document.getElementById("text");
+
+            let textContent = text.textContent;
+
+            for (var i = 0; i < file.length; i++) {
+                textContent = textContent.replace("<file/>", filesElements[i]);
+            }
+
+            text.remove();
+
+            let sampleDiv = document.createElement("div");
+            sampleDiv.innerHTML = textContent;
+
+            content.appendChild(sampleDiv);
+        });
+
+
+    </script>
+
+}
+
+
+
 <h1>Content</h1>
 
 <h3 class="d-inline card-title">@Model.Name</h3>
@@ -29,18 +73,20 @@
 
 <div style="margin-left:20px; margin-right:20px">
 
-    <label>Pictures</label>
-
     <div id="content" style=" display: block; margin-left: auto; margin-right: auto; width: 30%;">
+
+        <div id="text">@Model.Text</div>
+
+
         @foreach (var file in Model.Files)
         {
             switch (file.Type)
             {
                 case "image/png":
-                    <img style="margin-bottom:20px" src="data:image/png;base64,@(Convert.ToBase64String(file.Content))" />
+                    <img style="margin-bottom:20px" type="file" src="data:image/png;base64,@(Convert.ToBase64String(file.Content))" />
                     break;
                 case "video/mp4":
-                    <video style="margin-bottom:20px" controls src="data:video/mp4;base64,@(Convert.ToBase64String(file.Content))"></video>
+                    <video style="margin-bottom:20px" type="file" controls src="data:video/mp4;base64,@(Convert.ToBase64String(file.Content))"></video>
                     break;
             }
         }
@@ -48,4 +94,5 @@
     </div>
 
 </div>
+
 

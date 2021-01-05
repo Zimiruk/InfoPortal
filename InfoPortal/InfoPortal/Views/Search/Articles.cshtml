@@ -1,0 +1,36 @@
+﻿@model IEnumerable<InfoPortal.Common.Models.Article>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Language in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <span class="viewId">@Language.Id</span>
+                            </th>
+                            <td>
+                                <span class="viewName">@Language.Name</span>
+                            </td>
+                            <td class="fit">
+                                <button type="button" onclick="window.open('@Url.Action("Detail", "Article", new { id = Language.Id})')" class="btn btn-success openButton">View in separate tab</button>
+                                <button type="button" class="btn btn-danger getIdButton">Add as link</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -48,8 +48,7 @@ namespace InfoPortal.WebMVC.Controllers
             newArticle.Name = article.Name == null ? "" : article.Name;       
             newArticle.ThemesId = article.Themes;
             newArticle.LanguageId = article.LanguageId;
-
-
+            newArticle.Text = article.Text;
 
 
             /*
@@ -61,7 +60,7 @@ namespace InfoPortal.WebMVC.Controllers
                 });
             }
             */
-        //    newArticle.Themes = article.Themes;
+            //    newArticle.Themes = article.Themes;
 
             newArticle.Files = new List<File>();
 

@@ -6,10 +6,10 @@ CREATE PROCEDURE CreateArticle
 	@name varchar(50),
 	@addedOn datetime,
 	@languageId int,
-	@link int
+	@text text
 AS   
-INSERT INTO Articles(Name, AddedOn, LanguageId, Link)
-VALUES (@name, @addedOn, @languageId, @link);
+INSERT INTO Articles(Name, AddedOn, LanguageId, Text)
+VALUES (@name, @addedOn, @languageId, @text);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -20,7 +20,7 @@ GO
 CREATE PROCEDURE GetArticle  
     @id int
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Link
+    SELECT Id, Name, AddedOn, LanguageId, Text
     FROM Articles 
     WHERE Id = @id 
 GO  
@@ -31,7 +31,7 @@ USE [InfoPortal];
 GO  
 CREATE PROCEDURE GetArticles  
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Link
+    SELECT Id, Name, AddedOn, LanguageId, Text
     FROM Articles 
 GO  
 
@@ -44,7 +44,8 @@ CREATE PROCEDURE UpdateArticle
 	@name varchar(50),	
 	@addedOn datetime,
 	@languageId int,
-	@link int
+	@text text
+
 AS   
 
 UPDATE Articles
@@ -53,7 +54,7 @@ SET
 Name = @name,
 AddedOn = @addedOn,
 LanguageId = @languageId,
-Link = @link
+Text = @text
 
 WHERE Id = @id
 GO
@@ -75,7 +76,7 @@ GO
 CREATE PROCEDURE GetArticlesByLanguageId
     @Id int
 AS   
-    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Link
+    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Text
     FROM Articles
 
     WHERE LanguageId = @Id
@@ -87,7 +88,7 @@ GO
 CREATE PROCEDURE GetArticlesByName  
     @searchString varchar(max)
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Link
+    SELECT Id, Name, AddedOn, LanguageId, Text
     FROM Articles 
 	WHERE Name LIKE '%'+@searchString+'%'
 GO
@@ -99,7 +100,7 @@ GO
 CREATE PROCEDURE GetArticlesByDate  
     @searchDate Datetime
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Link
+    SELECT Id, Name, AddedOn, LanguageId, Text
     FROM Articles 
 	WHERE AddedOn >= @searchDate
 GO
@@ -248,7 +249,7 @@ GO
 CREATE PROCEDURE GetArticlesByThemeId    
     @Id int
 AS   
-    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Link
+    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId
     FROM Articles
 	INNER JOIN Article_Themes
 ON Articles.Id = Article_Themes.ArticleId
@@ -264,7 +265,7 @@ GO
 CREATE PROCEDURE GetArticlesByThemeName 
      @searchString varchar(max)
 AS   
-    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Link
+    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Text
     FROM Articles
 	INNER JOIN Article_Themes
 ON Articles.Id = Article_Themes.ArticleId

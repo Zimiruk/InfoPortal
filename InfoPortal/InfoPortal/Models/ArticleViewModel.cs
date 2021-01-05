@@ -15,10 +15,10 @@ namespace InfoPortal.WebMVC.Models
 
         public int LanguageId { get; set; }
 
-        public int Link { get; set; }
-
         public List<IFormFile> Files { get; set; }
 
         public List<int> Themes { get; set; }
+
+        public string Text { get; set; }
     }
 }
