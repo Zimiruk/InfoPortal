@@ -1,10 +1,12 @@
 ﻿using InfoPortal.BLL.Services.Interfaces;
 using InfoPortal.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InfoPortal.WebMVC.Controllers
 {
+    [Authorize(Roles = "Admin, User")]
     public class ThemeController : Controller
     {
         private readonly IThemeService _themeService;

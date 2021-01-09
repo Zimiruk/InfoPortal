@@ -31,23 +31,37 @@
 
         <div class="sidebar-heading">Articles</div>
 
-        <div class="list-group list-group-flush">
-            <a href="@Url.Action("Create", "Article")" class="d-block btn btn-success">Add article</a>
-        </div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+        {
+            <div class="list-group list-group-flush">
+                <a href="@Url.Action("Create", "Article")" class="d-block btn btn-success">Add article</a>
+            </div>
+        }
+
+
+
 
         <div class="list-group list-group-flush">
+
             <a href="@Url.Action("Login", "User")" class="list-group-item list-group-item-action bg-light">Login</a>
-            <a href="@Url.Action("Index", "Theme")" class="list-group-item list-group-item-action bg-light">Themes</a>
-            <a href="@Url.Action("Index", "Language")" class="list-group-item list-group-item-action bg-light">Languages</a>
-            <a href="@Url.Action("Index", "User")" class="list-group-item list-group-item-action bg-light">Users</a>
             <a href="@Url.Action("Index", "Search")" class="list-group-item list-group-item-action bg-light">Search</a>
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+            {
+                <a href="@Url.Action("Index", "Theme")" class="list-group-item list-group-item-action bg-light">Themes</a>
+                <a href="@Url.Action("Index", "Language")" class="list-group-item list-group-item-action bg-light">Languages</a>
+            }
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("Index", "User")" class="list-group-item list-group-item-action bg-light">Users</a>
+            }
+
         </div>
     </div>
-    <!-- /#sidebar-wrapper -->
+
     <!-- Page Content -->
     <div id="page-content-wrapper">
-
-
 
         @foreach (var article in Model)
         {

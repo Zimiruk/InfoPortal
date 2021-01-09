@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using InfoPortal.Common.Models;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InfoPortal.WebMVC.Controllers
 {
@@ -13,7 +14,7 @@ namespace InfoPortal.WebMVC.Controllers
         {
             _articleService = articleService;
         }
-
+    
         public IActionResult Index()
         {
             var articles = _articleService.GetAll();  

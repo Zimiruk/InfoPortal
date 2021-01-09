@@ -9,9 +9,11 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using InfoPortal.WebMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InfoPortal.WebMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -69,6 +71,7 @@ namespace InfoPortal.WebMVC.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
@@ -80,6 +83,7 @@ namespace InfoPortal.WebMVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginAsync(LoginViewModel model)
@@ -95,6 +99,7 @@ namespace InfoPortal.WebMVC.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
