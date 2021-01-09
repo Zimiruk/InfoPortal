@@ -2,6 +2,7 @@
 using InfoPortal.Common.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace InfoPortal.WebMVC.Controllers
 {
@@ -25,6 +26,8 @@ namespace InfoPortal.WebMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            SelectList roles = new SelectList(_userService.GetRoles(), "Id", "Name");          
+            ViewBag.Roles = roles;
             return View();   
         }
 
@@ -39,6 +42,8 @@ namespace InfoPortal.WebMVC.Controllers
         public IActionResult Update(int id)
         {
             var user = _userService.Get(id);
+            SelectList roles = new SelectList(_userService.GetRoles(), "Id", "Name");
+            ViewBag.Roles = roles;
             return View(user);
         }
 

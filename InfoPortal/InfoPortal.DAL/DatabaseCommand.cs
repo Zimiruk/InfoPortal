@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace InfoPortal.DAL
 {
@@ -164,7 +165,8 @@ namespace InfoPortal.DAL
                     switch (propertyInfo.Name)
                     {
                         case "Id":
-                       // case "Theme":
+                        case "Role":
+                        // case "Theme":
                         case "Language":
                             continue;
 
@@ -212,6 +214,11 @@ namespace InfoPortal.DAL
 
                 foreach (var propertyInfo in entity.GetType().GetProperties())
                 {
+                    if (propertyInfo.PropertyType.GetInterfaces().Contains(typeof(ITable)))
+                    {
+                        continue;
+                    }
+
                     if (propertyInfo.Name == "AddedOn")
                     {
                         command.Parameters

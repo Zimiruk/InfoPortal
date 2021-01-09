@@ -345,12 +345,12 @@ CREATE PROCEDURE CreateUser
 	@login varchar(50),
 	@email varchar(50),
 	@password varchar(50),
-	@role varchar(50)
+	@roleId int
 
 
 AS   
-INSERT INTO Users(Login, Email, Password, Role)
-VALUES (@login, @email, @password, @role);
+INSERT INTO Users(Login, Email, Password, RoleId)
+VALUES (@login, @email, @password, @roleId);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -371,7 +371,7 @@ GO
 CREATE PROCEDURE GetUser
     @id int
 AS   
-    SELECT Id, Login, Email, Password, Role
+    SELECT Id, Login, Email, Password, RoleId
     FROM Users
     WHERE Id = @id 
 GO 
@@ -382,7 +382,7 @@ USE [InfoPortal];
 GO  
 CREATE PROCEDURE GetUsers
 AS   
-    SELECT Id, Login, Email, Password, Role
+    SELECT Id, Login, Email, Password, RoleId
     FROM Users
 GO 
 
@@ -395,7 +395,7 @@ CREATE PROCEDURE UpdateUser
 	@login varchar(50),
 	@email varchar(50),
 	@password varchar(50),
-	@role varchar(50)
+	@roleId int
 AS   
 
 UPDATE Users
@@ -404,6 +404,34 @@ SET
 Login = @login,
 Email = @email,
 Password = @password,
-Role = @role
+RoleId = @roleId
 WHERE Id = @id
+GO
+
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE GetRole
+    @id int
+AS   
+
+    SELECT Roles.Id, Roles.Name
+    FROM Roles
+	INNER JOIN Users
+ON Roles.Id = Users.RoleId
+
+     WHERE Users.Id = @Id
+
+GO
+
+/***************************************************************************/
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE GetRoles
+
+AS
+    SELECT Id, Name
+    FROM Roles
 GO

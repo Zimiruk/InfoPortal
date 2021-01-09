@@ -24,7 +24,7 @@ namespace InfoPortal.DAL.Repositories.Interfaces
 
         public List<Article> GetAllByThemeName(string name);
 
-        public List<Article> GetAllByDate(DateTime date);
+        public List<Article> GetAllByDate(DateTime date);     
     }
 }
 
