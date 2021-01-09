@@ -1,5 +1,6 @@
 using InfoPortal.DAL;
 using InfoPortal.DI;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,11 @@ namespace InfoPortal.WebMVC
             services.AddRazorPages();
             services.IoCRegistry();
             services.AddTransient(_ => new SQLDataAccess(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+              .AddCookie(options =>
+              {
+                  options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/User/Login");
+              });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,6 +47,8 @@ namespace InfoPortal.WebMVC
             app.UseRouting();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             ///TODO Think over
             app.UseMvc(routes =>

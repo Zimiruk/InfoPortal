@@ -15,5 +15,7 @@
         public const string GetRole = "GetRole";
 
         public const string GetRoles = "GetRoles";
+
+        public const string CheckUser = "CheckUser";  
     }
 }

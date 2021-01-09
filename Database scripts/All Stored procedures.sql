@@ -435,3 +435,15 @@ AS
     SELECT Id, Name
     FROM Roles
 GO
+
+USE [InfoPortal] 
+GO  
+CREATE PROCEDURE CheckUser
+     @email varchar(max),
+	 @password varchar(max)
+AS   
+    SELECT Id, Login, Email, Password, RoleId
+    FROM Users
+
+    WHERE Email = @email AND Password = @password
+GO

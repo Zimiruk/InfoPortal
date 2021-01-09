@@ -23,7 +23,7 @@ namespace InfoPortal.DAL.Repositories.Implementations
 
         public List<User> GetAll()
         {
-           var users =  DatabaseCommand.ExecuteListReader<User>(UserConstants.GetUsers, Access.Connection);
+            var users = DatabaseCommand.ExecuteListReader<User>(UserConstants.GetUsers, Access.Connection);
 
             foreach (var user in users)
             {
@@ -55,5 +55,32 @@ namespace InfoPortal.DAL.Repositories.Implementations
         {
             return DatabaseCommand.ExecuteListReader<Role>(UserConstants.GetRoles, Access.Connection);
         }
+
+        public User CheckUser(string email, string password)
+        {
+            List<CustomParameter> parameters = new List<CustomParameter>
+                {
+                    new CustomParameter
+                    {
+                        Parameter = "@Email",
+                        Value = email
+                    },
+                    new CustomParameter
+                    {
+                        Parameter = "@Password",
+                        Value = password
+                    }
+                };
+
+            var user =  DatabaseCommand.ExecuteWithCustomParemeters<User>(parameters, UserConstants.CheckUser, Access.Connection);
+
+            if(user != null)
+            {
+                user.Role = DatabaseCommand.ExecuteSingleReader<Role>(user.Id, UserConstants.GetRole, Access.Connection);
+            }
+
+            return user;
+        }
     }
 }
+

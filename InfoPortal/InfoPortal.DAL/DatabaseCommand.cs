@@ -290,5 +290,44 @@ namespace InfoPortal.DAL
                 sqlConnection.Close();
             }
         }
+
+  
+
+        public static ITable ExecuteWithCustomParemeters<ITable>(List<CustomParameter> parameters, string sqlExpression, SqlConnection sqlConnection)
+        {
+            ITable entity = default;
+
+
+            using (SqlCommand command = new SqlCommand(sqlExpression, sqlConnection))
+            {
+                sqlConnection.Open();
+                command.CommandType = CommandType.StoredProcedure;
+
+                foreach (var param in parameters)
+                {
+
+                    SqlParameter parameter = new SqlParameter();
+
+                    parameter.ParameterName = param.Parameter;
+                    parameter.SqlDbType = SqlDbType.VarChar;
+                    parameter.Value = param.Value;
+
+                    command.Parameters.Add(parameter);
+                }
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        entity = DatabaseDataMapper.Map<ITable>(reader);
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return entity;
+        }
     }
 }
