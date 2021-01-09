@@ -18,6 +18,8 @@ namespace InfoPortal.DAL
             mappersDictionary.Add(typeof(Theme), ThemeMapper);
             mappersDictionary.Add(typeof(Language), LanguageMapper);
             mappersDictionary.Add(typeof(User), UserMapper);
+            mappersDictionary.Add(typeof(Role), RoleMapper);
+
 
             sqlTypes.Add(typeof(string), SqlDbType.VarChar);
             sqlTypes.Add(typeof(int), SqlDbType.Int);
@@ -99,10 +101,22 @@ namespace InfoPortal.DAL
                 Login = reader.GetValue(1).ToString(),
                 Email = reader.GetValue(2).ToString(),
                 Password = reader.GetValue(3).ToString(),
-                Role = reader.GetValue(4).ToString()
+                RoleId = Convert.ToInt32(reader.GetValue(4)),
             };
 
             return User;
         }
+
+        private static Role RoleMapper(SqlDataReader reader)
+        {
+            var Role = new Role
+            {
+                Id = Convert.ToInt32(reader.GetValue(0)),
+                Name = reader.GetValue(1).ToString()
+            };
+
+            return Role;
+        }
+
     }
 }

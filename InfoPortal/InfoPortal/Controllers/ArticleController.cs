@@ -1,6 +1,7 @@
 ﻿using InfoPortal.BLL.Services.Interfaces;
 using InfoPortal.Common.Models;
 using InfoPortal.WebMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,6 +9,9 @@ using System.Collections.Generic;
 
 namespace InfoPortal.WebMVC.Controllers
 {
+
+    [Authorize(Roles = "Admin, User")]
+
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -27,7 +31,6 @@ namespace InfoPortal.WebMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-
             ContentViewModel content = new ContentViewModel
             {
                 Themes = _themeService.GetAll(),
@@ -87,6 +90,7 @@ namespace InfoPortal.WebMVC.Controllers
             return Json(new { success = true, responseText = "Article added", id });
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Detail(int id)
         {
@@ -102,6 +106,7 @@ namespace InfoPortal.WebMVC.Controllers
             }
         }
 
+        [AllowAnonymous]
         public IActionResult Content(int id)
         {
             if (id == 0)

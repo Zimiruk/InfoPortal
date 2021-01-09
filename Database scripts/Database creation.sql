@@ -59,6 +59,12 @@ CREATE TABLE [InfoPortal].[dbo].[Files]
 
 GO
 
+CREATE TABLE [InfoPortal].[dbo].[Roles]
+(
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Name] VARCHAR(50) NOT NULL
+)
+GO
 
 CREATE TABLE [InfoPortal].[dbo].[Users]
 (
@@ -66,12 +72,15 @@ CREATE TABLE [InfoPortal].[dbo].[Users]
     [Login] VARCHAR(50) NOT NULL,
 	[Email] VARCHAR(50) NOT NULL,
 	[Password] VARCHAR(50) NOT NULL,
-	[Role] VARCHAR(50) NOT NULL
-)
+	[RoleId] int NOT NULL
 
+	CONSTRAINT FK_User_Roles FOREIGN KEY (RoleId)
+    REFERENCES Roles (Id)
+    ON DELETE CASCADE      
+)
 GO
 
-
-
-
-
+INSERT INTO [InfoPortal].[dbo].[Roles] (Name)
+VALUES 
+  ('Admin'), 
+  ('Editor')

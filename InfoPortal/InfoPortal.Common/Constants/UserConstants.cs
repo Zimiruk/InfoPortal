@@ -11,5 +11,11 @@
         public const string UpdateUser = "UpdateUser";
 
         public const string DeleteUser = "DeleteUser";
+
+        public const string GetRole = "GetRole";
+
+        public const string GetRoles = "GetRoles";
+
+        public const string CheckUser = "CheckUser";  
     }
 }

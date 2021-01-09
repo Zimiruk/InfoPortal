@@ -88,7 +88,7 @@
                             <span class="viewName">@User.Password</span>
                         </td>
                         <td>
-                            <span class="viewName">@User.Role</span>
+                            <span class="viewName">@User.Role.Name</span>
                         </td>
                         <td class="fit">
                             <button type="button" class="btn btn-success editButton "onclick="location.href='@Url.Action("Update", "User", new { id = User.Id})'">Edit</button>

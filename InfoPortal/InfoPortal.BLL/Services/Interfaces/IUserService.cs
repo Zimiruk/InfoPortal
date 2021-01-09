@@ -14,5 +14,9 @@ namespace InfoPortal.BLL.Services.Interfaces
         void Update(User User);
 
         void Delete(int id);
+
+        List<Role> GetRoles();
+
+        User CheckUser(string email, string password);
     }
 }

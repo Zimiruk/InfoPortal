@@ -17,20 +17,29 @@ namespace InfoPortal.DAL.Repositories.Implementations
         }
 
         public int Create(User User)
-        {     
+        {
             return DatabaseCommand.ExecuteNonQueryWithId(User, UserConstants.CreateUser, Access.Connection);
         }
 
         public List<User> GetAll()
-        {    
-            return DatabaseCommand.ExecuteListReader<User>(UserConstants.GetUsers, Access.Connection);
+        {
+            var users = DatabaseCommand.ExecuteListReader<User>(UserConstants.GetUsers, Access.Connection);
+
+            foreach (var user in users)
+            {
+                user.Role = DatabaseCommand.ExecuteSingleReader<Role>(user.Id, UserConstants.GetRole, Access.Connection);
+            }
+
+            return users;
         }
 
         public User Get(int id)
         {
-            return DatabaseCommand.ExecuteSingleReader<User>(id, UserConstants.GetUser, Access.Connection);
-       
-        }       
+            var user = DatabaseCommand.ExecuteSingleReader<User>(id, UserConstants.GetUser, Access.Connection);
+            user.Role = DatabaseCommand.ExecuteSingleReader<Role>(id, UserConstants.GetRole, Access.Connection);
+
+            return user;
+        }
 
         public void Update(User User)
         {
@@ -41,5 +50,37 @@ namespace InfoPortal.DAL.Repositories.Implementations
         {
             DatabaseCommand.ExecuteNonQuery(id, UserConstants.DeleteUser, Access.Connection);
         }
+
+        public List<Role> GetRoles()
+        {
+            return DatabaseCommand.ExecuteListReader<Role>(UserConstants.GetRoles, Access.Connection);
+        }
+
+        public User CheckUser(string email, string password)
+        {
+            List<CustomParameter> parameters = new List<CustomParameter>
+                {
+                    new CustomParameter
+                    {
+                        Parameter = "@Email",
+                        Value = email
+                    },
+                    new CustomParameter
+                    {
+                        Parameter = "@Password",
+                        Value = password
+                    }
+                };
+
+            var user =  DatabaseCommand.ExecuteWithCustomParemeters<User>(parameters, UserConstants.CheckUser, Access.Connection);
+
+            if(user != null)
+            {
+                user.Role = DatabaseCommand.ExecuteSingleReader<Role>(user.Id, UserConstants.GetRole, Access.Connection);
+            }
+
+            return user;
+        }
     }
 }
+

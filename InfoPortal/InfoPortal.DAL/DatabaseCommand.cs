@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace InfoPortal.DAL
 {
@@ -164,7 +165,8 @@ namespace InfoPortal.DAL
                     switch (propertyInfo.Name)
                     {
                         case "Id":
-                       // case "Theme":
+                        case "Role":
+                        // case "Theme":
                         case "Language":
                             continue;
 
@@ -212,6 +214,11 @@ namespace InfoPortal.DAL
 
                 foreach (var propertyInfo in entity.GetType().GetProperties())
                 {
+                    if (propertyInfo.PropertyType.GetInterfaces().Contains(typeof(ITable)))
+                    {
+                        continue;
+                    }
+
                     if (propertyInfo.Name == "AddedOn")
                     {
                         command.Parameters
@@ -282,6 +289,45 @@ namespace InfoPortal.DAL
                 command.ExecuteNonQuery();
                 sqlConnection.Close();
             }
+        }
+
+  
+
+        public static ITable ExecuteWithCustomParemeters<ITable>(List<CustomParameter> parameters, string sqlExpression, SqlConnection sqlConnection)
+        {
+            ITable entity = default;
+
+
+            using (SqlCommand command = new SqlCommand(sqlExpression, sqlConnection))
+            {
+                sqlConnection.Open();
+                command.CommandType = CommandType.StoredProcedure;
+
+                foreach (var param in parameters)
+                {
+
+                    SqlParameter parameter = new SqlParameter();
+
+                    parameter.ParameterName = param.Parameter;
+                    parameter.SqlDbType = SqlDbType.VarChar;
+                    parameter.Value = param.Value;
+
+                    command.Parameters.Add(parameter);
+                }
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        entity = DatabaseDataMapper.Map<ITable>(reader);
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return entity;
         }
     }
 }

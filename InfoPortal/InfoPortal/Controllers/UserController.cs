@@ -1,10 +1,19 @@
 ﻿using InfoPortal.BLL.Services.Interfaces;
 using InfoPortal.Common.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using InfoPortal.WebMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InfoPortal.WebMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -25,7 +34,9 @@ namespace InfoPortal.WebMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();   
+            SelectList roles = new SelectList(_userService.GetRoles(), "Id", "Name");
+            ViewBag.Roles = roles;
+            return View();
         }
 
         [HttpPost]
@@ -39,6 +50,8 @@ namespace InfoPortal.WebMVC.Controllers
         public IActionResult Update(int id)
         {
             var user = _userService.Get(id);
+            SelectList roles = new SelectList(_userService.GetRoles(), "Id", "Name");
+            ViewBag.Roles = roles;
             return View(user);
         }
 
@@ -56,6 +69,54 @@ namespace InfoPortal.WebMVC.Controllers
 
             return Json(new { success = true, responseText = "" });
 
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginAsync(LoginViewModel model)
+        {
+            var user = _userService.CheckUser(model.Email, model.Password);
+
+            if (user != null)
+            {
+                await Authenticate(model.Email, user.Role);
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
+        private async Task Authenticate(string email, Role role)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, email),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, role.Name),
+            };
+
+            var id = new ClaimsIdentity(claims, "AuthCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
     }
 }

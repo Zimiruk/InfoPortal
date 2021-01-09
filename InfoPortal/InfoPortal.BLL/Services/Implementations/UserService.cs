@@ -38,5 +38,15 @@ namespace InfoPortal.BLL.Services.Implementations
         {
             _userRepository.Delete(id);
         }
+
+        public List<Role> GetRoles()
+        {
+            return _userRepository.GetRoles();
+        }
+
+        public User CheckUser(string email, string password)
+        {
+            return _userRepository.CheckUser(email, password);
+        }
     }
 }
