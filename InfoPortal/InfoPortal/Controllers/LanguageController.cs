@@ -3,6 +3,7 @@ using InfoPortal.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace InfoPortal.WebMVC.Controllers
 {
@@ -27,20 +28,40 @@ namespace InfoPortal.WebMVC.Controllers
         [HttpPost]
         public IActionResult Create(Language language)
         {
-            /// TODO Add validation
-            /// 
 
-            language.Name = language.Name == null ? "" : language.Name;
+            if (ModelState.IsValid)
+            {
+                language.Name = language.Name == null ? "" : language.Name;
 
-            int id = _languageService.Create(language);
-            return Json(new { success = true, responseText = "Language added", id });
+                int id = _languageService.Create(language);
+
+                return Json(new { success = true, responseText = "Language added", id });
+
+            }
+
+            var errorList = (from item in ModelState
+                             where item.Value.Errors.Any()
+                             select item.Value.Errors[0].ErrorMessage).ToList();
+
+
+            return Json(new { success = false, responseText = errorList });
         }
 
         [HttpPost]
         public IActionResult Update(Language language)
         {
-            _languageService.Update(language);
-            return Json(new { success = true, responseText = "Language changed" });
+            if (ModelState.IsValid)
+            {
+                _languageService.Update(language);
+                return Json(new { success = true, responseText = "Language changed" });
+            }
+
+            var errorList = (from item in ModelState
+                             where item.Value.Errors.Any()
+                             select item.Value.Errors[0].ErrorMessage).ToList();
+
+
+            return Json(new { success = false, responseText = errorList });
         }
 
         [HttpDelete]
