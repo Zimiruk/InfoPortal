@@ -8,8 +8,7 @@ using System.Data;
 namespace InfoPortal.Tests
 {
     public class Tests
-    {
-
+    {     
         [Test]
         public void Test1()
         {
