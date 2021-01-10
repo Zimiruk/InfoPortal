@@ -113,42 +113,6 @@ GO
 
 /************************************************************************************/
 
-/*FILES*/
-
-USE [InfoPortal] 
-GO  
-CREATE PROCEDURE AddFile 
-	@Content varbinary(max),
-	@ArticleId int,
-	@Type varchar(50)
-AS   
-INSERT INTO Files(Content, ArticleId, Type)
-VALUES (@Content, @ArticleId, @Type);
-RETURN SCOPE_IDENTITY()
-GO  
-
-/************************************************************************************/
-
-USE [InfoPortal] 
-GO  
-CREATE PROCEDURE GetFilesByArticleId
-    @id int
-AS   
-    SELECT Id, ArticleId, Content, Type
-    FROM Files 
-    WHERE ArticleId = @id
-GO
-
-/************************************************************************************/
-
-USE [InfoPortal] 
-GO  
-CREATE PROCEDURE DeleteFile 
-	@id int
-AS   
-DELETE FROM Files Where Id = @id
-GO  
-
 /*THEMES*/
 
 USE [InfoPortal] 

@@ -4,49 +4,9 @@
     ViewData["Title"] = "Content";
 }
 
-@section Scripts {
-
-    <script>
-
-        /* Function showing content of the article in the right order
-         * MayB change that
-        */
-
-        $(document).ready(function () {
-
-            let content = document.getElementById("content");
-
-            let file = content.querySelectorAll('[type="file"]');
-
-            let filesElements = []
-
-            for (var i = 0; i < file.length; i++) {
-                filesElements.push(file[i].outerHTML);
-                file[i].remove();
-            }
-
-            let text = document.getElementById("text");
-
-            let textContent = text.textContent;
-
-            for (var i = 0; i < file.length; i++) {
-                textContent = textContent.replace("<file/>", filesElements[i]);
-            }
-
-            text.remove();
-
-            let sampleDiv = document.createElement("div");
-            sampleDiv.innerHTML = textContent;
-
-            content.appendChild(sampleDiv);
-        });
-
-
-    </script>
-
-}
-
-
+    <p>
+        @Model.AddedOn
+    </p>
 
 <h1>Content</h1>
 
@@ -70,21 +30,19 @@
     @Model.Language.Name
 </span>
 
-<img style="margin-bottom:20px" type="file" src="data:image/png;base64,@(Convert.ToBase64String(Model.Image))" />
 
 
-<video style="margin-bottom:20px" type="file" controls src="data:video/mp4;base64,@(Convert.ToBase64String(Model.Video))"></video>
+<div class="d-flex justify-content-center">
+    <img style="margin-right:20px;" type="file" class="createContent" src="data:image/png;base64,@(Convert.ToBase64String(Model.Image))" />
+    <video type="file" class="createContent" controls src="data:video/mp4;base64,@(Convert.ToBase64String(Model.Video))"></video>
+</div>
+
 
 <div style="margin-left:20px; margin-right:20px">
 
     <div id="content" style=" display: block; margin-left: auto; margin-right: auto; width: 30%;">
-
         <div id="text">@Model.Text</div>
-
-
-
     </div>
-
 </div>
 
 

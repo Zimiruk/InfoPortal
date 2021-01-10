@@ -165,8 +165,7 @@ namespace InfoPortal.DAL
                     switch (propertyInfo.Name)
                     {
                         case "Id":
-                        case "Role":
-                        // case "Theme":
+                        case "Role":                     
                         case "Language":
                             continue;
 

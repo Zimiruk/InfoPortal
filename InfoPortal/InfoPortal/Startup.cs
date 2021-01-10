@@ -49,8 +49,7 @@ namespace InfoPortal.WebMVC
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            ///TODO Think over
+                 
             app.UseMvc(routes =>
             {
                 routes.MapRoute("create", "/article/create", new { controller = "Article", action = "Create" });
