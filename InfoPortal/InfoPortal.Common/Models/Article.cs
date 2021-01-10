@@ -13,9 +13,7 @@ namespace InfoPortal.Common.Models
 
         public Language Language { get; set; }
 
-        public int LanguageId { get; set; }
-
-        //public List<File> Files {get; set; }
+        public int LanguageId { get; set; }  
 
         public byte[] Image { get; set; }
 

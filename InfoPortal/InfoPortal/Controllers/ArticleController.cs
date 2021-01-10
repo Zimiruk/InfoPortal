@@ -70,7 +70,7 @@ namespace InfoPortal.WebMVC.Controllers
 
                 int id = _articleService.Create(newArticle);
 
-                return RedirectToAction("Detail", new { newArticle.Id });
+                return RedirectToAction("Detail", new { id});
 
             }
 

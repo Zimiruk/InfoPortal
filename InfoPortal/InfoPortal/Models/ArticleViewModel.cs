@@ -21,12 +21,11 @@ namespace InfoPortal.WebMVC.Models
         [Required]
         public int LanguageId { get; set; }
 
-        public List<IFormFile> Files { get; set; }
-
-        [Required]
+        [Required]  
         public IFormFile Image { get; set; }
 
         [Required]
+        [ProperFiletAttribute(ErrorMessage = "Only mp4")]
         public IFormFile Video { get; set; }
 
         [Required]
