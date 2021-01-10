@@ -7,7 +7,6 @@
 
         let mode = 'edit';
 
-        //TODO MayB change that
         $(document).ready(function () {
 
             $("#modeButton").click(function () {
@@ -15,14 +14,14 @@
             });
 
             function changePage() {
-               
-                if (mode == 'content') {                  
+
+                if (mode == 'content') {
                     mode = 'edit';
                     $("#modeButton").html('View');
                     $("#div1").load("@Url.Action("Update", "Article", new { id = @ViewBag.Id })");
                 }
 
-                else if (mode == 'edit') {                
+                else if (mode == 'edit') {
                     mode = 'content';
                     $("#modeButton").html('Edit');
                     $("#div1").load("@Url.Action("Content", "Article", new { id = @ViewBag.Id })");
@@ -32,12 +31,14 @@
             changePage();
 
         });
-
-     
     </script>
 }
-<button type="button" class="d-inline  btn btn-danger float-right" onclick="location.href='@Url.Action("Update", "Article", new { id = @ViewBag.Id})'">Edit</button>
-<button type="button" class="d-inline  btn btn-danger float-right" onclick="location.href='@Url.Action("Delete", "Article", new { id = @ViewBag.Id})'">Delete</button>
-<button type="button" style="visibility:collapse" id="modeButton" class="d-inline  btn btn-warning float-right">Edit</button>
+
+@if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+{
+
+    <button type="button" class="d-inline  btn btn-primary float-right" onclick="location.href='@Url.Action("Update", "Article", new { id = @ViewBag.Id})'">Edit</button>
+    <button type="button" class="d-inline  btn btn-danger float-right" onclick="location.href='@Url.Action("Delete", "Article", new { id = @ViewBag.Id})'">Delete</button>
+}
 
 <div id="div1"></div>

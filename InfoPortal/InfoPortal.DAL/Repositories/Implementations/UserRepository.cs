@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 namespace InfoPortal.DAL.Repositories.Implementations
 {
-    /// TODO MayB add exception for wrong command input, or move commands to dictionary
-
     public class UserRepository : IUserRepository
     {
         public SQLDataAccess Access { get; }

@@ -13,23 +13,20 @@
     </script>
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-    <p>Hello @User.Identity.Name</p>
-    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
-}
-
-@if (User.IsInRole("Admin"))
-{
-    <p> Hello Admin </p>
-}
 
 <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
 
-        <div class="sidebar-heading">Articles</div>
+
+
+        <div class="sidebar-heading">Info portal</div>
+
+        @if (User.Identity.IsAuthenticated)
+        {            
+            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+        }
 
         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
         {
@@ -37,9 +34,6 @@
                 <a href="@Url.Action("Create", "Article")" class="d-block btn btn-success">Add article</a>
             </div>
         }
-
-
-
 
         <div class="list-group list-group-flush">
 
