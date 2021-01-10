@@ -334,5 +334,31 @@ namespace InfoPortal.DAL
 
             return entity;
         }
+
+        /*This method creating only for testing*/
+        public static IList<User> ExecuteList(string sqlExpression, IDbConnection sqlConnection)
+        {
+            List<ITable> entities = new List<ITable>();
+
+            using (IDbCommand command = sqlConnection.CreateCommand())
+            {
+                command.CommandText = sqlExpression;
+                sqlConnection.Open();
+
+                using (IDataReader reader = command.ExecuteReader())
+                {
+                    IList<User> rows = new List<User>();
+                    while (reader.Read())
+                    {
+                        rows.Add(new User
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Email = reader.GetString(reader.GetOrdinal("Email"))
+                        });
+                    }
+                    return rows;
+                }
+            }
+        }
     }
 }

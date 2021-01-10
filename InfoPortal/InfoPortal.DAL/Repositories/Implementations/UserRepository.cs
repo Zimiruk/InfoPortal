@@ -33,6 +33,18 @@ namespace InfoPortal.DAL.Repositories.Implementations
             return users;
         }
 
+        /* This method created only for testing 
+                 
+            It turns out that I create a fake method to pass Mock data there D:    
+        
+        */
+        public IList<User> GetAllTest()
+        {
+            var users = DatabaseCommand.ExecuteList(UserConstants.GetUsers, Access.DbConnection);
+
+            return users;
+        }
+
         public User Get(int id)
         {
             var user = DatabaseCommand.ExecuteSingleReader<User>(id, UserConstants.GetUser, Access.Connection);
