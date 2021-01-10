@@ -4,14 +4,13 @@ using InfoPortal.WebMVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 namespace InfoPortal.WebMVC.Controllers
 {
 
-    [Authorize(Roles = "Admin, User")]
-
+    [Authorize(Roles = "Admin, Editor")]
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -31,63 +30,56 @@ namespace InfoPortal.WebMVC.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ContentViewModel content = new ContentViewModel
-            {
-                Themes = _themeService.GetAll(),
-                Languages = _languageService.GetAll()
-            };         
+            SelectList languages = new SelectList(_languageService.GetAll(), "Id", "Name");
 
-            return View(content);
+            ViewBag.Themes = _themeService.GetAll();
+            ViewBag.Languages = languages;
+
+            ArticleViewModel articleViewModel = new ArticleViewModel();
+
+            return View(articleViewModel);
         }
 
         [HttpPost]
         public IActionResult Add(ArticleViewModel article)
         {
-            /// TODO Add validation
-
-            Article newArticle = new Article();
-              
-            //newArticle.ThemeId = article.ThemeId == null ? 0 : Convert.ToInt32(article.ThemeId);
-            newArticle.Name = article.Name == null ? "" : article.Name;       
-            newArticle.ThemesId = article.Themes;
-            newArticle.LanguageId = article.LanguageId;
-            newArticle.Text = article.Text;
-
-
-            /*
-            foreach(int themeId in article.Themes)
+            if (ModelState.IsValid)
             {
-                newArticle.Themes.Add( new Theme
+                Article newArticle = new Article();
+
+                newArticle.ThemesId = article.ThemesId;
+                newArticle.Name = article.Name;
+                newArticle.LanguageId = article.LanguageId;
+                newArticle.Text = article.Text;
+
+                byte[] imageData = null;
+                using (var binaryReader = new System.IO.BinaryReader(article.Image.OpenReadStream()))
                 {
-                    Id = themeId
-                });
-            }
-            */
-            //    newArticle.Themes = article.Themes;
-
-            newArticle.Files = new List<File>();
-
-            if(article.Files != null)
-            {
-                foreach (var file in article.Files)
-                {
-                    byte[] imageData = null;  
-                    using (var binaryReader = new System.IO.BinaryReader(file.OpenReadStream()))
-                    {
-                        imageData = binaryReader.ReadBytes((int)file.Length);
-                    }
-
-                    newArticle.Files.Add(new File
-                    {
-                        Content = imageData,
-                        Type = file.ContentType
-                    });
+                    imageData = binaryReader.ReadBytes((int)article.Image.Length);
                 }
+
+                newArticle.Image = imageData;
+
+                byte[] videoData = null;
+                using (var binaryReader = new System.IO.BinaryReader(article.Video.OpenReadStream()))
+                {
+                    videoData = binaryReader.ReadBytes((int)article.Video.Length);
+                }
+
+                newArticle.Video = videoData;
+
+                int id = _articleService.Create(newArticle);
+
+                return RedirectToAction("Detail", new { id});
+
             }
 
-            int id = _articleService.Create(newArticle);    
+            var errorList = (from item in ModelState
+                             where item.Value.Errors.Any()
+                             select item.Value.Errors[0].ErrorMessage).ToList();
 
-            return Json(new { success = true, responseText = "Article added", id });
+
+            return Json(new { success = false, responseText = errorList });
         }
 
         [AllowAnonymous]
@@ -116,7 +108,7 @@ namespace InfoPortal.WebMVC.Controllers
 
             else
             {
-                var article = _articleService.Get(id); 
+                var article = _articleService.Get(id);
                 return View(article);
             }
         }
@@ -125,15 +117,90 @@ namespace InfoPortal.WebMVC.Controllers
         public IActionResult Update(int id)
         {
             var article = _articleService.Get(id);
-            return View(article);
+
+            UpdateArticleViewModel model = new UpdateArticleViewModel();
+
+            model.Id = article.Id;
+            model.Name = article.Name;
+            model.ThemesId = article.ThemesId;
+            model.LanguageId = article.LanguageId;
+            model.Text = article.Text;
+
+            model.ImageContent = article.Image;
+            model.VideoContent = article.Video;
+
+            SelectList languages = new SelectList(_languageService.GetAll(), "Id", "Name");
+
+            ViewBag.Themes = _themeService.GetAll();
+            ViewBag.Languages = languages;
+
+            return View(model);
         }
 
+
         [HttpPost]
-        public IActionResult Update(Article article)
+        public IActionResult Update(UpdateArticleViewModel article)
         {
-            _articleService.Update(article);
-            return RedirectToAction("Detail", new { id = article.Id });
+
+            if (ModelState.IsValid)
+            {
+                Article newArticle = new Article();
+
+                newArticle.Id = article.Id;
+                newArticle.ThemesId = article.ThemesId;
+                newArticle.Name = article.Name;
+                newArticle.LanguageId = article.LanguageId;
+                newArticle.Text = article.Text;
+
+                if (article.Image != null)
+                {
+                    byte[] imageData = null;
+                    using (var binaryReader = new System.IO.BinaryReader(article.Image.OpenReadStream()))
+                    {
+                        imageData = binaryReader.ReadBytes((int)article.Image.Length);
+                    }
+
+                    newArticle.Image = imageData;
+                }
+
+                else
+                {
+                    newArticle.Image = _articleService.Get(newArticle.Id).Image;
+                }
+
+                if (article.Video != null)
+                {
+
+                    byte[] videoData = null;
+                    using (var binaryReader = new System.IO.BinaryReader(article.Video.OpenReadStream()))
+                    {
+                        videoData = binaryReader.ReadBytes((int)article.Video.Length);
+                    }
+
+                    newArticle.Video = videoData;
+
+                }
+
+                else
+                {
+                    newArticle.Video = _articleService.Get(newArticle.Id).Video;
+                }
+
+                _articleService.Update(newArticle);
+
+                return RedirectToAction("Detail", new { newArticle.Id });
+
+
+            }
+
+            var errorList = (from item in ModelState
+                             where item.Value.Errors.Any()
+                             select item.Value.Errors[0].ErrorMessage).ToList();
+
+
+            return Json(new { success = false, responseText = errorList });
         }
+
 
         public IActionResult Delete(int id)
         {

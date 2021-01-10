@@ -219,6 +219,11 @@ namespace InfoPortal.DAL
                         continue;
                     }
 
+                    if (propertyInfo.PropertyType.IsGenericType)
+                    {
+                        continue;
+                    }
+
                     if (propertyInfo.Name == "AddedOn")
                     {
                         command.Parameters

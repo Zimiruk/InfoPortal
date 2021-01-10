@@ -67,7 +67,7 @@ namespace InfoPortal.WebMVC.Controllers
         {
             _userService.Delete(id);
 
-            return Json(new { success = true, responseText = "" });
+            return Json(new { success = true, responseText = "User deleted" });
 
         }
 
@@ -88,15 +88,25 @@ namespace InfoPortal.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginAsync(LoginViewModel model)
         {
-            var user = _userService.CheckUser(model.Email, model.Password);
 
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                await Authenticate(model.Email, user.Role);
-                return RedirectToAction("Index", "Home");
+                var user = _userService.CheckUser(model.Email, model.Password);
+
+                if (user != null)
+                {
+                    await Authenticate(model.Email, user.Role);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                else
+                {
+                    ModelState.AddModelError("LogOnError", "Email or password provided is incorrect.");
+                    return View(model);
+                }
             }
 
-            return View(model);
+            return View(model);         
         }
 
         [AllowAnonymous]

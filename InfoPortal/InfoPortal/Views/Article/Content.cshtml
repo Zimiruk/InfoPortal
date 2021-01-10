@@ -70,6 +70,10 @@
     @Model.Language.Name
 </span>
 
+<img style="margin-bottom:20px" type="file" src="data:image/png;base64,@(Convert.ToBase64String(Model.Image))" />
+
+
+<video style="margin-bottom:20px" type="file" controls src="data:video/mp4;base64,@(Convert.ToBase64String(Model.Video))"></video>
 
 <div style="margin-left:20px; margin-right:20px">
 
@@ -78,18 +82,6 @@
         <div id="text">@Model.Text</div>
 
 
-        @foreach (var file in Model.Files)
-        {
-            switch (file.Type)
-            {
-                case "image/png":
-                    <img style="margin-bottom:20px" type="file" src="data:image/png;base64,@(Convert.ToBase64String(file.Content))" />
-                    break;
-                case "video/mp4":
-                    <video style="margin-bottom:20px" type="file" controls src="data:video/mp4;base64,@(Convert.ToBase64String(file.Content))"></video>
-                    break;
-            }
-        }
 
     </div>
 

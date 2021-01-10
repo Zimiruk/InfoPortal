@@ -22,11 +22,11 @@ namespace InfoPortal.DAL.Repositories.Implementations
         {
             int id = DatabaseCommand.ExecuteNonQueryWithId(article, ArticleConstants.CreateArticle, Access.Connection);
 
-            foreach (var file in article.Files)
+            /*foreach (var file in article.Files)
             {
                 file.ArticleId = id;
                 CreateFile(file);
-            }
+            }*/
 
 
             /// TODO Make sure to use it more then one time
@@ -73,7 +73,14 @@ namespace InfoPortal.DAL.Repositories.Implementations
             var article = DatabaseCommand.ExecuteSingleReader<Article>(id, ArticleConstants.GetArticle, Access.Connection);
 
             article.Themes = GetThemesByArticleId(id);
-            article.Files = GetAllFilesByArticleId(id);
+            article.ThemesId = new List<int>();
+
+            foreach(var theme in article.Themes)
+            {
+                article.ThemesId.Add(theme.Id);
+            }
+
+            //article.Files = GetAllFilesByArticleId(id);
             article.Language = GetLanguage(article.LanguageId);
 
             return article;

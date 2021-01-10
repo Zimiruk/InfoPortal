@@ -50,9 +50,13 @@ namespace InfoPortal.DAL
                 AddedOn = Convert.ToDateTime(reader.GetValue(3)),
                 Language = reader.GetValue(4).ToString(),
                 Link = Convert.ToInt32(reader.GetValue(5))*/
+
+
                 AddedOn = Convert.ToDateTime(reader.GetValue(2)),
                 LanguageId = Convert.ToInt32(reader.GetValue(3)),
-                Text = reader.GetValue(4).ToString()         
+                Image = (byte[])reader.GetValue(4),
+                Video = (byte[])reader.GetValue(5),
+                Text = reader.GetValue(6).ToString()         
             };
 
             return article;

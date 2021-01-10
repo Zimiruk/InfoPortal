@@ -4,13 +4,18 @@
 
     <script>
 
+        /** 
+         *  
+         *  Creating dynamic html elements using basic java script
+         *  
+         *  **/
+
         let Language = {};
         let lastValue = "";
         let editMode = false;
 
-        ///TODO Think over;
-
         $(function () {
+
             $("#buttonNext").click(function () {
 
                 Language.Name = $("#Name").val();
@@ -31,6 +36,10 @@
                         if (response.success) {
                             alert(response.responseText);
                             window.location.reload();
+                        }
+
+                        else {
+                            alert(response.responseText);
                         }
 
                     },
@@ -59,7 +68,6 @@
                     let saveButton = document.createElement("button");
                     saveButton.innerHTML = "Save";
                     saveButton.className = "btn btn-success saveButton indent";
-                    //saveButton.style.marginRight = "5px";
                     buttonsBox.appendChild(saveButton);
 
                     let cancelButton = document.createElement("button");
@@ -67,7 +75,6 @@
                     cancelButton.className = "btn btn-warning cancelButton";
                     buttonsBox.appendChild(cancelButton);
 
-                    /// might be model way to get element did not found for now;
                     let nameElement = contentBox.getElementsByClassName("viewName")[0];
                     lastValue = nameElement.textContent;
 
@@ -97,7 +104,6 @@
                 let editButton = document.createElement("button");
                 editButton.innerHTML = "Edit";
                 editButton.className = "btn btn-success editButton indent";
-                //editButton.style.marginRight = "5px";
                 buttonsBox.appendChild(editButton);
 
                 let deleteButton = document.createElement("button");
@@ -152,6 +158,10 @@
                             alert(response.responseText);
                             window.location.reload();
                         }
+
+                        else {
+                            alert(response.responseText);
+                        }
                     },
                     failure: function (response) {
                         alert(response.responseText);
@@ -164,8 +174,6 @@
             });
 
             $(document).on("click", ".deleteButton", function (event) {
-
-                console.log("here")
 
                 let deleteButton = event.target;
 
@@ -209,13 +217,11 @@
 
 <div class="container">
     <div class="form-group addContentForm" />
-    <!-- style="margin-right:20px; width: 30%; display:inline-block"> -->
     <label>Name</label>
     <input class="form-control" id="Name" />
 </div>
 
 <button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new Language</button>
-</div>
 
 <div class="container">
     <div class="row">

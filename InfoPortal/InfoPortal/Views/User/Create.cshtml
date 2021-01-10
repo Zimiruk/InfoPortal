@@ -23,10 +23,12 @@
         <input asp-for="Password" type="text" class="form-control" id="Password" />
     </div>
 
-    <p>
-        Role <br />
-        @Html.DropDownListFor(model => model.RoleId, ViewBag.Roles as SelectList)
-    </p>
+    <div class="form-group" style="margin-left:20px; margin-right:20px">
+        <p class="form-group">
+            Role <br />
+            @Html.DropDownListFor(model => model.RoleId, ViewBag.Roles as SelectList)
+        </p>
+    </div>
 
     <button type="submit" value="Create" style="margin-left:20px" ; class="btn btn-primary">Save</button>
 </form>
