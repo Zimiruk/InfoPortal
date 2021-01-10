@@ -3,6 +3,7 @@ using InfoPortal.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace InfoPortal.WebMVC.Controllers
 {
@@ -27,20 +28,38 @@ namespace InfoPortal.WebMVC.Controllers
         [HttpPost]
         public IActionResult Create(Theme theme)
         {
-            /// TODO Add validation
-            /// 
 
-            theme.Name = theme.Name == null ? "" : theme.Name;
+            if (ModelState.IsValid)
+            {
+                theme.Name = theme.Name == null ? "" : theme.Name;
 
-            int id = _themeService.Create(theme);
-            return Json(new { success = true, responseText = "Theme added", id });
+                int id = _themeService.Create(theme);
+                return Json(new { success = true, responseText = "Theme added", id });
+            }
+
+            var errorList = (from item in ModelState
+                             where item.Value.Errors.Any()
+                             select item.Value.Errors[0].ErrorMessage).ToList();
+
+            return Json(new { success = false, responseText = errorList });
+
+
         }
 
         [HttpPost]
         public IActionResult Update(Theme theme)
         {
-            _themeService.Update(theme);
-            return Json(new { success = true, responseText = "Theme chenged"});
+            if (ModelState.IsValid)
+            {
+                _themeService.Update(theme);
+                return Json(new { success = true, responseText = "Theme changed" });
+            }
+
+            var errorList = (from item in ModelState
+                             where item.Value.Errors.Any()
+                             select item.Value.Errors[0].ErrorMessage).ToList();
+
+            return Json(new { success = false, responseText = errorList });
         }
 
         [HttpDelete]
