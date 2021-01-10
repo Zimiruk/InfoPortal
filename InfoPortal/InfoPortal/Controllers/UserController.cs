@@ -67,7 +67,7 @@ namespace InfoPortal.WebMVC.Controllers
         {
             _userService.Delete(id);
 
-            return Json(new { success = true, responseText = "" });
+            return Json(new { success = true, responseText = "User deleted" });
 
         }
 
@@ -97,6 +97,12 @@ namespace InfoPortal.WebMVC.Controllers
                 {
                     await Authenticate(model.Email, user.Role);
                     return RedirectToAction("Index", "Home");
+                }
+
+                else
+                {
+                    ModelState.AddModelError("LogOnError", "Email or password provided is incorrect.");
+                    return View(model);
                 }
             }
 
