@@ -1,0 +1,259 @@
+﻿@model IEnumerable<InfoPortal.Common.Models.Language>
+
+@section Scripts {
+
+    <script>
+
+        /** 
+         *  
+         *  Creating dynamic html elements using basic java script
+         *  
+         *  **/
+
+        let Language = {};
+        let lastValue = "";
+        let editMode = false;
+
+        $(function () {
+
+            $("#buttonNext").click(function () {
+
+                Language.Name = $("#Name").val();
+
+                let formData = new FormData();
+
+                formData.append("Name", Language.Name);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Language/Create",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function (response) {
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.reload();
+                        }
+
+                        else {
+                            alert(response.responseText);
+                        }
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert("Server error");
+                    }
+                });
+            });
+
+            $(document).on("click", ".editButton", function (event) {
+
+                if (!editMode) {
+
+                    editMode = true;
+
+                    let editButton = event.target;
+
+                    let buttonsBox = editButton.parentElement;
+                    let contentBox = buttonsBox.parentElement;
+
+                    buttonsBox.innerHTML = "";
+
+                    let saveButton = document.createElement("button");
+                    saveButton.innerHTML = "Save";
+                    saveButton.className = "btn btn-success saveButton indent";
+                    buttonsBox.appendChild(saveButton);
+
+                    let cancelButton = document.createElement("button");
+                    cancelButton.innerHTML = "Cancel";
+                    cancelButton.className = "btn btn-warning cancelButton";
+                    buttonsBox.appendChild(cancelButton);
+
+                    let nameElement = contentBox.getElementsByClassName("viewName")[0];
+                    lastValue = nameElement.textContent;
+
+                    let tdElement = nameElement.parentElement;
+                    tdElement.innerHTML = "";
+
+                    let inputElement = document.createElement("input");
+                    inputElement.type = "text";
+                    inputElement.value = lastValue;
+                    inputElement.className = "inputName";
+
+                    tdElement.appendChild(inputElement);
+                }
+
+            });
+            $(document).on("click", ".cancelButton", function (event) {
+
+                editMode = false;
+
+                let cancelButton = event.target;
+
+                let buttonsBox = cancelButton.parentElement;
+                let contentBox = buttonsBox.parentElement;
+
+                buttonsBox.innerHTML = "";
+
+                let editButton = document.createElement("button");
+                editButton.innerHTML = "Edit";
+                editButton.className = "btn btn-success editButton indent";
+                buttonsBox.appendChild(editButton);
+
+                let deleteButton = document.createElement("button");
+                deleteButton.innerHTML = "Delete";
+                deleteButton.className = "btn btn-danger deleteButton";
+                buttonsBox.appendChild(deleteButton);
+
+                let nameElement = contentBox.getElementsByClassName("inputName")[0];
+
+                let tdElement = nameElement.parentElement;
+                tdElement.innerHTML = "";
+
+                let spanElement = document.createElement("span");
+                spanElement.innerHTML = lastValue;
+                spanElement.className = "viewName";
+
+                tdElement.appendChild(spanElement);
+            });
+
+            $(document).on("click", ".saveButton", function (event) {
+
+                let editButton = event.target;
+
+                let buttonsBox = editButton.parentElement;
+                let contentBox = buttonsBox.parentElement;
+
+                let idElement = contentBox.getElementsByClassName("viewId")[0];
+                Language.Id = idElement.textContent;
+
+                let inputElement = contentBox.getElementsByClassName("inputName")[0];
+                Language.Name = inputElement.value;
+
+                console.log(Language);
+
+                let formData = new FormData();
+
+                formData.append("Id", Language.Id);
+                formData.append("Name", Language.Name);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Language/Update",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function (response) {
+
+                        console.log(response);
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.reload();
+                        }
+
+                        else {
+                            alert(response.responseText);
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert("Server error");
+                    }
+                });
+
+            });
+
+            $(document).on("click", ".deleteButton", function (event) {
+
+                let deleteButton = event.target;
+
+                let buttonsBox = deleteButton.parentElement;
+                let contentBox = buttonsBox.parentElement;
+
+                let idElement = contentBox.getElementsByClassName("viewId")[0];
+                id = idElement.textContent;
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/Language/Delete?id=" + id,
+
+                    success: function (response) {
+
+                        console.log(response);
+
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.reload();
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert("Server error");
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+@{
+    ViewData["Title"] = "Language";
+}
+
+<h1>Languages</h1>
+
+<div class="container">
+    <div class="form-group addContentForm" />
+    <label>Name</label>
+    <input class="form-control" id="Name" />
+</div>
+
+<button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new Language</button>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Language in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <span class="viewId">@Language.Id</span>
+                            </th>
+                            <td>
+                                <span class="viewName">@Language.Name</span>
+                            </td>
+                            <td class="fit">
+                                <button type="button" class="btn btn-success editButton">Edit</button>
+                                <button type="button" id="deleteButton" class="btn btn-danger deleteButton">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

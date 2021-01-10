@@ -1,5 +1,6 @@
 using InfoPortal.DAL;
 using InfoPortal.DI;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,18 +15,30 @@ namespace InfoPortal.WebMVC
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;            
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews(mvcOtions =>
+            {
+                mvcOtions.EnableEndpointRouting = false;
+            });
+
             services.AddRazorPages();
             services.IoCRegistry();
             services.AddTransient(_ => new SQLDataAccess(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+              .AddCookie(options =>
+              {
+                  options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/User/Login");
+              });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -34,10 +47,19 @@ namespace InfoPortal.WebMVC
             app.UseRouting();
             app.UseStaticFiles();
 
-            app.UseEndpoints(endpoint =>
+            app.UseAuthentication();
+            app.UseAuthorization();
+                 
+            app.UseMvc(routes =>
             {
-                endpoint.MapDefaultControllerRoute();
-            });           
+                routes.MapRoute("create", "/article/create", new { controller = "Article", action = "Create" });
+                routes.MapRoute("detail", "/article/{id}", new { controller = "Article", action = "Detail" });
+       
+
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=home}/{action=Index}/{id?}");
+            });
         }
     }
 }

@@ -1,0 +1,200 @@
+﻿@model InfoPortal.WebMVC.Models.UpdateArticleViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Scripts {
+
+    <script>
+
+        let sText = "";
+
+        $(document).on('change', '#Image', function () {
+
+            var selectedFile = $('#Image').get(0).files[0];
+
+            let image = document.getElementById("imageContent");
+            image.src = URL.createObjectURL(selectedFile);
+            image.style.display = "block";
+        });
+
+        $(document).on('change', '#Video', function () {
+
+            var selectedFile = $('#Video').get(0).files[0];
+
+            let video = document.getElementById("videoContent");
+            video.src = URL.createObjectURL(selectedFile);
+            video.style.display = "block";
+        });
+
+        /** Set div content to Model text value **/
+
+        $(document).ready(function () {
+
+            let text = document.getElementById("Text")
+            let editor = document.getElementById("editor")
+
+            editor.innerHTML = text.value;
+
+            document.getElementById("editor").addEventListener("input", function (event) {
+
+                let text = document.getElementById("Text")
+                text.value = event.target.innerHTML;
+
+            }, false);
+        });
+
+        function saveSelection() {
+            if (window.getSelection) {
+                var sel = window.getSelection();
+                if (sel.getRangeAt && sel.rangeCount) {
+                    return sel.getRangeAt(0);
+                }
+            } else if (document.selection && document.selection.createRange) {
+                return document.selection.createRange();
+            }
+            return null;
+        }
+
+        function restoreSelection(range) {
+            if (range) {
+                if (window.getSelection) {
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else if (document.selection && range.select) {
+                    range.select();
+                }
+            }
+        }
+
+        $(document).on("mousedown", "#urlButton", function () {
+
+            sText = saveSelection();
+
+            console.log(sText);
+
+            $.ajax({
+                url: "/Search/Articles"
+            }).done(function (msg) {
+                $("#showModal").html(msg);
+                $("#myModal").modal();
+            })
+        });
+
+        $(document).on("click", "button", function (event) {
+            if (event.target.className == "btn btn-danger getIdButton") {
+
+                let tr = event.target.parentNode.parentNode;
+                linkId = tr.getElementsByClassName("viewId")[0].innerHTML;
+
+                restoreSelection(sText);
+                console.log(sText);
+
+                document.execCommand('insertHTML', false, '<a href="' + linkId + '">' + sText + '</a>');
+
+                $("#cl").click();
+                $("#showModal").html("");
+                $('.dropdown-toggle').dropdown();
+            }
+        });
+
+
+    </script>
+}
+
+<h1 class="indentLeft">Update</h1>
+
+@using (Html.BeginForm("Update", "Article", FormMethod.Post, new { enctype = "multipart/form-data", id = "form", style = "margin: 15px" }))
+{
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Content Title" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p>
+                Language <br />
+                @Html.DropDownListFor(model => model.LanguageId, ViewBag.Languages as SelectList)
+            </p>
+        </div>
+
+        <div class="form-group">
+            <div class="editor-label"><b>Themes</b></div>
+            @{
+                List<Theme> courses = ViewBag.Themes;
+                foreach (Theme c in courses)
+                {
+                    <div class="checkbox" style="display: inline-block">
+                        <label>
+                            <input type="checkbox"
+                                   name="ThemesId"
+                                   value="@c.Id"
+                                   @if (Model.ThemesId.Contains(c.Id)) { <text> checked </text> } /> @c.Name
+                            </label>
+                        </div>
+                    }
+            }
+
+            @Html.ValidationMessageFor(model => model.ThemesId)
+        </div>
+
+        <div class="form-group" style="display: inline-block">
+            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <img id="imageContent" class="createContent" src="data:image/png;base64,@(Convert.ToBase64String(Model.ImageContent))" />
+                <input type="file" name="Image" id="Image" accept="image/x-png,image/gif,image/jpeg" />
+                @Html.ValidationMessageFor(model => model.Image)
+            </div>
+        </div>
+
+        <div class="form-group" style="display: inline-block">
+            @Html.LabelFor(model => model.Video, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <video type="file" id="videoContent" class="createContent" controls src="data:video/mp4;base64,@(Convert.ToBase64String(Model.VideoContent))"></video>
+                <input type="file" name="Video" id="Video"  accept="video/mp4" />
+                @Html.ValidationMessageFor(model => model.Video)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Text, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div style="visibility: hidden">
+                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", placeholder = "Content Title" })
+                </div>
+
+                <button id="urlButton">Create a link to another article of the selected text</button>
+                <div contenteditable="true" id="editor" style="border:solid"></div>
+
+                @Html.ValidationMessageFor(model => model.Text)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="modal" id="myModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-footer">
+                <button type="button" id="cl" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            <div id="showModal">
+            </div>
+        </div>
+    </div>
+</div>

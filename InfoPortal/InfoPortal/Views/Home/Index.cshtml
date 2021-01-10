@@ -1,28 +1,93 @@
-﻿
+﻿@model IEnumerable<InfoPortal.Common.Models.Article>
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Info Portal</h1>
-
-<h2>List of articles</h2>
-
-@foreach (var article in ViewBag.Articles)
-{
-    <div class="card" style="width: 40rem;">
-        <div>
-            <span class="float-left">@article.AddedOn</span>
-            <span class="float-right">@article.Language</span>
-        </div>
-
-        <div class="card-body">
-            <h5 class="card-title">@article.Name</h5>
-            <p>Themes</p>
-            <ul>
-                <li>@article.Theme</li>             
-            </ul>
-            <img class="card-img-top" src="..." alt="Some awesome picture could be here">
-            <a href="#" class="d-block btn btn-primary">Show details</a>
-        </div>
-    </div>   
+@section Scripts {
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 }
+
+
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+
+
+
+        <div class="sidebar-heading">Info portal</div>
+
+        @if (User.Identity.IsAuthenticated)
+        {            
+            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+        }
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+        {
+            <div class="list-group list-group-flush">
+                <a href="@Url.Action("Create", "Article")" class="d-block btn btn-success">Add article</a>
+            </div>
+        }
+
+        <div class="list-group list-group-flush">
+
+            <a href="@Url.Action("Login", "User")" class="list-group-item list-group-item-action bg-light">Login</a>
+            <a href="@Url.Action("Index", "Search")" class="list-group-item list-group-item-action bg-light">Search</a>
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+            {
+                <a href="@Url.Action("Index", "Theme")" class="list-group-item list-group-item-action bg-light">Themes</a>
+                <a href="@Url.Action("Index", "Language")" class="list-group-item list-group-item-action bg-light">Languages</a>
+            }
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("Index", "User")" class="list-group-item list-group-item-action bg-light">Users</a>
+            }
+
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+        @foreach (var article in Model)
+        {
+            <div class="card">
+                <div>
+                    <span class="float-left">@article.AddedOn</span>
+                    <span class="float-right">@article.Language.Name</span>
+                </div>
+
+                <div class="card-body">
+
+                    <p>Themes</p>
+
+                    @foreach (var theme in article.Themes)
+                    {
+                        <ul>
+                            <li>
+                                @theme.Name
+                            </li>
+                        </ul>
+                    }
+
+                    <h5 class="card-title">@article.Name</h5>
+
+
+
+                    <a href="@Url.Action("Detail", "Article", new { id = article.Id})" class="d-block btn btn-primary" style="width:10%">Show details</a>
+                </div>
+            </div>
+        }
+
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>

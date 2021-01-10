@@ -1,0 +1,156 @@
+﻿@model IEnumerable<InfoPortal.Common.Models.Article>
+
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+@section Scripts {
+
+    <script>
+
+        Date.prototype.toDateInputValue = (function () {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0, 10);
+
+            console.log("here")
+        });
+
+
+        $(document).ready(function () {
+           document.getElementById("dateInput").value = new Date().toDateInputValue();
+        });
+
+
+        $(function () {
+
+            $('#dateInput').change(function () {
+                var date = $(this).val();
+                console.log(date, 'change')
+
+
+                $.ajax({
+                    url: "/Search/Index?expression=" + date + '&parameter=Date',
+                    type: 'GET',
+
+
+                    success: function (response) {
+                        $("body").html(response);
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+
+
+                });
+
+            });
+
+            $("#buttonFind").click(function () {
+
+                //alert("Hello");
+
+             let searchExpression = $("#Search").val();
+                let parameter;
+
+                if (document.getElementById('byArticle').checked) {
+
+                    parameter = "Name";
+                }
+
+                else if (document.getElementById('byTheme').checked) {
+
+                    parameter = "Theme";
+                }
+
+                $.ajax({
+                    url: "/Search/Index?expression=" + searchExpression + '&parameter=' + parameter,
+                    type: 'GET',
+
+
+                    success: function (response) {
+                        $("body").html(response);
+
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+<h1>Search</h1>
+
+<div class="container">
+    <div class="form-group" />
+    <label>
+        Search expression
+    </label>
+
+    <br/>
+
+    <input class="form-control inlineBlock addContentForm" id="Search" />
+    <button type="button" id="buttonFind" class="indentBottom-Small btn btn-primary">Find</button>
+
+    <br/>
+
+    <input type="radio" id="byArticle" name="search" value="byArticle" checked>
+    <label class="indentRight">By article name</label>
+    <input type="radio" id="byTheme" name="search" value="byTheme">
+    <label>By theme name</label>
+
+    <div class="form-group row">
+        <label for="example-date-input" class="col-2 col-form-label">Date</label>
+        <div class="col-10">
+            <input class="form-control" type="date" id="dateInput">
+        </div>
+    </div>
+
+</div>
+
+
+@if (Model == null)
+{
+    <p>Search results will be shawn here</p>
+}
+
+else
+{
+    @foreach (var article in Model)
+    {
+        <div class="card" style="width: 40rem;">
+
+            <div>
+                <span class="float-left">@article.AddedOn</span>
+                <span class="float-right">@article.Language.Name</span>
+            </div>
+
+            <div class="card-body">
+
+                <h5 class="card-title">@article.Name</h5>
+                <p>Themes</p>
+
+                @foreach (var theme in article.Themes)
+                {
+                    <ul>
+                        <li>@theme.Name</li>
+                    </ul>
+                }
+
+                <a href="@Url.Action("Detail", "Article", new { id = article.Id})" class="d-block btn btn-primary">Show details</a>
+            </div>
+        </div>
+    }
+}
+

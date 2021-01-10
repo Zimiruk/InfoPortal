@@ -11,13 +11,11 @@ namespace InfoPortal.WebMVC.Controllers
         {
             _articleService = articleService;
         }
-
+    
         public IActionResult Index()
         {
-            var articles = _articleService.GetAll();
-            ViewBag.Articles = articles;
-
-            return View();
+            var articles = _articleService.GetAll();  
+            return View(articles);
         }
     }
 }
