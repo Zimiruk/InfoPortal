@@ -5,13 +5,15 @@ VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoPortal.WebMVC", "InfoPortal\InfoPortal.WebMVC.csproj", "{35AC0370-2D68-444F-B272-2412F6E3DF8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoPortal.DAL", "InfoPortal.DAL\InfoPortal.DAL.csproj", "{C5A6453B-B992-4FD2-8CF8-6755F639D295}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoPortal.DAL", "InfoPortal.DAL\InfoPortal.DAL.csproj", "{C5A6453B-B992-4FD2-8CF8-6755F639D295}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoPortal.BLL", "InfoPortal.BLL\InfoPortal.BLL.csproj", "{308E97C6-677F-48D9-A076-41D374571BED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoPortal.BLL", "InfoPortal.BLL\InfoPortal.BLL.csproj", "{308E97C6-677F-48D9-A076-41D374571BED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoPortal.DI", "InfoPortal.DI\InfoPortal.DI.csproj", "{9173D94E-DE4B-4170-B95F-5C0D8E4AB311}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoPortal.DI", "InfoPortal.DI\InfoPortal.DI.csproj", "{9173D94E-DE4B-4170-B95F-5C0D8E4AB311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoPortal.Common", "InfoPortal.Common\InfoPortal.Common.csproj", "{A953979C-6D49-48E4-8459-85C1AE3B2DA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoPortal.Common", "InfoPortal.Common\InfoPortal.Common.csproj", "{A953979C-6D49-48E4-8459-85C1AE3B2DA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InforPortal.Tests", "InforPortal.Tests\InforPortal.Tests.csproj", "{22C9986F-8144-44C3-AB10-4D1372ED1684}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A953979C-6D49-48E4-8459-85C1AE3B2DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A953979C-6D49-48E4-8459-85C1AE3B2DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A953979C-6D49-48E4-8459-85C1AE3B2DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C9986F-8144-44C3-AB10-4D1372ED1684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C9986F-8144-44C3-AB10-4D1372ED1684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C9986F-8144-44C3-AB10-4D1372ED1684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C9986F-8144-44C3-AB10-4D1372ED1684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
