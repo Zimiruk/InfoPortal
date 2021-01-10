@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InfoPortal.WebMVC.Controllers
 {
-    [Authorize(Roles = "Admin, User")]
-
+    [Authorize(Roles = "Admin, Editor")]
     public class LanguageController : Controller
     {
         private readonly ILanguageService _languageService;

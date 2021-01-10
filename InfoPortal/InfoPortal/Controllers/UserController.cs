@@ -88,15 +88,19 @@ namespace InfoPortal.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginAsync(LoginViewModel model)
         {
-            var user = _userService.CheckUser(model.Email, model.Password);
 
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                await Authenticate(model.Email, user.Role);
-                return RedirectToAction("Index", "Home");
+                var user = _userService.CheckUser(model.Email, model.Password);
+
+                if (user != null)
+                {
+                    await Authenticate(model.Email, user.Role);
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
-            return View(model);
+            return View(model);         
         }
 
         [AllowAnonymous]

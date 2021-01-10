@@ -26,6 +26,8 @@ CREATE TABLE [InfoPortal].[dbo].[Articles]
 	[Name] VARCHAR(50) NOT NULL, 
 	[AddedOn] DATETIME NOT NULL		DEFAULT GETDATE(),
 	[LanguageId] INT NOT NULL,
+	[Image] varbinary(MAX) NULL,
+	[Video] varbinary(MAX) NULL,
     [Text] TEXT
 
 	CONSTRAINT FK_Article_Language FOREIGN KEY (LanguageId)
@@ -81,6 +83,11 @@ CREATE TABLE [InfoPortal].[dbo].[Users]
 GO
 
 INSERT INTO [InfoPortal].[dbo].[Roles] (Name)
+VALUES 
+  ('Admin'), 
+  ('Editor')
+
+  INSERT INTO [InfoPortal].[dbo].[Roles] (Name)
 VALUES 
   ('Admin'), 
   ('Editor')

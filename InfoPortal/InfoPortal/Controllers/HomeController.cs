@@ -1,8 +1,5 @@
 ﻿using InfoPortal.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using InfoPortal.Common.Models;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 
 namespace InfoPortal.WebMVC.Controllers
 {

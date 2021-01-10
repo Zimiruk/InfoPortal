@@ -6,10 +6,12 @@ CREATE PROCEDURE CreateArticle
 	@name varchar(50),
 	@addedOn datetime,
 	@languageId int,
+	@image varbinary(max),
+	@video varbinary(max),
 	@text text
 AS   
-INSERT INTO Articles(Name, AddedOn, LanguageId, Text)
-VALUES (@name, @addedOn, @languageId, @text);
+INSERT INTO Articles(Name, AddedOn, LanguageId, Image, Video, Text)
+VALUES (@name, @addedOn, @languageId, @image, @video, @text);
 RETURN SCOPE_IDENTITY()
 GO  
 
@@ -20,7 +22,7 @@ GO
 CREATE PROCEDURE GetArticle  
     @id int
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Text
+    SELECT Id, Name, AddedOn, LanguageId, Image, Video, Text 
     FROM Articles 
     WHERE Id = @id 
 GO  
@@ -31,7 +33,7 @@ USE [InfoPortal];
 GO  
 CREATE PROCEDURE GetArticles  
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Text
+    SELECT Id, Name, AddedOn, LanguageId, Image, Video, Text 
     FROM Articles 
 GO  
 
@@ -44,6 +46,8 @@ CREATE PROCEDURE UpdateArticle
 	@name varchar(50),	
 	@addedOn datetime,
 	@languageId int,
+	@image varbinary(max),
+	@video varbinary(max),
 	@text text
 
 AS   
@@ -54,6 +58,8 @@ SET
 Name = @name,
 AddedOn = @addedOn,
 LanguageId = @languageId,
+Image = @image,
+Video = @video,
 Text = @text
 
 WHERE Id = @id
@@ -76,7 +82,7 @@ GO
 CREATE PROCEDURE GetArticlesByLanguageId
     @Id int
 AS   
-    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Text
+    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Image, Video, Text 
     FROM Articles
 
     WHERE LanguageId = @Id
@@ -88,7 +94,7 @@ GO
 CREATE PROCEDURE GetArticlesByName  
     @searchString varchar(max)
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Text
+    SELECT Id, Name, AddedOn, LanguageId, Image, Video, Text 
     FROM Articles 
 	WHERE Name LIKE '%'+@searchString+'%'
 GO
@@ -100,7 +106,7 @@ GO
 CREATE PROCEDURE GetArticlesByDate  
     @searchDate Datetime
 AS   
-    SELECT Id, Name, AddedOn, LanguageId, Text
+    SELECT Id, Name, AddedOn, LanguageId, Image, Video, Text 
     FROM Articles 
 	WHERE AddedOn >= @searchDate
 GO
@@ -265,7 +271,7 @@ GO
 CREATE PROCEDURE GetArticlesByThemeName 
      @searchString varchar(max)
 AS   
-    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Text
+    SELECT Articles.Id, Articles.Name, AddedOn, LanguageId, Image, Video, Text 
     FROM Articles
 	INNER JOIN Article_Themes
 ON Articles.Id = Article_Themes.ArticleId
@@ -346,8 +352,6 @@ CREATE PROCEDURE CreateUser
 	@email varchar(50),
 	@password varchar(50),
 	@roleId int
-
-
 AS   
 INSERT INTO Users(Login, Email, Password, RoleId)
 VALUES (@login, @email, @password, @roleId);

@@ -1,415 +1,63 @@
-﻿@model InfoPortal.WebMVC.Models.ContentViewModel
+﻿@model InfoPortal.WebMVC.Models.ArticleViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
+
+
 @section Scripts {
+
 
     <script>
 
-        let linkId;
         let sText = "";
-        let activeElement;
 
-        //let text;
-        let article = {};
-        let files = [];
-        let themes = [];
-        let selectedLanguage = {};
+        function fileCheck(obj) {
 
-        document.addEventListener('click', function (e) {
-            if (e.target && e.target.class == 'DeleteButton') {
 
-                let parent = e.target.parentNode;
-                removePicture(parent);
-            }
+
+
+            /* var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+             if ($.inArray($(obj).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                 alert("Only '.jpeg','.jpg', '.png', '.gif', '.bmp' formats are allowed.");
+             }*/
+        }
+
+
+        $(document).on('change', '#Image', function () {
+
+            var selectedFile = $('#Image').get(0).files[0];
+
+            let image = document.getElementById("imageContent");
+            image.src = URL.createObjectURL(selectedFile);
+            image.style.display = "block";
         });
 
-        $(function () {
-            $("#buttonNext").click(function () {
+        $(document).on('change', '#Video', function () {
 
-                let text = '';
+            var selectedFile = $('#Video').get(0).files[0];
 
-                let content = document.getElementById("content");
-                let children = content.children;
-
-
-                console.log(children);
-
-
-                for (i = 0; i < children.length; i++) {
-                    console.log(children[i]);
-
-                    if (children[i].className == "sample-toolbar") {
-                        console.log("found one");
-                        console.log(children[i].getElementsByClassName("editor")[0].innerHTML);
-
-                        text += '<p>' + children[i].getElementsByClassName("editor")[0].innerHTML + '</p>';
-                        text += '<br>';
-                    }
-
-                    else {
-
-                        console.log("We a here");
-                        text += '<file/> <br>';
-                    }
-                }
-
-                console.log(text);
-
-                if (themes.length == 0) {
-                    alert("Add at least one theme")
-                }
-
-                if (selectedLanguage.Id == undefined) {
-                    alert("Add language")
-                }
-
-                else {
-
-                    article.Name = $("#Name").val();
-                    article.Language = $("#Language").val();
-
-                    let formData = new FormData();
-
-                    formData.append("Name", article.Name);
-                    formData.append("LanguageId", selectedLanguage.Id);
-                    formData.append("Text", text);
-
-                    console.log(themes[0]);
-
-                    for (let x = 0; x < files.length; x++) {
-                        formData.append("Files", files[x].file);
-                    }
-
-                    for (let x = 0; x < themes.length; x++) {
-
-                        formData.append("Themes", themes[x].Id);
-                    }
-
-                    $.ajax({
-                        type: "POST",
-                        url: "/Article/Add",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-
-                        success: function (response) {
-
-                            if (response.success) {
-                                alert(response.responseText);
-                                location.href = response.id;
-                            }
-
-                        },
-                        failure: function (response) {
-                            alert(response.responseText);
-                        },
-                        error: function (response) {
-                            alert(response.responseText);
-                        }
-                    });
-                }
-            });
-
-            $("#addPicture").click(function () {
-                $('#file-input-picture').trigger('click');
-            });
-
-            $("#addVideo").click(function () {
-                $('#file-input-video').trigger('click');
-            });
-
-            $("#set").click(function () {
-                document.getElementById('sampleeditor').setAttribute('contenteditable', 'false');
-                text = document.getElementById('sampleeditor').innerHTML
-
-                console.log(text);
-            });
-
-            $("#addText").click(function () {
-
-                let newId = setFileId();
-
-                let sampleDiv = document.createElement("div");
-                sampleDiv.className = "sample-toolbar";
-                sampleDiv.id = "sample_div" + newId;
-
-                let url = document.createElement("button");
-                url.innerHTML = "Create a link to another article of the selected text";
-                url.className = "url";
-
-                let addTextButton = document.createElement("button");
-                addTextButton.innerHTML = "Remove";      
-                addTextButton.class = "DeleteButton";
-
-                sampleDiv.appendChild(url);
-  
-
-                let editorDiv = document.createElement("div");
-                editorDiv.className = "editor border";
-                editorDiv.id = "sampleeditor";
-                editorDiv.contentEditable = "true";
-
-                sampleDiv.appendChild(editorDiv);
-                sampleDiv.appendChild(addTextButton);
-
-                let content = document.getElementById('content');
-                content.appendChild(sampleDiv);  
-            });
-
-            ///Picture input
-
-            $(document).on('change', '#file-input-picture', function () {
-
-                var selectedFile = $('#file-input-picture').get(0).files[0];
-
-                if (selectedFile.type == "image/png") {
-
-                    let newId = setFileId();
-
-                    let imageDiv = document.createElement("div");
-                    imageDiv.className = "img-wrap  imageDiv indentBottom";
-                    imageDiv.id = "image_div" + newId;
-
-                    let deleteImageButton = document.createElement("button");
-                    deleteImageButton.innerHTML = "Remove this picture";      
-                    deleteImageButton.class = "DeleteButton";
-
-
-                    let newImage = document.createElement("img");
-                    newImage.src = URL.createObjectURL(selectedFile);
-
-                    imageDiv.appendChild(newImage);
-                    imageDiv.appendChild(deleteImageButton);
-
-                    let content = document.getElementById('content');
-                    content.appendChild(imageDiv);
-
-                    files.push(
-                        {
-                            "id": newId,
-                            "file": selectedFile
-                        }
-                    );
-
-                    document.getElementById("file-input-picture").value = "";
-
-                    console.log(files)
-                }
-
-                else {
-                    alert("Wrong file format");
-                }
-
-            });
-
-            ///Video input
-
-            $(document).on('change', '#file-input-video', function () {
-
-                var selectedFile = $('#file-input-video').get(0).files[0];
-
-                if (selectedFile.type == "video/mp4") {
-
-                    let newId = setFileId();
-
-                    let videoDiv = document.createElement("div");
-                    videoDiv.id = "video_div" + newId;
-                    videoDiv.className = "indentBottom";
-
-                    let deleteVideoButton = document.createElement("button");
-                    deleteVideoButton.innerHTML = "Remove this video";
-                    //deleteVideoButton.class = "DeleteVideo";
-                    deleteVideoButton.class = "DeleteButton";
-
-                    let newVideo = document.createElement("video");
-                    newVideo.src = URL.createObjectURL(selectedFile);
-                    newVideo.controls = true;
-
-                    videoDiv.appendChild(newVideo);
-                    videoDiv.appendChild(newVideo);
-                    videoDiv.appendChild(deleteVideoButton);
-
-                    let content = document.getElementById('content');
-                    content.appendChild(videoDiv);
-
-                    files.push(
-                        {
-                            "id": newId,
-                            "file": selectedFile
-                        }
-                    );
-
-                    document.getElementById("file-input-video").value = "";
-
-                    console.log(files);
-                }
-
-                else {
-                    alert("Wrong file format");
-                }
-
-            });
-
-            $(document).on("click", ".addTheme", function (event) {
-
-                if (themes.length == 10) {
-
-                    alert("Enough themes for that article")
-                }
-
-                else {
-
-                    let id = event.target.id;
-
-                    let element = themes.find(x => x.Id == id);
-
-                    if (element == undefined) {
-
-                        let editButton = event.target;
-
-                        let themeDiv = document.createElement("div");
-                        themeDiv.className = "inlineBlock"
-                        themeDiv.id = id;
-
-                        let themeContent = document.createElement("button");
-
-                        themeContent.innerHTML = editButton.innerHTML;
-                        themeContent.className = "btn btn-dark themeContentButton";
-
-                        let themeDelete = document.createElement("button");
-                        themeDelete.innerHTML = "X";
-                        themeDelete.className = "btn btn-dark deleteTheme themeDeleteButton";
-
-                        themeDiv.appendChild(themeContent);
-                        themeDiv.appendChild(themeDelete);
-
-                        let selectedThemeBlock = document.getElementById("selectedTheme");
-
-                        selectedThemeBlock.className = "container-fluid selectedThemeBlockUpdate indentBottom";
-
-                        if (themes.length == 0) {
-                            selectedThemeBlock.innerHTML = "";
-                        }
-
-                        selectedThemeBlock.appendChild(themeDiv);
-
-                        let selectedTheme = {};
-                        selectedTheme.Id = id
-                        selectedTheme.Name = event.target.innerHTML;
-
-                        themes.push(selectedTheme);
-                    }
-                }
-            });
-
-
-            $(document).on("click", ".deleteTheme", function (event) {
-
-                let id = event.target.parentNode.id;
-                event.target.parentNode.remove();
-
-                index = themes.findIndex(x => x.Id == id);
-
-                if (index > -1) {
-                    themes.splice(index, 1);
-                }
-
-            });
-
-          
-            $(document).on("click", "#createLink", function (event) {
-
-                console.log("Link");
-            });
-      
-
-            $(document).on("click", ".addLanguage", function (event) {
-
-                let id = event.target.id;
-
-                if (selectedLanguage.Id != id) {
-
-                    if (selectedLanguage.Id != undefined) {
-                        document.getElementById("languageDivContent").remove();
-                    }
-
-                    let editButton = event.target;
-
-                    languageDiv = document.createElement("div");
-                    languageDiv.id = "languageDivContent";
-                    languageDiv.style.display = "inline";
-
-                    let languageInfo = document.createElement("span");
-                    languageInfo.className = "indentRight";
-                    languageInfo.innerHTML = "Selected Language:";
-
-                    let languageContent = document.createElement("span");
-                    languageContent.className = "indentRight-Medium";
-                    languageContent.innerHTML = editButton.innerHTML;
-
-                    let languageDelete = document.createElement("button");
-                    languageDelete.innerHTML = "Remove language";
-                    languageDelete.className = "btn btn-dark deleteLanguage";
-
-                    languageDiv.appendChild(languageInfo);
-                    languageDiv.appendChild(languageContent);
-                    languageDiv.appendChild(languageDelete);
-
-                    let selectedLanguageBlock = document.getElementById("languageDiv");
-                    selectedLanguageBlock.appendChild(languageDiv);
-
-                    selectedLanguage.Id = id
-                    selectedLanguage.Name = event.target.innerHTML;
-                }
-            });
-
-            $(document).on("click", ".deleteLanguage", function (event) {
-                event.target.parentNode.remove();
-                selectedLanguage = {};
-            });
+            let video = document.getElementById("videoContent");
+            video.src = URL.createObjectURL(selectedFile);
+            video.style.display = "block";
         });
 
-        function setFileId() {
+        /** Set div content to Model text value **/
 
-            if (files.length == 0) {
-                return 1;
-            }
+        $(document).ready(function () {
 
-            else {
+            let text = document.getElementById("Text")
+            let editor = document.getElementById("editor")
 
-                let id = Math.max.apply(Math, files.map(
-                    function (element) {
-                        return element.id;
-                    }))
+            editor.innerHTML = text.value;
 
-                return ++id;
-            }
-        }
+            document.getElementById("editor").addEventListener("input", function (event) {
 
-        function removePicture(parent) {
-            let id = parent.id.substr(9)
+                let text = document.getElementById("Text")
+                text.value = event.target.innerHTML;
 
-            console.log(id);
-            index = files.findIndex(x => x.id == id);
-
-            console.log(index);
-            files.splice(index, 1);
-
-            parent.remove();
-            console.log(files);
-        }
-
-        function textAreaAdjust(element) {
-            element.style.height = "1px";
-            element.style.height = (25 + element.scrollHeight) + "px";
-        }
-
-        window.addEventListener('load', function () {
-            document.getElementById('sampleeditor').setAttribute('contenteditable', 'true');
-            document.getElementById('sampleeditor2').setAttribute('contenteditable', 'true');
+            }, false);
         });
 
         function saveSelection() {
@@ -436,8 +84,8 @@
             }
         }
 
-        $(document).on("mousedown", ".url", function () {     
-          
+        $(document).on("mousedown", "#urlButton", function () {
+
             sText = saveSelection();
 
             console.log(sText);
@@ -452,78 +100,120 @@
 
         $(document).on("click", "button", function (event) {
             if (event.target.className == "btn btn-danger getIdButton") {
-                
+
                 let tr = event.target.parentNode.parentNode;
-                linkId = tr.getElementsByClassName("viewId")[0].innerHTML;   
+                linkId = tr.getElementsByClassName("viewId")[0].innerHTML;
 
                 restoreSelection(sText);
                 console.log(sText);
 
                 document.execCommand('insertHTML', false, '<a href="' + linkId + '">' + sText + '</a>');
 
-                $("#cl").click();    
+                $("#cl").click();
                 $("#showModal").html("");
-                $('.dropdown-toggle').dropdown();                
+                $('.dropdown-toggle').dropdown();
             }
         });
+
+        $("form[0]").submit(function () {
+            alert("form submit");
+        })
+
+
+
+        //newImage.src = URL.createObjectURL(selectedFile);
+
+        //newImage.src = URL.createObjectURL(selectedFile);
+
 
     </script>
 }
 
 <h1 class="indentLeft">Create</h1>
 
-<div>
-    <div class="form-group indentLeft indentRight">
-        <label class="indentRight">Name</label>
-        <input class="form-control addContentForm" id="Name" />
+@using (Html.BeginForm("Add", "Article", FormMethod.Post, new { enctype = "multipart/form-data", id = "form", style = "margin: 15px" }))
+{
+    <div class="form-horizontal">
 
-        <button type="button" id="buttonNext" style="margin-right:20px" class="d-inline  btn btn-primary float-right">Save article</button>
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Content Title" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p>
+                Language <br />
+                @Html.DropDownListFor(model => model.LanguageId, ViewBag.Languages as SelectList)
+            </p>
+        </div>
+
+        <div class="form-group">
+            <div class="editor-label"><b>Themes</b></div>
+            @{
+                List<Theme> courses = ViewBag.Themes;
+                foreach (Theme c in courses)
+                {
+                    <div class="checkbox" style="display: inline-block">
+                        <label>
+                            <input type="checkbox"
+                                   name="ThemesId"
+                                   value="@c.Id"
+                                   @if (Model.ThemesId.Contains(c.Id)) { <text> checked </text> } /> @c.Name
+                            </label>
+                        </div>
+                    }
+            }
+
+            @Html.ValidationMessageFor(model => model.ThemesId)
+        </div>
+
+        <div class="form-group" style="display: inline-block">
+            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <img style="display:none;" id="imageContent" class="createContent" />
+                <input type="file" name="Image" id="Image" onchange="fileCheck(this);" accept="image/x-png,image/gif,image/jpeg" />
+                @Html.ValidationMessageFor(model => model.Image)
+            </div>
+        </div>
+
+        <div class="form-group" style="display: inline-block">
+            @Html.LabelFor(model => model.Video, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <video style="display:none;" type="file" id="videoContent" class="createContent" controls></video>
+                <input type="file" name="Video" id="Video" onchange="fileCheck(this);" accept="video/mp4" />
+                @Html.ValidationMessageFor(model => model.Video)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Text, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div style="visibility: hidden">
+                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", placeholder = "Content Title" })
+                </div>
+
+                <button id="urlButton">Create a link to another article of the selected text</button>
+                <div contenteditable="true" id="editor" style="border:solid"></div>
+
+                @Html.ValidationMessageFor(model => model.Text)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
     </div>
-</div>
-
-<div class="dropdown indentBottom indentLeft" id="languageDiv">
-    <button class="btn btn-secondary dropdown-toggle indentRight-Medium" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Select language
-    </button>
-
-    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        @foreach (var language in Model.Languages)
-        {
-            <button id="@language.Id" class="dropdown-item addLanguage" type="button">@language.Name</button>
-        }
-    </div>
-</div>
-
-<div class="dropdown indentBottom indentLeft">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Select theme
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        @foreach (var theme in Model.Themes)
-        {
-            <button id="@theme.Id" class="dropdown-item addTheme" type="button">@theme.Name</button>
-        }
-    </div>
-</div>
-
-<div id="selectedTheme" class="container-fluid selectedThemeBlock indentBottom">
-    <span class="themeBlockSpan">
-        Selected themes will be shown here
-    </span>
-</div>
-
-<input id="file-input-picture" class="hiddenElement" type="file" name="name" accept="image/x-png,image/gif,image/jpeg" />
-<input id="file-input-video" class="hiddenElement" type="file" name="name" accept="video/mp4, video/ogg, video/webm" />
-
-<div style="display:flex; margin-bottom:40px">
-    <button type="button" id="addPicture" class="d-inline btn btn-secondary float-left indentLeft">Add picture</button>
-    <button type="button" id="addVideo" class="d-inline btn btn-secondary float-left indentLeft">Add video</button>
-    <button type="button" id="addText" class="d-inline btn btn-secondary float-left indentLeft">Add text block</button>
-</div>
+}
 
 <div class="modal" id="myModal" tabindex="-1">
     <div class="modal-dialog">
-        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-footer">
                 <button type="button" id="cl" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -533,7 +223,3 @@
         </div>
     </div>
 </div>
-
-<div id="content" style=" display: block; margin-left: auto; margin-right: auto; width: 30%;" />
-
-

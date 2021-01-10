@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InfoPortal.WebMVC.Controllers
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = "Admin, Editor")]
     public class ThemeController : Controller
     {
         private readonly IThemeService _themeService;

@@ -4,11 +4,15 @@
 
     <script>
 
+        /**
+        *
+        *  Creating dynamic html elements using basic java script
+        *       
+        *  **/
+
         let theme = {};
         let lastValue = "";
         let editMode = false;
-
-        ///TODO Think over;
 
         $(function () {
             $("#buttonNext").click(function () {
@@ -58,8 +62,8 @@
 
                     let saveButton = document.createElement("button");
                     saveButton.innerHTML = "Save";
-                    saveButton.className = "btn btn-success saveButton indentRight";                   
-         
+                    saveButton.className = "btn btn-success saveButton indentRight";
+
                     buttonsBox.appendChild(saveButton);
 
                     let cancelButton = document.createElement("button");
@@ -67,7 +71,6 @@
                     cancelButton.className = "btn btn-warning cancelButton";
                     buttonsBox.appendChild(cancelButton);
 
-                    /// might be model way to get element did not found for now;
                     let nameElement = contentBox.getElementsByClassName("viewName")[0];
                     lastValue = nameElement.textContent;
 
@@ -97,7 +100,6 @@
                 let editButton = document.createElement("button");
                 editButton.innerHTML = "Edit";
                 editButton.className = "btn btn-success editButton indentRight";
-                //editButton.style.marginRight = "5px";
                 buttonsBox.appendChild(editButton);
 
                 let deleteButton = document.createElement("button");
@@ -209,13 +211,11 @@
 
 <div class="container">
     <div class="form-group addContentForm" />
-        <!-- style="margin-right:20px; width: 30%; display:inline-block"> -->
-        <label>Name</label>
-        <input class="form-control" id="Name" />
-    </div>
-
-    <button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new theme</button>
+    <label>Name</label>
+    <input class="form-control" id="Name" />
 </div>
+
+<button type="button" id="buttonNext" class="d-inline  btn btn-primary">Add new theme</button>
 
 <div class="container">
     <div class="row">
